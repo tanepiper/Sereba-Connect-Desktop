@@ -1,0 +1,12 @@
+#popup {
+	background: url('../images/Serebra-Popup-1.png') no-repeat top left;
+	width: 296px;
+	height: 244px;
+}
+
+#message-area {
+	width: 80%;
+	margin: 0 auto;
+	position:relative;
+	top: 50px;
+}
