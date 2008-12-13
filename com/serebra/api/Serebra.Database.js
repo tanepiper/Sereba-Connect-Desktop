@@ -54,7 +54,7 @@ Serebra.Database.SetupFirstRun = function(databaseFile, callback) {
 		'queryString': 'CREATE TABLE IF NOT EXISTS serebra_options (key TEXT, value TEXT);'
 	});
 	Serebra.Database.Query(databaseFile, {
-		'queryString': 'CREATE TABLE IF NOT EXISTS serebra_user_alerts (AlertID INTEGER PRIMARY KEY, Type TEXT, alertText TEXT, userLink TEXT, objectLink TEXT);'
+		'queryString': 'CREATE TABLE IF NOT EXISTS serebra_user_alerts (AlertID INTEGER PRIMARY KEY, Type TEXT, alertText TEXT, userLink TEXT, objectLink TEXT, messageRead INTEGER);'
 	});
 	
 	if (typeof callback === 'function') return callback();
@@ -89,6 +89,7 @@ Serebra.Database.Query = function(databaseFile, options){
   query.sqlConnection = connection;
   query.text = options.queryString;
   if (DebugMode) air.trace('Executing Query.');
+	air.trace(query.text);
 	query.execute();
   var success = query.getResult();
   if (success) {

@@ -28,6 +28,7 @@ Serebra.Menu.CreateSystrayMenu = function(){
 	var menuItems = {
 		'serebraConnect': new air.NativeMenuItem("Serebra Connect", false),
 		'updatesMenu': new air.NativeMenuItem("Check For Updates", false),
+		'fakeAlerts': new air.NativeMenuItem("Create Fake Alert", false),
 		'optionsMenu': new air.NativeMenuItem("Set Options", false),
 		'closeMenu': new air.NativeMenuItem("Exit", false)
 	}
@@ -53,6 +54,9 @@ Serebra.Menu.MenuItemClickHandler = function(event){
 		break;
 		case "Set Options":
 			Serebra.Window.ShowOptionsWindow();
+		break;
+		case "Create Fake Alert":
+			Serebra.SOAP.CreateFakeAlert(null, function(){});
 		break;
 		case "Exit":
 			air.NativeApplication.nativeApplication.exit();

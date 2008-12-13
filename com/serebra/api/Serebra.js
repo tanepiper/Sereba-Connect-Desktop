@@ -2,7 +2,7 @@ var Serebra;
 if (!Serebra) Serebra = function(){};
 
 /* Some Global Variables We Need */
-var DebugMode = false, FirstRun = false; ForceUpdate = false, ForceOffline = false; SerebraOnline = false, DatabaseFile = null;
+var DebugMode = false, FirstRun = false; applicationCode = 'B000002'; authCode = null; ForceUpdate = false, ForceOffline = false; SerebraOnline = false, DatabaseFile = null;
 
 /* We need to handle command line requests */
 Serebra.Initialize = function(){
@@ -22,37 +22,25 @@ Serebra.InvokeApplication = function ( event ) {
 			'databaseFile': 'SeberaConnectTest1.sqlite'
 		});
 		
-		var data = {
-			'applicationCode': 'B000002',
-			'username': 'jayc',
-			'password': 'password'
-		};
-		
-		function processResponse( result ) {
-			air.Introspector.Console.log(result);
+		function afterDbCheck(){
+			Serebra.SOAP.Authenticate({
+				'username': 'jayc',
+				'password': 'password',
+				'applicationCode': applicationCode
+			}, function(soapDocument){
+				authCode = jQuery('authCode', soapDocument).text();
+			});
 		}
 		
-		var soapBody = new SOAPObject("authenticateRequest");
-		soapBody.ns = "http://DefaultNamespace";
-		soapBody.appendChild(new SOAPObject("username")).val('jayc');
-		soapBody.appendChild(new SOAPObject("password")).val('password');
-		soapBody.appendChild(new SOAPObject("applicationCode")).val('B000002');
-		var sr = new SOAPRequest("http://qa.serebracampus.com:8888/apiWebService.cfc?wsdl", soapBody);
-		air.trace(sr);
-		SOAPClient.SOAPServer = "http://qa.serebracampus.com:8888/apiWebService.cfc?wsdl";
-		SOAPClient.SendRequest(sr, processResponse);
-		
-		/*
 		if (DatabaseFile) {
 			air.trace(FirstRun);
 			if (FirstRun) {
 				Serebra.Database.SetupFirstRun(DatabaseFile, function(){
-					Serebra.Messages.CreateMessage();
+					afterDbCheck();
 				});
 			} else {
-				Serebra.Messages.CreateMessage();
+				afterDbCheck();
 			}
-		}*/
-		
+		}
 	});
 }

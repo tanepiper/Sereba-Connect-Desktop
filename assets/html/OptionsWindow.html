@@ -3,7 +3,34 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 		<title>Options Window</title>
+		<link rel="stylesheet" media="screen" href="app:/assets/css/options.css" />
 	</head>
 	<body>
+		<div id="options-container">
+			<div id="handle">&nbsp;</div>
+			<div id="close-button-container"><a href="#" class="close-button"><span>Close</span></a></div>
+			
+			<div id="credentials">
+				<fieldset>
+					<legend>Serebra Connect Credentials</legend>
+					<table>
+						<tbody>
+							<tr>
+								<th scope="row">Username</th>
+								<td scope="row"><input type="text" name="username" id="username"></td>
+							</tr>
+							<tr>
+								<th scope="row">Password</th>
+								<td scope="row"><input type="password" name="password" id="password"></td>
+							</tr>
+							<tr>
+								<td colspan="2"><input type="submit" value="Save Options" /></td>
+							</tr>
+						</tbody>
+					</table>
+				</fieldset>
+			</div>
+			
+		</div>
 	</body>
 </html>

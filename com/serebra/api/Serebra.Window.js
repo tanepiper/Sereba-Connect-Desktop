@@ -108,9 +108,28 @@ Serebra.Window.ShowHideAllWindows = function( state ) {
 };
 
 Serebra.Window.ShowOptionsWindow = function() {
+	//air.Introspector.Console.log();
+	var sizeWidth = air.Screen.mainScreen.visibleBounds.width - 800;
+	var sizeHeight = air.Screen.mainScreen.visibleBounds.height - 600;
+	
 	Serebra.Window.CreateNewWindow({
-		'type':'utility',
 		'content':'app:/assets/html/OptionsWindow.html',
-		'size': [800, 500]
+		'maximizable': false,
+		'minimizable': false,
+		'resizable' : false,
+		'systemChrome': 'none',
+		'transparent': true,
+		'scrollBarsVisible': false,
+		'position': [sizeWidth, sizeHeight],
+		'size': [640, 480]
+	}, function ( event ){
+			//air.Introspector.Console.log();
+				var optionsWindow = jQuery('#options-container', event.target.window.document).get(0);
+				jQuery('#handle', optionsWindow).bind('mousedown.move', function(){
+						event.target.window.nativeWindow.startMove();
+				});
+				jQuery('.close-button', optionsWindow).click(function(){
+						event.target.window.nativeWindow.close();
+				});
 	});
 }

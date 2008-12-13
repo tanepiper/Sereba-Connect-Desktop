@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+	<soapenv:Body>
+		<authenticateRequest xmlns="http://DefaultNamespace">
+			<username>jayc</username>
+			<password>password</password>
+			<applicationCode>B000002</applicationCode>
+		</authenticateRequest>
+	</soapenv:Body>
+</soapenv:Envelope>

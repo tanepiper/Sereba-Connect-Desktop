@@ -17,7 +17,15 @@ Serebra.Messages.CreateMessage = function(options) {
 		'size': [296, 244]
 		}, function ( event ){
 				var messageArea = jQuery('#message-area', event.target.window.document).get(0);
-				jQuery('.title', messageArea).html('<strong>Message Title</strong>');
-				jQuery('.message', messageArea).html('This is where the messages will go.');
+				jQuery('.title', messageArea).html('<strong>New '+options.Type+'</strong>');
+				jQuery('.title', messageArea).click(function(){
+					event.target.window.nativeWindow.close();
+				});
+				jQuery('.message', messageArea).html('<a class="alert-link" href="' + options.objectLink + '">' + options.alertText + '</a>').bind('click', function(){
+					air.navigateToURL(new air.URLRequest(jQuery('.alert-link', messageArea).attr('href')));
+				});
+				jQuery('.user', messageArea).html('<a class="user-link" href="' + options.userLink + '">Click here to view the users profile.</a>').bind('click', function(){
+					air.navigateToURL(new air.URLRequest(jQuery('.user-link', messageArea).attr('href')));
+				});
 		});
 };
