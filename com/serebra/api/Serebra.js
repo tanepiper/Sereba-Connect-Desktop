@@ -22,6 +22,27 @@ Serebra.InvokeApplication = function ( event ) {
 			'databaseFile': 'SeberaConnectTest1.sqlite'
 		});
 		
+		var data = {
+			'applicationCode': 'B000002',
+			'username': 'jayc',
+			'password': 'password'
+		};
+		
+		function processResponse( result ) {
+			air.Introspector.Console.log(result);
+		}
+		
+		var soapBody = new SOAPObject("authenticateRequest");
+		soapBody.ns = "http://DefaultNamespace";
+		soapBody.appendChild(new SOAPObject("username")).val('jayc');
+		soapBody.appendChild(new SOAPObject("password")).val('password');
+		soapBody.appendChild(new SOAPObject("applicationCode")).val('B000002');
+		var sr = new SOAPRequest("http://qa.serebracampus.com:8888/apiWebService.cfc?wsdl", soapBody);
+		air.trace(sr);
+		SOAPClient.SOAPServer = "http://qa.serebracampus.com:8888/apiWebService.cfc?wsdl";
+		SOAPClient.SendRequest(sr, processResponse);
+		
+		/*
 		if (DatabaseFile) {
 			air.trace(FirstRun);
 			if (FirstRun) {
@@ -31,7 +52,7 @@ Serebra.InvokeApplication = function ( event ) {
 			} else {
 				Serebra.Messages.CreateMessage();
 			}
-		}
+		}*/
 		
 	});
 }
