@@ -13,12 +13,12 @@ Serebra.Network.Online = function(){
 		if (air.NativeApplication.supportsSystemTrayIcon) {
     	air.NativeApplication.nativeApplication.icon.bitmaps = new Array(event.target.content.bitmapData);
       air.NativeApplication.nativeApplication.icon.tooltip = 'Serebra Connect Desktop Is Online';
-			
+			/*
 			if (!DebugMode || ForceUpdate) {
 	  		Serebra.Update.InvokeApplicationUpdate({
 	  			'updateXML': 'http://jquery-api-browser.googlecode.com/svn/branches/update/update.xml'
 	  		});
-	  	}
+	  	}*/
 			Serebra.Network.messageTimer.start();
     }
 	}

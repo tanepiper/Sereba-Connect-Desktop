@@ -16,7 +16,7 @@ Serebra.Messages.CreateMessage = function(options) {
 		'position': [sizeWidth, sizeHeight],
 		'size': [296, 244]
 		}, function ( event ){
-				event.target.window.nativeWindow.alwaysInFront = true;
+				//event.target.window.nativeWindow.alwaysInFront = true;
 				var messageArea = jQuery('#message-area', event.target.window.document).get(0);
 				jQuery('.title', messageArea).html('<strong>New '+options.Type+'</strong>');
 				jQuery('.title', messageArea).click(function(){
@@ -57,42 +57,53 @@ Serebra.Messages.MessageCenter = function(){
 				var allMessages = Serebra.Database.Query(DatabaseFile, {
 					'queryString': 'SELECT * FROM serebra_user_alerts ORDER BY AlertID DESC'
 				});
-				var output = []
-				jQuery.each(allMessages.result.data, function(i, item){
-					
-					switch (item.messageRead) {
-						case 0:
-							var readStatus = "Unread";
-							var readClass = 'unread';
-						break;
-						case 1:
-							var readStatus = "Read";
-							var readClass = 'read';
-						break;
-					}
-					
-					output.push('<li>');
-						output.push('<div class="message" id="'+item.AlertID+'">');
-							output.push('<strong>Message: <span class="'+readClass+'">' + readStatus + '</span></strong>');
-							output.push('<p><a rel="'+item.AlertID+'" class="alert-link" href="' + item.objectLink + '">' + item.alertText+'</a></p>');
+				var output = [];
+				if (allMessages.result.data != null) {
+					jQuery.each(allMessages.result.data, function(i, item){
+						switch (item.messageRead) {
+							case 0:
+								var readStatus = "Unread";
+								var readClass = 'unread';
+								break;
+							case 1:
+								var readStatus = "Read";
+								var readClass = 'read';
+								break;
+						}
+						
+						output.push('<li>');
+						output.push('<div class="message" id="' + item.AlertID + '">');
+						output.push('<strong>Message: <span class="' + readClass + '">' + readStatus + '</span></strong>');
+						output.push('<p><a rel="' + item.AlertID + '" class="alert-link" href="' + item.objectLink + '">' + item.alertText + '</a></p>');
 						output.push('</div>');
-					output.push('</li>');
-				});
-				jQuery('#message-list', messageCenter).append(output.join(''));
-				
-				jQuery('.alert-link', messageCenter).bind('click', function(){
-					air.navigateToURL(new air.URLRequest(jQuery('.alert-link', messageCenter).attr('href')));
-					var id = jQuery(this).attr('rel');
+						output.push('</li>');
+					});
+					jQuery('#message-list', messageCenter).append(output.join(''));
 					
-					Serebra.SOAP.ConsumeAlert({
-						'authCode': authCode,
-						'applicationCode': applicationCode,
-						'alertID': id
-					}, function(response){
-						Serebra.Database.Query(DatabaseFile, {
-						'queryString': 'UPDATE serebra_user_alerts SET messageRead = 1 WHERE AlertID = ' + id
+					jQuery('.alert-link', messageCenter).bind('click', function(){
+						air.navigateToURL(new air.URLRequest(jQuery('.alert-link', messageCenter).attr('href')));
+						var id = jQuery(this).attr('rel');
+						
+						Serebra.SOAP.ConsumeAlert({
+							'authCode': authCode,
+							'applicationCode': applicationCode,
+							'alertID': id
+						}, function(response){
+							var result = jQuery('consumedAlert', response).text();
+							if (result == 'true') {
+								Serebra.Database.Query(DatabaseFile, {
+									'queryString': 'UPDATE serebra_user_alerts SET messageRead = 1 WHERE AlertID = ' + id
+								});
+								jQuery('#' + id + ' .unread', messageCenter).fadeOut('slow', function(){
+									jQuery(this).removeClass('unread').addClass('read').text('Read');
+									jQuery(this).fadeIn('slow');
+								});
+							}
 						});
 					});
-				});
+				} else {
+					output.push('<strong>You Have No Message</strong>');
+					jQuery('#footer',messageCenter).html(output.join(''));
+				}
 		});
 }

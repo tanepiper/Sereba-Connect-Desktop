@@ -108,7 +108,6 @@ Serebra.Window.ShowHideAllWindows = function( state ) {
 };
 
 Serebra.Window.ShowOptionsWindow = function() {
-	//air.Introspector.Console.log();
 	var sizeWidth = air.Screen.mainScreen.visibleBounds.width - 800;
 	var sizeHeight = air.Screen.mainScreen.visibleBounds.height - 600;
 	
