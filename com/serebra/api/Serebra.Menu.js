@@ -27,8 +27,9 @@ Serebra.Menu.CreateSystrayMenu = function(){
 	
 	var menuItems = {
 		'serebraConnect': new air.NativeMenuItem("Serebra Connect", false),
-		'updatesMenu': new air.NativeMenuItem("Check For Updates", false),
+		'messageCenter': new air.NativeMenuItem("Message Center", false),
 		'fakeAlerts': new air.NativeMenuItem("Create Fake Alert", false),
+		'updatesMenu': new air.NativeMenuItem("Check For Updates", false),
 		'optionsMenu': new air.NativeMenuItem("Set Options", false),
 		'closeMenu': new air.NativeMenuItem("Exit", false)
 	}
@@ -51,6 +52,9 @@ Serebra.Menu.MenuItemClickHandler = function(event){
 	switch (event.target.label) {
 		case "Serebra Connect":
 			air.navigateToURL(new air.URLRequest('https://www.serebraconnect.com/'));
+		break;
+		case "Message Center":
+			Serebra.Messages.MessageCenter();
 		break;
 		case "Set Options":
 			Serebra.Window.ShowOptionsWindow();
