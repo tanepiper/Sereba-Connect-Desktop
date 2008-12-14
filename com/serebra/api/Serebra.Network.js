@@ -109,11 +109,11 @@ Serebra.Network.CheckMessages = function() {
 				'objectLink': objectLink[1]
 			});
 			
-			var existing = Serebra.Database.Query(DatabaseFile, {
+			var existing = Serebra.Database.Query({
 				'queryString': 'SELECT * FROM serebra_user_alerts WHERE AlertID = ' + id
 			});
 			if(!existing.result.data){
-				Serebra.Database.Query(DatabaseFile, {
+				Serebra.Database.Query({
 					'queryString': 'INSERT INTO serebra_user_alerts VALUES(' + id + ',"' + type + '","' + alertText + '","' + userLink[1] + '","' + objectLink[1] + '",0)'
 				});
 				Serebra.Messages.CreateMessage(alerts[0]);

@@ -1,5 +1,10 @@
 Serebra.Database = {};
 
+Serebra.Database.DatabaseFile = null;
+Serebra.Database.GetConnection = function(){
+	return Serebra.Database.DatabaseFile;
+}
+
 /**
  * Connects to a local SQLite database
  * @param {Object} options
@@ -32,15 +37,16 @@ Serebra.Database.ConnectToFile = function(options){
 			databaseFile = null;
 		}
 	}
-  return databaseFile || false;
+  Serebra.Database.DatabaseFile = databaseFile;
 };
 
 /**
  * Creates the database from the passed file location
  * @param {Object} databaseFile The location of the database file
  */
-Serebra.Database.CreateDB = function(databaseFile){
+Serebra.Database.CreateDB = function(){
 	FirstRun = true;
+	var databaseFile = Serebra.Database.GetConnection();
 	var connection = new air.SQLConnection();
 	connection.addEventListener(air.SQLErrorEvent.ERROR, Serebra.Database.ErrorHandler);
 	connection.open(databaseFile, air.SQLMode.CREATE);
@@ -49,11 +55,12 @@ Serebra.Database.CreateDB = function(databaseFile){
 	return true;
 };
 
-Serebra.Database.SetupFirstRun = function(databaseFile, callback) {
-	Serebra.Database.Query(databaseFile, {
+Serebra.Database.SetupFirstRun = function(callback) {
+	var databaseFile = Serebra.Database.GetConnection();
+	Serebra.Database.Query({
 		'queryString': 'CREATE TABLE IF NOT EXISTS serebra_options (key TEXT, value TEXT);'
 	});
-	Serebra.Database.Query(databaseFile, {
+	Serebra.Database.Query({
 		'queryString': 'CREATE TABLE IF NOT EXISTS serebra_user_alerts (AlertID INTEGER PRIMARY KEY, Type TEXT, alertText TEXT, userLink TEXT, objectLink TEXT, messageRead INTEGER);'
 	});
 	
@@ -65,8 +72,8 @@ Serebra.Database.SetupFirstRun = function(databaseFile, callback) {
  * @param {Object} databaseFile The location of the database file
  * @param {Object} options The object that contains the options
  */
-Serebra.Database.Query = function(databaseFile, options){
-
+Serebra.Database.Query = function(options){
+	
 	/**
 	 * Default options for a query
 	 * @param {String} queryString The query string to be passed to the database
@@ -77,29 +84,34 @@ Serebra.Database.Query = function(databaseFile, options){
 		}
 	}
 	options = jQuery.extend(defaults(), options);
-    
+  var databaseFile = Serebra.Database.GetConnection();
   var transactionSuccessful = false;
   var result = false;
-  var connection = new air.SQLConnection();
-  var query = new air.SQLStatement();
-    
-  connection.open(databaseFile, air.SQLMode.CREATE);
-  query.addEventListener(air.SQLErrorEvent.ERROR, Serebra.Database.ErrorHandler);
-    
-  query.sqlConnection = connection;
-  query.text = options.queryString;
-  if (DebugMode) air.trace('Executing Query.');
-	air.trace(query.text);
-	query.execute();
-  var success = query.getResult();
-  if (success) {
-		if (DebugMode) air.trace('Transaction Successful.');
-  	transactionSuccessful = true;
-    result = success;
-	} else {
-		if (DebugMode) air.trace('Transaction Failed.');
+  
+	try {
+		var connection = new air.SQLConnection();
+		connection.open(databaseFile, air.SQLMode.CREATE);
+		
+		 var query = new air.SQLStatement();
+		 query.addEventListener(air.SQLErrorEvent.ERROR, Serebra.Database.ErrorHandler);
+		 query.sqlConnection = connection;
+  	query.text = options.queryString;
+  	if (DebugMode) air.trace('Executing Query.');
+		air.trace(query.text);
+		query.execute();
+  	var success = query.getResult();
+  	if (success) {
+			if (DebugMode) air.trace('Transaction Successful.');
+  		transactionSuccessful = true;
+  	  result = success;
+		} else {
+			if (DebugMode) air.trace('Transaction Failed.');
+		}
+  	connection.close();
+	} catch ( error ) {
+		transactionSuccessful = false;
+		result = error;
 	}
-  connection.close();
   return {
 		'success': transactionSuccessful,
 		'result': result

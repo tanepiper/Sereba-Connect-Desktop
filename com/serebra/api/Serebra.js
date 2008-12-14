@@ -13,12 +13,13 @@ Serebra.Initialize = function(){
 Serebra.InvokeApplication = function ( event ) {
 	var AppArguments = event.arguments; 
 	var CurrentDir = event.currentDirectory;
+	//Serebra.System.InitUserAgentString();
 	
 	Serebra.CLI.ParseCLI(AppArguments, function(){
 		Serebra.Menu.Initialize();
 		Serebra.Network.Initialize();
 		
-		DatabaseFile = Serebra.Database.ConnectToFile({
+		Serebra.Database.ConnectToFile({
 			'databaseFile': 'SeberaConnectTest1.sqlite'
 		});
 		
@@ -32,15 +33,12 @@ Serebra.InvokeApplication = function ( event ) {
 			});
 		}
 		
-		if (DatabaseFile) {
-			air.trace(FirstRun);
-			if (FirstRun) {
-				Serebra.Database.SetupFirstRun(DatabaseFile, function(){
-					afterDbCheck();
-				});
-			} else {
+		if (FirstRun) {
+			Serebra.Database.SetupFirstRun(function(){
 				afterDbCheck();
-			}
+			});
+		} else {
+			afterDbCheck();
 		}
 	});
 }

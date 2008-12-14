@@ -2,58 +2,96 @@ body {
 	font: 70% Arial, Helvetica, sans-serif;
 }
 
+#footer {
+	position:absolute;
+	top: 365px;
+}
+
 #message-center {
-	background: url('../images/Serebra-Message-Center-1.png') no-repeat top left;
-	width: 232px;
-	height: 474px;
+	background: url('../images/Thin-Bg-1.png') repeat-x top left;
+	width: 635px;
+	height: 475px;
+	border: 2px solid #000;
+	-webkit-border-radius:3.0em;
+	margin:0 auto;
 }
 
-#handle {
+#window-handle {
 	width: 100%;
-	height: 65px;
+	height: 55px;
+	background: url('../images/Handle-Background-1.png') repeat-x top left;
+	border: 0;
+	-webkit-border-top-left-radius: 3.0em;
+	-webkit-border-top-right-radius: 3.0em;
+	-webkit-border-bottom-left-radius: 0em;
+	-webkit-border-bottom-right-radius: 0em;
 }
 
-#close-button-container {
-	position:absolute;
-	top: 30px;
-	right: 50px;
-}
-
-#close-button-container .close-button {
-	background: url('../icons/Close-Button-Off.png') no-repeat top left;
-	width: 32px;
-	height: 32px;
-}
-
-#close-button-container .close-button:hover {
-	background: url('../icons/Close-Button-On.png') no-repeat top left;
-}
-
-#message-list {
-	position:absolute;
-	top: 75px;
-	left: 10px;
-	list-style:none;
-	height: 300px;
-	width:200px;
-	overflow: hidden;
-	margin:0 auto;
-	padding:0;
-}
-
-#message-list li {
+#window-handle .logo {
+	background: url('../images/Serebra-Logo-1.png') no-repeat top left;
+	width: 133px;
+	height: 51px;
 	display:block;
-	height: 100px;
-	background: url('../images/Message-BG-1.png') no-repeat top left;
+	position:relative;
+	top: 5px;
+	left: 10px;
 }
 
-.message {
-	color: #000;
-	position:relative;
-	top: 10px;
-	left: 10px;
-	width: 90%;
+#message-wrapper {
+	position:absolute;
+	top: 65px;
+	overflow: hidden;
+	width: 630px;
+	height: 330px;
+	margin: 0 auto;
+}
+
+.scrollableTableWrapper {
 	margin:0 auto;
+	border: 2px solid #000;
+	-webkit-border-radius:1.0em;
+	background: #fff;
+	padding-bottom: 20px;
+}
+
+.scrollableTableInnerWrapper {
+	padding-bottom:10px;
+}
+
+#message-table {
+	padding:0;
+	margin:0;
+}
+
+#message-table thead tr {
+	border-bottom: 1px solid #75726B;
+	width: 100%;
+}
+
+#message-table thead th {
+	color: #332E24;
+	height: 23px;
+	padding:0;
+	margin:0;
+	border-left:1px solid #75726B;
+	-webkit-border-radius:1.0em;
+}
+
+#message-table thead th:first-child {
+	border-left: 0;
+}
+
+#message-table tr:hover {
+	cursor:pointer;
+}
+
+#message-table tbody tr {
+	text-align:center;
+	border-bottom: 1px solid #EFEFEF;
+}
+
+#message-table tbody tr.even {
+	background-color: #F3F3F2;
 }
 
 .read {
@@ -64,6 +102,49 @@ body {
 	color: #f00;
 }
 
-#close-button-container .close-button span {
-	/*display:none;*/
+#slider {
+	position:absolute;
+	top: 65px;
+	right: 5px;
+	width: 5px;
+	height: 300px;
+}
+
+.ui-slider-handle {
+	background: url('../icons/Slider-Handle-1.png') no-repeat top left;
+	border: 0;
+	left:-5px;
+}
+
+.ui-slider-handle:hover {
+	background: url('../icons/Slider-Handle-On.png') no-repeat top left;
+	border: 0;
+}
+
+.no-messages {
+	position:relative;
+	top: 100px;
+	left: 210px;
+	font-size: 200%;
+}
+
+#close-button-container {
+	position:absolute;
+	top: 10px;
+	right: 10px;
+}
+
+.close-button {
+	display:block;
+	width: 18px;
+	height: 18px;
+	background: url('../icons/Close-Button-Off.png') no-repeat top left;
+}
+
+.close-button:hover {
+	background: url('../icons/Close-Button-On.png') no-repeat top left;
+}
+
+.close-button span {
+	display:none;
 }
