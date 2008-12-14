@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<title>Login to Serebra COnnect</title>
+		
+		<link rel="stylesheet" media="screen" href="app:/assets/css/login.css" />
+		<script type="text/javascript" src="app:/lib/air/AIRAliases.js"></script>
+		<script type="text/javascript" src="app:/lib/air/AIRIntrospector.js"></script>
+		<script type="text/javascript" src="app:/lib/air/AIRLocalizer.js"></script>
+		<script type="text/javascript" src="app:/lib/air/AIRMenuBuilder.js"></script>
+		<script type="text/javascript" src="app:/lib/air/AIRSourceViewer.js"></script>
+		
+		<script type="text/javascript" src="app:/lib/jquery/jquery.js"></script>
+		<script type="text/javascript" src="app:/lib/jquery/jquery.ui.all.min.js"></script>
+		<script type="text/javascript" src="app:/lib/misc/jquery.grid.core.js"></script>
+		
+		<script type="text/javascript" src="app:/com/serebra/api/Serebra.js"></script>
+		<script type="text/javascript" src="app:/com/serebra/api/Serebra.CLI.js"></script>
+		<script type="text/javascript" src="app:/com/serebra/api/Serebra.Menu.js"></script>
+		<script type="text/javascript" src="app:/com/serebra/api/Serebra.Network.js"></script>
+		<script type="text/javascript" src="app:/com/serebra/api/Serebra.Window.js"></script>
+		<script type="text/javascript" src="app:/com/serebra/api/Serebra.Database.js"></script>
+		<script type="text/javascript" src="app:/com/serebra/api/Serebra.Messages.js"></script>
+		<script type="text/javascript" src="app:/com/serebra/api/Serebra.SOAP.js"></script>
+		<script type="text/javascript" src="app:/com/serebra/api/Serebra.System.js"></script>
+		
+	</head>
+	<body>
+		<div id="login-area">
+			<div id="window-handle">
+				<span class="logo">&nbsp;</span>
+				<div id="close-button-container"><a href="#" class="close-button"><span>Close</span></a></div>
+			</div>
+			<div id="welcome-message">
+				Welcome to Serebra Connect Desktop.  Below is the login form.  Please enter your username
+				and password.
+			</div>
+			<div id="login-form">
+				<h3>Login to Serebra Connect</h3>
+				<fieldset>
+					<div id="form-errors">
+						<ul></ul>
+					</div>
+					<table>
+					<tbody>
+						<tr>
+							<th scope="row"><label for="username">Username</label></th>
+							<td scope="row"><input type="text" name="username" id="username" /></td>
+						</tr>
+						<tr>
+							<th scope="row"><label for="password">Password</label></th>
+							<td scope="row"><input type="password" name="password" id="password" /></td>
+						</tr>
+						<tr>
+							<th scope="row"><label for="autologin">Auto Login</label></th>
+							<td scope="row"><input type="checkbox" name="autologin" id="autologin" /></td>
+						</tr>
+						<tr>
+							<td scope="row" colspan="2" align="center"><input type="submit" name="login-button" id="login-button" value="Login To Serebra Connect"/></td>
+						</tr>
+					</tbody>
+				</table>
+				</fieldset>
+			</div>
+		</div>
+	</body>
+</html>

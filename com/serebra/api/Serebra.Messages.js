@@ -93,7 +93,7 @@ Serebra.Messages.MessageCenter = function(){
   						output.push('<td>' + item.Type + '</td>');
   						output.push('<td>' + item.alertText + '</td>');
   						output.push('<td>No</td>');
-  						output.push('<td></td>');
+  						output.push('<td><a href="#" rel="' + item.AlertID + '">X</a></td>');
   						output.push('</tr>');
   						break;
   					case 1:
@@ -103,7 +103,7 @@ Serebra.Messages.MessageCenter = function(){
   						output.push('<td>' + item.Type + '</td>');
   						output.push('<td>' + item.alertText + '</td>');
   						output.push('<td>Yes</td>');
-  						output.push('<td></td>');
+  						output.push('<td><a href="#" rel="' + item.AlertID + '">X</a></td>');
   						output.push('</tr>');
   						break;
   				}

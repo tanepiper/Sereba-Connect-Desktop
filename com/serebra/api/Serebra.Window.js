@@ -132,3 +132,81 @@ Serebra.Window.ShowOptionsWindow = function() {
 				});
 	});
 }
+
+Serebra.Window.LoginWindow = function( callback ) {
+	var sizeWidth = air.Screen.mainScreen.visibleBounds.width - 800;
+	var sizeHeight = air.Screen.mainScreen.visibleBounds.height - 600;
+	
+	Serebra.Window.CreateNewWindow({
+		'content':'app:/assets/html/LoginWindow.html',
+		'maximizable': false,
+		'minimizable': false,
+		'resizable' : false,
+		'systemChrome': 'none',
+		'transparent': true,
+		'scrollBarsVisible': false,
+		'position': [sizeWidth, sizeHeight],
+		'size': [355, 400]
+	}, function ( event ){
+				var loginWindow = jQuery('#login-area', event.target.window.document).get(0);
+				var username = null; password = null; autologin = false;
+				
+				if (Errors.length > 0) {
+					var errorMessages = [];
+					jQuery.each(Errors, function(i, error){
+						errorMessages.push('<li>' + error + '</li>');
+					});
+					Errors = [];
+					jQuery('#form-errors ul', loginWindow).append(errorMessages.join(''));
+				}
+				
+				
+				var dbValues = Serebra.Database.Query({
+  				'queryString': 'SELECT * FROM serebra_options'
+  			});
+				
+				if (dbValues.result.data) {
+					jQuery.each(dbValues.result.data, function(i, item){
+						switch (item.key) {
+							case "autologin":
+								autologin = item.value;
+								jQuery('#autologin', loginWindow).val(autologin);
+							break;
+							case "username":
+								username = item.value;
+								jQuery('#username', loginWindow).val(username);
+							break;
+						case "password":
+							password = item.value;
+							jQuery('#password', loginWindow).val(password);
+						break;
+						}
+					});
+				}
+				jQuery('#window-handle', loginWindow).bind('mousedown.move', function(){
+						event.target.window.nativeWindow.startMove();
+				});
+				jQuery('.close-button', loginWindow).click(function(){
+						event.target.window.nativeWindow.close();
+				});
+				
+				jQuery('#login-button', loginWindow).click(function(){
+					username = jQuery('#username', loginWindow).val();
+					password = jQuery('#password', loginWindow).val();
+					autologin = jQuery('#autologin', loginWindow).val();
+					air.trace(autologin);
+					Serebra.Database.Query({
+  					'queryString': 'INSERT INTO serebra_options VALUES("username", "'+username+'")'
+  				});
+					Serebra.Database.Query({
+  					'queryString': 'INSERT INTO serebra_options VALUES("password", "'+password+'")'
+  				});
+					Serebra.Database.Query({
+  					'queryString': 'INSERT INTO serebra_options VALUES("autologin", "'+autologin+'")'
+  				});
+					event.target.window.nativeWindow.close();
+					return callback({'username':username, 'password':password, 'autologin':autologin});
+				});
+				
+	});
+}
