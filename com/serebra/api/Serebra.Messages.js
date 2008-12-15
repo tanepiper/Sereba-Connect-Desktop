@@ -1,6 +1,6 @@
 Serebra.Messages = {};
 
-Serebra.Messages.CreateMessage = function(options) {
+Serebra.Messages.CreateMessageNotification = function(options) {
 	
 	var sizeWidth = air.Screen.mainScreen.visibleBounds.width - 350;
 	var sizeHeight = air.Screen.mainScreen.visibleBounds.height - 261;
@@ -16,24 +16,66 @@ Serebra.Messages.CreateMessage = function(options) {
 		'position': [sizeWidth, sizeHeight],
 		'size': [350, 261]
 		}, function ( event ){
-			
-				function windowClose( event ) {
-					Serebra.Messages.MessageCenter();
-				}
-			
 				//event.target.window.nativeWindow.alwaysInFront = true;
-				var messageArea = jQuery('#message-area', event.target.window.document).get(0);
-				jQuery('.title', messageArea).html('<strong>New '+options.Type+'</strong>');
+				var messageArea = jQuery('#popup', event.target.window.document).get(0);
+				
+				jQuery('#window-handle', messageArea).bind('mousedown.move', function(){
+						event.target.window.nativeWindow.startMove();
+				});
+				jQuery('.close-button', messageArea).click(function(){
+						event.target.window.nativeWindow.close();
+				});
+				
+				jQuery('.title', messageArea).html('<h3>Serebra Connect Desktop Alert</h3>');
 				jQuery('.title', messageArea).click(function(){
 					event.target.window.nativeWindow.close();
 				});
-				jQuery('.message', messageArea).html('You have recieved a new message!');
-				jQuery('.user', messageArea).html('<a class="user-link" href="#">Click Here to open the Message Center</a>').bind('click', function(){
+				jQuery('.message', messageArea).html('<p>You have recieved a new message!</p>');
+/*			jQuery('.user', messageArea).html('<p><a class="user-link" href="#">Click Here to open the Message Center</a></p>').bind('click', function(){
 					event.target.window.nativeWindow.addEventListener(air.Event.CLOSE, windowClose);
 					event.target.window.nativeWindow.close();
-				});
+				});*/
 		});
 };
+
+Serebra.Messages.DeleteMessage = function(id, callback) {
+	var deleted = false;
+	
+	var thisMessage = Serebra.Database.Query({
+  	'queryString': 'SELECT * FROM serebra_user_alerts WHERE AlertID = ' + id
+  });
+	
+	if (thisMessage.result.data) {
+		if (!thisMessage.result.data[0].messageRead) {
+			Serebra.SOAP.ConsumeAlert({
+				'authCode': authCode,
+				'applicationCode': applicationCode,
+				'alertID': id
+			}, function(soapDocument) {;
+				var errorCode = jQuery('errorFlag', soapDocument).text();
+				if (errorCode == "false") {
+					var deleteRow = Serebra.Database.Query({
+						'queryString': 'DELETE FROM serebra_user_alerts WHERE AlertID = ' + id
+					});
+					if (deleteRow.success) {
+						deleted = true;
+					}
+				}
+				return callback(deleted);
+			});
+		} else {
+			var deleteRow = Serebra.Database.Query({
+				'queryString': 'DELETE FROM serebra_user_alerts WHERE AlertID = ' + id
+			});
+			
+			if (deleteRow.result.complete) {
+				deleted = true;
+			}
+		}
+	}
+		
+	return callback(deleted);
+}
 
 Serebra.Messages.MessageCenter = function(){
 	var sizeWidth = air.Screen.mainScreen.visibleBounds.width - 800;
@@ -93,7 +135,7 @@ Serebra.Messages.MessageCenter = function(){
   						output.push('<td>' + item.Type + '</td>');
   						output.push('<td>' + item.alertText + '</td>');
   						output.push('<td>No</td>');
-  						output.push('<td><a href="#" rel="' + item.AlertID + '">X</a></td>');
+  						output.push('<td><a class="delete" href="#" rel="' + item.AlertID + '">X</a></td>');
   						output.push('</tr>');
   						break;
   					case 1:
@@ -103,7 +145,7 @@ Serebra.Messages.MessageCenter = function(){
   						output.push('<td>' + item.Type + '</td>');
   						output.push('<td>' + item.alertText + '</td>');
   						output.push('<td>Yes</td>');
-  						output.push('<td><a href="#" rel="' + item.AlertID + '">X</a></td>');
+  						output.push('<td><a class="delete" href="#" rel="' + item.AlertID + '">X</a></td>');
   						output.push('</tr>');
   						break;
   				}
@@ -126,25 +168,6 @@ Serebra.Messages.MessageCenter = function(){
   				'columnResize': false
   			});
 				
-				/*
-				var tableBody = jQuery('.scrollableTableInnerWrapper');
-				
-				jQuery('#slider', messageCenter).slider({
-						'range': 100,
-						'axis':'vertical',
-						'minValue': 0,
-						'maxValue': 1800,
-						'change' : function(event, ui) {
-							tableBody.animate({ 'top' : '-' + ui.value + 'px' }, 500, 'linear');
-						},
-						'slide' : function (ev, ui) {
-							tableBody.css('top', '-' + (ui.value) + 'px');
-						},
-						'stop': function (ev, ui) {
-        			tableBody.animate({ 'top' : '-' + ui.value + 'px' }, 500, 'linear');
-      			}
-					});
-  			*/
   			jQuery('#message-table tbody tr', messageCenter).click(function(){
   				jQuery('#message-table tr', messageCenter).css({
   					'background-color': 'transparent'
@@ -153,6 +176,18 @@ Serebra.Messages.MessageCenter = function(){
   					'background-color': '#F29614'
   				});
   			});
+				
+				jQuery('.delete', messageCenter).click(function(){
+					var id = jQuery(this).attr('rel');
+					Serebra.Messages.DeleteMessage(id, function(deleted){
+						if (deleted) {
+		  				jQuery('tr#' + id, messageCenter).fadeOut(function(){
+								jQuery(this).remove();
+							});
+		  			}
+					});
+				});
+				
   			jQuery('#message-table tbody tr', messageCenter).dblclick(function(){
   				var id = jQuery(this).attr('id');
   				

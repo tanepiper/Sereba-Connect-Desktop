@@ -4,8 +4,6 @@ Serebra.Menu = {};
  * Initialises the main systray icon
  */
 Serebra.Menu.Initialize = function(){
-	if (DebugMode) air.trace('Creating Menu');
-	
 	function iconLoadComplete ( event ) {
 		if (air.NativeApplication.supportsSystemTrayIcon) {
 			air.NativeApplication.nativeApplication.icon.bitmaps = new Array(event.target.content.bitmapData);

@@ -8,7 +8,6 @@ Serebra.System.GetVersion = function() {
 
 Serebra.System.InitUserAgentString = function() {
 	var newString = Serebra.System.SetUserAgent('Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en) AppleWebKit/420+ (KHTML, like Gecko) Serebra Desktop Connect/' + Serebra.System.GetVersion());
-	air.trace(newString)
 	return newString;
 };
 Serebra.System.GetUserAgent = function() {

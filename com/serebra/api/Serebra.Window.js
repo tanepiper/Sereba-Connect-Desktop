@@ -122,7 +122,6 @@ Serebra.Window.ShowOptionsWindow = function() {
 		'position': [sizeWidth, sizeHeight],
 		'size': [640, 480]
 	}, function ( event ){
-			//air.Introspector.Console.log();
 				var optionsWindow = jQuery('#options-container', event.target.window.document).get(0);
 				jQuery('#handle', optionsWindow).bind('mousedown.move', function(){
 						event.target.window.nativeWindow.startMove();
@@ -146,7 +145,7 @@ Serebra.Window.LoginWindow = function( callback ) {
 		'transparent': true,
 		'scrollBarsVisible': false,
 		'position': [sizeWidth, sizeHeight],
-		'size': [355, 400]
+		'size': [400, 400]
 	}, function ( event ){
 				var loginWindow = jQuery('#login-area', event.target.window.document).get(0);
 				var username = null; password = null; autologin = false;
@@ -158,6 +157,7 @@ Serebra.Window.LoginWindow = function( callback ) {
 					});
 					Errors = [];
 					jQuery('#form-errors ul', loginWindow).append(errorMessages.join(''));
+					jQuery('#form-errors', loginWindow).fadeIn();
 				}
 				
 				
@@ -194,7 +194,6 @@ Serebra.Window.LoginWindow = function( callback ) {
 					username = jQuery('#username', loginWindow).val();
 					password = jQuery('#password', loginWindow).val();
 					autologin = jQuery('#autologin', loginWindow).val();
-					air.trace(autologin);
 					Serebra.Database.Query({
   					'queryString': 'INSERT INTO serebra_options VALUES("username", "'+username+'")'
   				});
@@ -206,6 +205,10 @@ Serebra.Window.LoginWindow = function( callback ) {
   				});
 					event.target.window.nativeWindow.close();
 					return callback({'username':username, 'password':password, 'autologin':autologin});
+				});
+				
+				jQuery('#create-account', loginWindow).click(function(){
+					air.navigateToURL(new air.URLRequest('https://www.serebraconnect.com/index.cfm?fuseaction=account.addAccountConnect'));
 				});
 				
 	});

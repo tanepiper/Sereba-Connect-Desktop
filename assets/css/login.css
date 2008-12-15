@@ -4,11 +4,28 @@ body {
 
 #login-area {
 	background: url('../images/Thin-Bg-1.png') repeat-x top left;
-	width: 350px;
-	height: 395px;
+	width: 395px;
 	border: 2px solid #000;
 	-webkit-border-radius:3.0em;
 	margin:0 auto;
+}
+
+#login-form table {
+	margin: 0 auto;
+	width: 80%;
+}
+
+#form-errors {
+	display:none;
+	width: 80%;
+	margin: 0 auto;
+	background: #fcc;
+	opacity: 0.8;
+	border: 2px solid #f00;
+}
+
+#form-errors ul {
+	list-style:none;
 }
 
 #window-handle {

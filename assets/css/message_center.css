@@ -58,11 +58,6 @@ body {
 	padding-bottom:10px;
 }
 
-#message-table {
-	padding:0;
-	margin:0;
-}
-
 #message-table thead tr {
 	border-bottom: 1px solid #75726B;
 	width: 100%;
@@ -85,12 +80,13 @@ body {
 	cursor:pointer;
 }
 
-#message-table tbody tr {
+#message-table tbody tr.odd {
 	text-align:center;
 	border-bottom: 1px solid #EFEFEF;
 }
 
 #message-table tbody tr.even {
+	text-align:center;
 	background-color: #F3F3F2;
 }
 

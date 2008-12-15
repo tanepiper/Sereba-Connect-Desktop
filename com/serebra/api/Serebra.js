@@ -6,7 +6,6 @@ var DebugMode = false, FirstRun = false; Errors = []; applicationCode = 'B000002
 
 /* We need to handle command line requests */
 Serebra.Initialize = function(){
-	air.trace('Serebra Connect Desktop Initializing');
 	air.NativeApplication.nativeApplication.addEventListener(air.InvokeEvent.INVOKE, Serebra.InvokeApplication);
 };
 

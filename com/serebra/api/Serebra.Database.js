@@ -30,7 +30,6 @@ Serebra.Database.ConnectToFile = function(options){
 	databaseFile = databaseFile.resolvePath(options.databaseFile);
 	
 	if (!databaseFile.exists) {
-		if (DebugMode) air.trace('Database does not exist.');
 		if (options.createFile) {
 			Serebra.Database.CreateDB(databaseFile);
 		} else {
@@ -51,7 +50,6 @@ Serebra.Database.CreateDB = function(){
 	connection.addEventListener(air.SQLErrorEvent.ERROR, Serebra.Database.ErrorHandler);
 	connection.open(databaseFile, air.SQLMode.CREATE);
 	connection.close();
-	if (DebugMode) air.trace('Database created.');
 	return true;
 };
 
@@ -96,16 +94,12 @@ Serebra.Database.Query = function(options){
 		 query.addEventListener(air.SQLErrorEvent.ERROR, Serebra.Database.ErrorHandler);
 		 query.sqlConnection = connection;
   	query.text = options.queryString;
-  	if (DebugMode) air.trace('Executing Query.');
-		air.trace(query.text);
 		query.execute();
   	var success = query.getResult();
   	if (success) {
-			if (DebugMode) air.trace('Transaction Successful.');
   		transactionSuccessful = true;
   	  result = success;
 		} else {
-			if (DebugMode) air.trace('Transaction Failed.');
 		}
   	connection.close();
 	} catch ( error ) {

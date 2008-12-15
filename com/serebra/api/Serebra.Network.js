@@ -54,11 +54,9 @@ Serebra.Network.MainLoop = function(event){
 	switch (event.code) {
 		case "Service.available":
 			//we are online
-			if (DebugMode) air.trace('Serebra Connect Desktop Is Online');
 			Serebra.Network.Online();
 		break;
 		case "Service.unavailable":
-			if (DebugMode) air.trace('Serebra Connect Desktop Is Offline');
 			Serebra.Network.Offline();
 		break;
 	}
@@ -69,15 +67,12 @@ Serebra.Network.MainLoop = function(event){
  */
 Serebra.Network.Initialize = function(){
 	if (!ForceOffline) {
-  	if (DebugMode) 
-  		air.trace('Starting Network Loop');
   	var url = new air.URLRequest(Serebra.Network.monitorCheckURL);
   	var monitor = new air.URLMonitor(url);
   	monitor.pollInterval = Serebra.Network.pollInterval;
   	monitor.addEventListener(air.StatusEvent.STATUS, Serebra.Network.MainLoop);
   	monitor.start();
   } else {
-		if (DebugMode) air.trace('Serebra Desktop Connect Has Been Forced Offline');
 		Serebra.Network.Offline();
 	}
 };
@@ -99,7 +94,6 @@ Serebra.Network.CheckMessages = function() {
 			//We need to get just the URL from the links
 			userLink = userLink.split('"');
 			objectLink = objectLink.split('"');
-			air.trace(objectLink[1]);
 						
 			alerts.push({
 				'AlertID': id,
@@ -116,7 +110,6 @@ Serebra.Network.CheckMessages = function() {
 				Serebra.Database.Query({
 					'queryString': 'INSERT INTO serebra_user_alerts VALUES(' + id + ',"' + type + '","' + alertText + '","' + userLink[1] + '","' + objectLink[1] + '",0)'
 				});
-				Serebra.Messages.CreateMessage(alerts[0]);
 			} else {
 				if (existing.result.data[0].messageRead == 0) {
 					unreadMessages = true;
@@ -130,7 +123,17 @@ Serebra.Network.CheckMessages = function() {
 				if (air.NativeApplication.supportsSystemTrayIcon) {
 					air.NativeApplication.nativeApplication.icon.bitmaps = new Array(event.target.content.bitmapData);
 					air.NativeApplication.nativeApplication.icon.tooltip = 'Serebra Connect Desktop - You have unread messages';
-				}	
+				}
+				
+				var alreadyOpen = false;
+				jQuery.each(air.NativeApplication.nativeApplication.openedWindows, function(i, win){
+					if (win.title == 'Notification from Serebra Connect') {
+						alreadyOpen = true;
+					}
+				});
+				if (!alreadyOpen) {
+					Serebra.Messages.CreateMessageNotification();
+				}
 			}
 	
 			var iconLoader = new runtime.flash.display.Loader();
