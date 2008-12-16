@@ -1,27 +1,28 @@
 var Serebra;
 if (!Serebra) Serebra = function(){};
 
-/* Some Global Variables We Need */
-var DebugMode = false, FirstRun = false; Errors = []; applicationCode = 'B000002'; authCode = null; ForceUpdate = false, ForceOffline = false; SerebraOnline = false, DatabaseFile = null;
-
 /* We need to handle command line requests */
 Serebra.Initialize = function(){
 	air.NativeApplication.nativeApplication.addEventListener(air.InvokeEvent.INVOKE, Serebra.InvokeApplication);
 };
 
 Serebra.CheckLogin = function( options ) {
-	Serebra.Network.Initialize();
 	Serebra.SOAP.Authenticate({
 		'username': options.username,
 		'password': options.password,
 		'applicationCode': applicationCode
-	}, function(soapDocument){		
+	}, function(soapDocument){
+		Serebra.Network.Initialize();
 		var errorCode = jQuery('errorFlag', soapDocument).text();
 		
 		if(errorCode == "false") {
-			authCode = jQuery('authCode', soapDocument).text();	
+			authCode = jQuery('authCode', soapDocument).text();
+			Serebra.Network.CheckMessages();
 		} else {
 			var errorMessage = jQuery('errorString', soapDocument).text();
+			if (errorMessage == '') {
+				errorMessage = 'Unknown Error'
+			}
 			Errors.push('Login Error: ' + errorMessage);
 			Serebra.Window.LoginWindow(function(results){
 				Serebra.CheckLogin(results);	

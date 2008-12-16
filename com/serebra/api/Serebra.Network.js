@@ -2,7 +2,7 @@
 Serebra.Network = {};
 Serebra.Network.monitorCheckURL = 'http://www.serebraconnect.com';
 Serebra.Network.pollInterval = 300000; //for testing - 5000;
-Serebra.Network.messageTimer = new air.Timer(10000, 0);
+Serebra.Network.messageTimer = new air.Timer(1800000, 0);
 /**
  * The function to execute when we have a internet connection
  */
@@ -10,17 +10,18 @@ Serebra.Network.Online = function(){
 	SerebraOnline = true;
 	
 	function iconLoadComplete( event ) {
-		if (air.NativeApplication.supportsSystemTrayIcon) {
+		if (air.NativeApplication.supportsSystemTrayIcon && !unreadMessages) {
     	air.NativeApplication.nativeApplication.icon.bitmaps = new Array(event.target.content.bitmapData);
       air.NativeApplication.nativeApplication.icon.tooltip = 'Serebra Connect Desktop Is Online';
-			/*
+			
 			if (!DebugMode || ForceUpdate) {
 	  		Serebra.Update.InvokeApplicationUpdate({
-	  			'updateXML': 'http://jquery-api-browser.googlecode.com/svn/branches/update/update.xml'
+	  			'updateXML': 'http://dev.ifies.org/descriptor/update.xml'
 	  		});
-	  	}*/
-			Serebra.Network.messageTimer.start();
-    }
+	  	}
+			if (!Serebra.Network.messageTimer.running)
+				Serebra.Network.messageTimer.start();
+    	}
 	}
 	
   var iconLoader = new runtime.flash.display.Loader();
@@ -83,8 +84,9 @@ Serebra.Network.CheckMessages = function() {
 		'applicationCode': applicationCode
 	}, function(userAlerts){
 		var alerts = [];
-		var unreadMessages = false;
+		var unreadCount = 0;
 		jQuery('alert', userAlerts).each(function(){
+			unreadCount = unreadCount + 1;
 			var id = jQuery(this).attr('id');
 			var type = jQuery('type', this).text();
 			var alertText = jQuery('alertText', this).text();
@@ -105,7 +107,8 @@ Serebra.Network.CheckMessages = function() {
 			
 			var existing = Serebra.Database.Query({
 				'queryString': 'SELECT * FROM serebra_user_alerts WHERE AlertID = ' + id
-			});
+			});	
+			
 			if(!existing.result.data){
 				Serebra.Database.Query({
 					'queryString': 'INSERT INTO serebra_user_alerts VALUES(' + id + ',"' + type + '","' + alertText + '","' + userLink[1] + '","' + objectLink[1] + '",0)'
@@ -132,7 +135,9 @@ Serebra.Network.CheckMessages = function() {
 					}
 				});
 				if (!alreadyOpen) {
-					Serebra.Messages.CreateMessageNotification();
+					Serebra.Messages.CreateMessageNotification({
+		  			'unreadCount': unreadCount
+		  		});	
 				}
 			}
 	

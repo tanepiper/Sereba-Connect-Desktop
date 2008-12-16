@@ -46,16 +46,18 @@ body {
 	margin: 0 auto;
 }
 
-.scrollableTableWrapper {
+#outer-table-wrapper {
 	margin:0 auto;
 	border: 2px solid #000;
 	-webkit-border-radius:1.0em;
 	background: #fff;
 	padding-bottom: 20px;
+	height: 300px;
 }
 
-.scrollableTableInnerWrapper {
-	padding-bottom:10px;
+#inner-table-wrapper {
+	height: 300px;
+	overflow-y:scroll;
 }
 
 #message-table thead tr {
@@ -88,6 +90,11 @@ body {
 #message-table tbody tr.even {
 	text-align:center;
 	background-color: #F3F3F2;
+}
+
+#message-table tbody tr td {
+	text-align:center;
+	font-size: 70%;
 }
 
 .read {
