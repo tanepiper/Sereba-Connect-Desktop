@@ -1,5 +1,8 @@
-Serebra.Update = {};
+var Serebra;
+if (!Serebra) Serebra = function(){};
 
+Serebra.Update = {};
+Serebra.Update.ShowFail = false;
 Serebra.Update.InvokeApplicationUpdate = function ( options ) {
 	function defaults() {
 		return {
@@ -9,7 +12,7 @@ Serebra.Update.InvokeApplicationUpdate = function ( options ) {
 	options = jQuery.extend(defaults(), options);
 	var request = new air.URLRequest(options.updateXML); 
 	var loader = new air.URLLoader(); 
-	
+	Serebra.Update.ShowFail = options.displayFail;
 	loader.addEventListener(air.Event.COMPLETE, Serebra.Update.AppVersionCheck);
 	loader.load(request);
 };
@@ -42,6 +45,11 @@ Serebra.Update.AppVersionCheck = function ( event ) {
   		stream.addEventListener(air.Event.COMPLETE, updateApplication);
   		stream.load(new air.URLRequest(remoteAir));
   	}
+	} else {
+		if (Serebra.Update.ShowFail) {
+			alert('No updates have been found at this time.');
+			Serebra.Update.ShowFail = false;
+		}
 	}
 	
 	// Handlers

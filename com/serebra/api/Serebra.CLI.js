@@ -1,3 +1,6 @@
+var Serebra;
+if (!Serebra) Serebra = function(){};
+
 Serebra.CLI = {};
 
 Serebra.CLI.ParseCLI = function ( AppArguments, callback) {

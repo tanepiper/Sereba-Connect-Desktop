@@ -11,8 +11,6 @@
 		<script type="text/javascript" src="app:/lib/jquery/jquery.ui.all.min.js"></script>
 		<script type="text/javascript" src="app:/lib/misc/jquery.grid.core.js"></script>
 		
-		<script type="text/javascript" src="app:/bootstrap.js"></script>
-		
 		<script type="text/javascript" src="app:/com/serebra/api/Serebra.js"></script>
 		<script type="text/javascript" src="app:/com/serebra/api/Serebra.CLI.js"></script>
 		<script type="text/javascript" src="app:/com/serebra/api/Serebra.Menu.js"></script>
@@ -28,7 +26,22 @@
 		<script type="application/x-shockwave-flash" src="app:/lib/air/servicemonitor.swf"></script>
 		<script type="application/x-shockwave-flash" src="app:/lib/air/applicationupdater.swf"></script>
 		<script type="text/javascript">
+			var Serebra;
+				if (!Serebra) Serebra = function(){};
+
+				var DebugMode = false;
+				var FirstRun = false;
+				var Errors = [];
+				var applicationName = 'Serebra Connect Desktop';
+				var applicationCode = 'B000002';
+				var authCode = null;
+				var ForceUpdate = false;
+				var ForceOffline = false;
+				var SerebraOnline = false;
+				var DatabaseFile = null;
+				var unreadMessages = false;
 			jQuery(document).ready(function(){
+				/* Some Global Variables We Need */
 				Serebra.Initialize();
 			});
 		</script>

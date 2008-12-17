@@ -6,31 +6,6 @@ Serebra.Initialize = function(){
 	air.NativeApplication.nativeApplication.addEventListener(air.InvokeEvent.INVOKE, Serebra.InvokeApplication);
 };
 
-Serebra.CheckLogin = function( options ) {
-	Serebra.SOAP.Authenticate({
-		'username': options.username,
-		'password': options.password,
-		'applicationCode': applicationCode
-	}, function(soapDocument){
-		Serebra.Network.Initialize();
-		var errorCode = jQuery('errorFlag', soapDocument).text();
-		
-		if(errorCode == "false") {
-			authCode = jQuery('authCode', soapDocument).text();
-			Serebra.Network.CheckMessages();
-		} else {
-			var errorMessage = jQuery('errorString', soapDocument).text();
-			if (errorMessage == '') {
-				errorMessage = 'Unknown Error'
-			}
-			Errors.push('Login Error: ' + errorMessage);
-			Serebra.Window.LoginWindow(function(results){
-				Serebra.CheckLogin(results);	
-			});
-		}
-	});
-}
-
 Serebra.InvokeApplication = function ( event ) {
 	var AppArguments = event.arguments; 
 	var CurrentDir = event.currentDirectory;
@@ -53,7 +28,7 @@ Serebra.InvokeApplication = function ( event ) {
 				});
 			});
 		} else {
-			var username = null; password = null; autologin = false;
+			var username = null; password = null; autologin = false; messageCheckTime = 300000;
 			var dbValues = Serebra.Database.Query({
   			'queryString': 'SELECT * FROM serebra_options'
   		});
@@ -69,11 +44,14 @@ Serebra.InvokeApplication = function ( event ) {
 	  				case "password":
 	  					password = item.value;
 	  				break;
+						case "checktime":
+								messageCheckTime = parseInt(item.value, 10);
+						break;
 	  			}
 	  		});
 	  	}
-			if (autologin == 'on') {
-				Serebra.CheckLogin({'username': username, 'password': password});
+			if (autologin == 'true') {
+				Serebra.CheckLogin({'username': username, 'password': password, 'messageCheckTime': messageCheckTime});
 			} else {
 				Serebra.Window.LoginWindow(function(results){
 					Serebra.CheckLogin(results);	
@@ -82,3 +60,26 @@ Serebra.InvokeApplication = function ( event ) {
 		}
 	});
 };
+
+Serebra.CheckLogin = function( options ) {
+	Serebra.SOAP.Authenticate({
+		'username': options.username,
+		'password': options.password,
+		'applicationCode': applicationCode
+	}, function(soapDocument){
+		var errorCode = jQuery('errorFlag', soapDocument).text();
+		if(errorCode == "false") {
+			authCode = jQuery('authCode', soapDocument).text();
+			Serebra.Network.Initialize(options.messageCheckTime);
+		} else {
+			var errorMessage = jQuery('errorString', soapDocument).text();
+			if (errorMessage == '') {
+				errorMessage = 'Unknown Error'
+			}
+			Errors.push('Login Error: ' + errorMessage);
+			Serebra.Window.LoginWindow(function(results){
+				Serebra.CheckLogin(results);	
+			});
+		}
+	});
+}

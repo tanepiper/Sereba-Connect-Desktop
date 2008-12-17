@@ -1,3 +1,6 @@
+var Serebra;
+if (!Serebra) Serebra = function(){};
+
 Serebra.System = {};
 
 Serebra.System.GetVersion = function() {

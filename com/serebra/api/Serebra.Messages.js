@@ -1,41 +1,56 @@
+var Serebra;
+if (!Serebra) Serebra = function(){};
+
 Serebra.Messages = {};
 
 Serebra.Messages.CreateMessageNotification = function(options) {
 	
-	var sizeWidth = air.Screen.mainScreen.visibleBounds.width - 350;
-	var sizeHeight = air.Screen.mainScreen.visibleBounds.height - 261;
-	
-	Serebra.Window.CreateNewWindow({
-		'content':'app:/assets/html/Popup.html',
-		'maximizable': false,
-		'minimizable': false,
-		'resizable' : false,
-		'systemChrome': 'none',
-		'transparent': true,
-		'scrollBarsVisible': false,
-		'position': [sizeWidth, sizeHeight],
-		'size': [350, 261]
-		}, function ( event ){
-				//event.target.window.nativeWindow.alwaysInFront = true;
+	var alreadyOpen = false;
+	jQuery.each(air.NativeApplication.nativeApplication.openedWindows, function(i, win){
+		if (win.title == 'Serebra Connect Desktop - Notification') {
+			alreadyOpen = true;
+		}
+	});
+	if (!alreadyOpen) {
+  	var sizeWidth = air.Screen.mainScreen.visibleBounds.width - 350;
+  	var sizeHeight = air.Screen.mainScreen.visibleBounds.height - 261;
+  	
+  	Serebra.Window.CreateNewWindow({
+  		'content': 'app:/assets/html/Popup.html',
+  		'maximizable': false,
+  		'minimizable': false,
+  		'resizable': false,
+  		'systemChrome': 'none',
+  		'transparent': true,
+  		'scrollBarsVisible': false,
+  		'position': [sizeWidth, sizeHeight],
+  		'size': [350, 261]
+  	}, function(event){
+  		//event.target.window.nativeWindow.alwaysInFront = true;
 				var messageArea = jQuery('#popup', event.target.window.document).get(0);
 				
 				jQuery('#window-handle', messageArea).bind('mousedown.move', function(){
-						event.target.window.nativeWindow.startMove();
+					event.target.window.nativeWindow.startMove();
 				});
 				jQuery('.close-button', messageArea).click(function(){
-						event.target.window.nativeWindow.close();
+					event.target.window.nativeWindow.close();
 				});
 				
 				jQuery('.title', messageArea).html('<h3>Serebra Connect Desktop Alert</h3>');
 				jQuery('.title', messageArea).click(function(){
 					event.target.window.nativeWindow.close();
 				});
-				jQuery('.message', messageArea).html('<p>You have '+options.unreadCount+' unread messages!</p>');
-/*			jQuery('.user', messageArea).html('<p><a class="user-link" href="#">Click Here to open the Message Center</a></p>').bind('click', function(){
-					event.target.window.nativeWindow.addEventListener(air.Event.CLOSE, windowClose);
-					event.target.window.nativeWindow.close();
-				});*/
-		});
+				
+				switch (options.type) {
+					case 'new':
+						jQuery('.message', messageArea).html('<p>You have recived ' + options.messageCount + ' new messages!</p>');
+						break;
+					default:
+						jQuery('.message', messageArea).html('<p>You have ' + options.messageCount + ' unread messages!</p>');
+						break
+				}
+			});
+	}
 };
 
 Serebra.Messages.DeleteMessage = function(id, callback) {

@@ -1,3 +1,6 @@
+var Serebra;
+if (!Serebra) Serebra = function(){};
+
 Serebra.Menu = {};
 
 /**
@@ -59,6 +62,12 @@ Serebra.Menu.MenuItemClickHandler = function(event){
 		break;
 		case "Create Fake Alert":
 			Serebra.SOAP.CreateFakeAlert(null, function(){});
+		break;
+		case "Check For Updates":
+			Serebra.Update.InvokeApplicationUpdate({
+	  		'updateXML': 'http://dev.ifies.org/descriptor/update.xml',
+				'displayFail': true
+	  	});
 		break;
 		case "Exit":
 			air.NativeApplication.nativeApplication.exit();

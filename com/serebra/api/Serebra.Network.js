@@ -1,8 +1,31 @@
-// Our global variable that tells us were online
+var Serebra;
+if (!Serebra) Serebra = function(){};
+
 Serebra.Network = {};
+// Url we want to check
 Serebra.Network.monitorCheckURL = 'http://www.serebraconnect.com';
+// How often we want to check
 Serebra.Network.pollInterval = 300000; //for testing - 5000;
-Serebra.Network.messageTimer = new air.Timer(1800000, 0);
+
+/**
+ * The main network initialization function
+ */
+Serebra.Network.Initialize = function(messageCheckTime){
+	if (!ForceOffline) {
+		// Lets overide the poll time from the options.
+		if (messageCheckTime) {
+			Serebra.Network.pollInterval = messageCheckTime;
+		}
+  	var url = new air.URLRequest(Serebra.Network.monitorCheckURL);
+  	var monitor = new air.URLMonitor(url);
+  	monitor.pollInterval = Serebra.Network.pollInterval;
+  	monitor.addEventListener(air.StatusEvent.STATUS, Serebra.Network.MainLoop);
+  	monitor.start();
+  } else {
+		Serebra.Network.Offline();
+	}
+};
+
 /**
  * The function to execute when we have a internet connection
  */
@@ -16,12 +39,12 @@ Serebra.Network.Online = function(){
 			
 			if (!DebugMode || ForceUpdate) {
 	  		Serebra.Update.InvokeApplicationUpdate({
-	  			'updateXML': 'http://dev.ifies.org/descriptor/update.xml'
+	  			'updateXML': 'http://dev.ifies.org/descriptor/update.xml',
+					'displayFail': false
 	  		});
 	  	}
-			if (!Serebra.Network.messageTimer.running)
-				Serebra.Network.messageTimer.start();
-    	}
+			Serebra.Network.CheckMessages();
+    }
 	}
 	
   var iconLoader = new runtime.flash.display.Loader();
@@ -63,56 +86,28 @@ Serebra.Network.MainLoop = function(event){
 	}
 };
 
-/**
- * The main network initialization function
- */
-Serebra.Network.Initialize = function(){
-	if (!ForceOffline) {
-  	var url = new air.URLRequest(Serebra.Network.monitorCheckURL);
-  	var monitor = new air.URLMonitor(url);
-  	monitor.pollInterval = Serebra.Network.pollInterval;
-  	monitor.addEventListener(air.StatusEvent.STATUS, Serebra.Network.MainLoop);
-  	monitor.start();
-  } else {
-		Serebra.Network.Offline();
-	}
-};
-
 Serebra.Network.CheckMessages = function() {
 	Serebra.SOAP.GetUserAlerts({
 		'authCode': authCode,
 		'applicationCode': applicationCode
 	}, function(userAlerts){
-		var alerts = [];
 		var unreadCount = 0;
+		air.Introspector.Console.log(userAlerts);
 		jQuery('alert', userAlerts).each(function(){
 			unreadCount = unreadCount + 1;
 			var id = jQuery(this).attr('id');
 			var type = jQuery('type', this).text();
 			var alertText = jQuery('alertText', this).text();
 			var userLink = jQuery('userLink', this).text();
-			var objectLink = jQuery('objectLink', this).text();
-						
-			//We need to get just the URL from the links
-			userLink = userLink.split('"');
-			objectLink = objectLink.split('"');
-						
-			alerts.push({
-				'AlertID': id,
-				'Type': type,
-				'alertText': alertText,
-				'userLink': userLink[1],
-				'objectLink': objectLink[1]
-			});
-			
+			var objectLink = jQuery('objectLink', this).text();			
 			var existing = Serebra.Database.Query({
 				'queryString': 'SELECT * FROM serebra_user_alerts WHERE AlertID = ' + id
 			});	
-			
 			if(!existing.result.data){
 				Serebra.Database.Query({
 					'queryString': 'INSERT INTO serebra_user_alerts VALUES(' + id + ',"' + type + '","' + alertText + '","' + userLink[1] + '","' + objectLink[1] + '",0)'
 				});
+				unreadMessages = true;
 			} else {
 				if (existing.result.data[0].messageRead == 0) {
 					unreadMessages = true;
@@ -127,20 +122,11 @@ Serebra.Network.CheckMessages = function() {
 					air.NativeApplication.nativeApplication.icon.bitmaps = new Array(event.target.content.bitmapData);
 					air.NativeApplication.nativeApplication.icon.tooltip = 'Serebra Connect Desktop - You have unread messages';
 				}
-				
-				var alreadyOpen = false;
-				jQuery.each(air.NativeApplication.nativeApplication.openedWindows, function(i, win){
-					if (win.title == 'Notification from Serebra Connect') {
-						alreadyOpen = true;
-					}
-				});
-				if (!alreadyOpen) {
-					Serebra.Messages.CreateMessageNotification({
-		  			'unreadCount': unreadCount
-		  		});	
-				}
+				Serebra.Messages.CreateMessageNotification({
+					'type': 'new',
+		  		'messageCount': unreadCount
+		  	});
 			}
-	
 			var iconLoader = new runtime.flash.display.Loader();
   		iconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE, iconLoadComplete);
   		iconLoader.load(new air.URLRequest('app:/assets/icons/SerebraConnectUnread.png'));
@@ -148,4 +134,3 @@ Serebra.Network.CheckMessages = function() {
 		
 	});
 }
-Serebra.Network.messageTimer.addEventListener(air.TimerEvent.TIMER, Serebra.Network.CheckMessages);

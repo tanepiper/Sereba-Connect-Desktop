@@ -1,3 +1,6 @@
+var Serebra;
+if (!Serebra) Serebra = function(){};
+
 Serebra.SOAP = {};
 
 Serebra.SOAP.GetResponse = function(output, callback) {

@@ -1,3 +1,6 @@
+var Serebra;
+if (!Serebra) Serebra = function(){};
+
 Serebra.Window = {};
 
 /**
@@ -120,15 +123,66 @@ Serebra.Window.ShowOptionsWindow = function() {
 		'transparent': true,
 		'scrollBarsVisible': false,
 		'position': [sizeWidth, sizeHeight],
-		'size': [640, 480]
+		'size': [305, 480]
 	}, function ( event ){
-				var optionsWindow = jQuery('#options-container', event.target.window.document).get(0);
-				jQuery('#handle', optionsWindow).bind('mousedown.move', function(){
+				var autologin; var username; var password; var autostart; var checktime;
+				var optionsWindow = jQuery('#options-window', event.target.window.document).get(0);
+				jQuery('#window-handle', optionsWindow).bind('mousedown.move', function(){
 						event.target.window.nativeWindow.startMove();
 				});
 				jQuery('.close-button', optionsWindow).click(function(){
 						event.target.window.nativeWindow.close();
 				});
+				
+				var dbValues = Serebra.Database.Query({
+  				'queryString': 'SELECT * FROM serebra_options'
+  			});
+				if (dbValues.result.data) {
+	  			jQuery.each(dbValues.result.data, function(i, item){
+	  				switch (item.key) {
+	  					case "autologin":
+	  						autologin = item.value;
+	  					break;
+	  					case "username":
+	  						username = item.value;
+	  					break;
+	  					case "password":
+	  						password = item.value;
+	  					break;
+							case "autostart":
+								autostart = item.value;
+							break;
+							case "checktime":
+								checktime = item.value;
+							break;
+	  				}
+	  			});
+					jQuery('#username', optionsWindow).val(username);
+					jQuery('#password', optionsWindow).val(password);
+					jQuery('#autologin', optionsWindow).attr('checked', autologin);
+					
+					jQuery('#autostart option', optionsWindow).each(function(){
+						if (jQuery(this).val() == autostart) {
+							jQuery(this).attr('selected', 'selected');
+						}
+					});
+					jQuery('#checktime', optionsWindow).val(checktime);
+	  		}
+				
+				jQuery('#save', optionsWindow).click(function(){
+					username = jQuery('#username', optionsWindow).val();
+					password = jQuery('#password', optionsWindow).val();
+					autologin = jQuery('#autologin', optionsWindow).attr('checked');
+					autostart = jQuery('#autostart', optionsWindow).attr('checked');
+					checktime = jQuery('#checktime', optionsWindow).val();
+					Serebra.Database.SaveOrCreateOption({'key':'username', 'value':username});
+					Serebra.Database.SaveOrCreateOption({'key':'password', 'value':password});
+					Serebra.Database.SaveOrCreateOption({'key':'autologin', 'value':autologin});
+					Serebra.Database.SaveOrCreateOption({'key':'autostart', 'value':autostart});
+					Serebra.Database.SaveOrCreateOption({'key':'checktime', 'value':checktime});
+					event.target.window.nativeWindow.close();
+				});
+				
 	});
 }
 
@@ -145,7 +199,7 @@ Serebra.Window.LoginWindow = function( callback ) {
 		'transparent': true,
 		'scrollBarsVisible': false,
 		'position': [sizeWidth, sizeHeight],
-		'size': [400, 400]
+		'size': [318, 269]
 	}, function ( event ){
 				var loginWindow = jQuery('#login-area', event.target.window.document).get(0);
 				var username = null; password = null; autologin = false;
@@ -193,16 +247,10 @@ Serebra.Window.LoginWindow = function( callback ) {
 				jQuery('#login-button', loginWindow).click(function(){
 					username = jQuery('#username', loginWindow).val();
 					password = jQuery('#password', loginWindow).val();
-					autologin = jQuery('#autologin', loginWindow).val();
-					Serebra.Database.Query({
-  					'queryString': 'INSERT INTO serebra_options VALUES("username", "'+username+'")'
-  				});
-					Serebra.Database.Query({
-  					'queryString': 'INSERT INTO serebra_options VALUES("password", "'+password+'")'
-  				});
-					Serebra.Database.Query({
-  					'queryString': 'INSERT INTO serebra_options VALUES("autologin", "'+autologin+'")'
-  				});
+					autologin = jQuery('#autologin', loginWindow).attr('checked');
+					Serebra.Database.SaveOrCreateOption({'key':'username', 'value':username});
+					Serebra.Database.SaveOrCreateOption({'key':'password', 'value':password});
+					Serebra.Database.SaveOrCreateOption({'key':'autologin', 'value':autologin});
 					event.target.window.nativeWindow.close();
 					return callback({'username':username, 'password':password, 'autologin':autologin});
 				});

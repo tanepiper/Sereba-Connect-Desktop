@@ -3,16 +3,12 @@ body {
 }
 
 #login-area {
-	background: url('../images/Thin-Bg-1.png') repeat-x top left;
-	width: 395px;
-	border: 2px solid #000;
-	-webkit-border-radius:3.0em;
+	background: url('../images/background_slice_medium.png') repeat-x top left;
+	width: 313px;
+	height: 240px;
+	border: 2px solid #e0e0e0;
+	-webkit-border-radius:1.0em;
 	margin:0 auto;
-}
-
-#login-form table {
-	margin: 0 auto;
-	width: 80%;
 }
 
 #form-errors {
@@ -31,39 +27,45 @@ body {
 #window-handle {
 	width: 100%;
 	height: 55px;
-	background: url('../images/Handle-Background-1.png') repeat-x top left;
 	border: 0;
-	-webkit-border-top-left-radius: 3.0em;
-	-webkit-border-top-right-radius: 3.0em;
-	-webkit-border-bottom-left-radius: 0em;
-	-webkit-border-bottom-right-radius: 0em;
 }
 
 #window-handle .logo {
-	background: url('../images/Serebra-Logo-1.png') no-repeat top left;
-	width: 133px;
-	height: 51px;
+	background: url('../images/app_logo.png') no-repeat top left;
+	width: 79px;
+	height: 29px;
 	display:block;
-	position:relative;
-	top: 5px;
+	position:absolute;
+	top: 10px;
 	left: 10px;
+}
+
+#window-handle .screentype {
+	background: url('../images/title_alerts.png') no-repeat top left;
+	width: 58px;
+	height: 20px;
+	display:block;
+	position:absolute;
+	top: 15px;
+	left: 220px;
 }
 
 #close-button-container {
 	position:absolute;
 	top: 10px;
 	right: 8px;
+	z-index:1000;
 }
 
 .close-button {
 	display:block;
 	width: 18px;
 	height: 18px;
-	background: url('../icons/Close-Button-Off.png') no-repeat top left;
+	background: url('../images/icon_close-delete.png') no-repeat top left;
 }
 
 .close-button:hover {
-	background: url('../icons/Close-Button-On.png') no-repeat top left;
+	background: url('../images/icon_close-delete.png') no-repeat top left;
 }
 
 .close-button span {
@@ -71,42 +73,19 @@ body {
 }
 
 #welcome-message {
+	font-size: 110%;
+	font-weight:bold;
 	width: 85%;
 	margin: 0 auto;
-	border: 1px solid #000;
 	padding: 10px;
-	background: #fff;
-	-webkit-border-radius:3.0em;
 }
 
-h3 {
-	text-align:center;
+#login-form {
+	width: 95%;
+	margin:0 auto;
 }
-
-form {
-	margin:1em;
-	width:27em;
-}
-label {
-	float:left;
-	width:10em;
-	text-align:right;
-	margin-right:1em;
-}
-legend {
-	color:#000;
-	font-size:1.2em;
-	margin-bottom: 10px;
-}
-legend span {
-	width:10em;
-	text-align:right;
-}
-
 
 input {
-	padding:0.15em;
-	width:15em;
 	border:1px solid #ddd;
 	background:#fafafa;
 	font:bold 0.95em arial, sans-serif;
@@ -118,10 +97,15 @@ input:hover, input:focus {
 	background:#f6f6f6;
 }
 
-fieldset {
-	border:0;
-	padding:0 0.5em 0.5em;
-	background: #fff;
-	-webkit-border-radius:3.0em;
+table {
+	margin: 0 auto;
 }
 
+th {
+	width: 10%;
+	text-align:left;
+}
+
+td {
+	text-align:left;
+}
