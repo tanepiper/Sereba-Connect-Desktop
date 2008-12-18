@@ -3,29 +3,24 @@ body {
 }
 
 #options-window {
-	background: url('../images/Thin-Bg-1.png') repeat-x top left;
+	background: url('../images/background_slice_large.png') repeat-x top left;
 	width: 300px;
-	height: 475px;
-	border: 2px solid #000;
-	-webkit-border-radius:3.0em;
+	height: 310px;
+	border: 2px solid #e0e0e0;
+	-webkit-border-radius:1.0em;
 	margin:0 auto;
 }
 
 #window-handle {
 	width: 100%;
 	height: 55px;
-	background: url('../images/Handle-Background-1.png') repeat-x top left;
 	border: 0;
-	-webkit-border-top-left-radius: 3.0em;
-	-webkit-border-top-right-radius: 3.0em;
-	-webkit-border-bottom-left-radius: 0em;
-	-webkit-border-bottom-right-radius: 0em;
 }
 
 #window-handle .logo {
-	background: url('../images/Serebra-Logo-1.png') no-repeat top left;
-	width: 133px;
-	height: 51px;
+	background: url('../images/app_logo.png') no-repeat top left;
+	width: 79px;
+	height: 29px;
 	display:block;
 	position:relative;
 	top: 5px;
@@ -42,13 +37,43 @@ body {
 	display:block;
 	width: 18px;
 	height: 18px;
-	background: url('../icons/Close-Button-Off.png') no-repeat top left;
+	background: url('../images/icon_close-delete.png') no-repeat top left;
 }
 
 .close-button:hover {
-	background: url('../icons/Close-Button-On.png') no-repeat top left;
+	background: url('../images/icon_close-delete.png') no-repeat top left;
 }
 
-.close-button span {
+#min-button-container {
+	position:absolute;
+	top: 10px;
+	right: 30px;
+}
+
+.min-button {
+	display:block;
+	width: 18px;
+	height: 18px;
+	background: url('../images/icon_minimize.png') no-repeat top left;
+}
+
+.min-button:hover {
+	background: url('../images/icon_minimize.png') no-repeat top left;
+}
+
+.close-button span, .min-button span {
 	display:none;
+}
+
+#save {
+	position:relative;
+	left: 10px;
+	margin: 0;
+  padding: 0;
+  border: 0;
+	width: 100px;
+	height: 20px;
+	background: url('../images/btn_savesettings.png') no-repeat;
+	text-indent: -1000em;
+  cursor: pointer; /* hand-shaped cursor */
 }

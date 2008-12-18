@@ -6,7 +6,7 @@ Serebra.Database = {};
 Serebra.Database.DatabaseFile = null;
 Serebra.Database.GetConnection = function(){
 	return Serebra.Database.DatabaseFile;
-}
+};
 
 /**
  * Connects to a local SQLite database
@@ -25,7 +25,7 @@ Serebra.Database.ConnectToFile = function(options){
 			'airDir': 'applicationStorageDirectory',
 			'databaseFile': '',
 			'createFile': true
-		}
+		};
 	}
 	options = jQuery.extend(defaults(), options);
 	
@@ -66,7 +66,7 @@ Serebra.Database.SetupFirstRun = function(callback) {
 	});
 	
 	if (typeof callback === 'function') return callback();
-}
+};
 
 /**
  * Allows you to pass a query to the passed database file
@@ -82,34 +82,33 @@ Serebra.Database.Query = function(options){
 	function defaults(){
 		return {
 			'queryString': ''
-		}
+		};
 	}
 	options = jQuery.extend(defaults(), options);
-  var databaseFile = Serebra.Database.GetConnection();
-  var transactionSuccessful = false;
-  var result = false;
+  	var databaseFile = Serebra.Database.GetConnection();
+  	var transactionSuccessful = false;
+  	var result = false;
   
 	try {
 		var connection = new air.SQLConnection();
 		connection.open(databaseFile, air.SQLMode.CREATE);
 		
-		 var query = new air.SQLStatement();
-		 query.addEventListener(air.SQLErrorEvent.ERROR, Serebra.Database.ErrorHandler);
-		 query.sqlConnection = connection;
-  	query.text = options.queryString;
+		var query = new air.SQLStatement();
+		query.addEventListener(air.SQLErrorEvent.ERROR, Serebra.Database.ErrorHandler);
+		query.sqlConnection = connection;
+  		query.text = options.queryString;
 		query.execute();
-  	var success = query.getResult();
-  	if (success) {
-  		transactionSuccessful = true;
-  	  result = success;
-		} else {
+  		var success = query.getResult();
+  		if (success) {
+  			transactionSuccessful = true;
+  	  		result = success;
 		}
-  	connection.close();
+  		connection.close();
 	} catch ( error ) {
 		transactionSuccessful = false;
 		result = error;
 	}
-  return {
+  	return {
 		'success': transactionSuccessful,
 		'result': result
 	};
@@ -125,11 +124,11 @@ Serebra.Database.SaveOrCreateOption = function(options) {
 			'key': '',
 			'value': '',
 			'overwrite': true
-		}
+		};
 	}
 	options = jQuery.extend(defaults(), options);
-  var databaseFile = Serebra.Database.GetConnection();
-  var exists = false;
+  	var databaseFile = Serebra.Database.GetConnection();
+  	var exists = false;
 	var result;
 	
 	//First we do a search for the item
@@ -152,7 +151,7 @@ Serebra.Database.SaveOrCreateOption = function(options) {
 		});
 	}
 	return {'exists':exists, 'result':result};
-}
+};
 
 /**
  * The database error handler

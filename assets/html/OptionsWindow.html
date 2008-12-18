@@ -9,6 +9,7 @@
 		<div id="options-window">
 			<div id="window-handle">
 				<span class="logo">&nbsp;</span>
+				<div id="min-button-container"><a href="#" class="min-button"><span>Minimize</span></a></div>
 				<div id="close-button-container"><a href="#" class="close-button"><span>Close</span></a></div>
 			</div>
 			
@@ -25,6 +26,10 @@
 								<tr>
 									<th scope="row"><label for="password">Password</label></th>
 									<td scope="row"><input type="password" name="password" id="password" /></td>
+								</tr>
+								<tr>
+									<th scope="row"><label for="rememberme">Remember Me</label></th>
+									<td scope="row"><input type="checkbox" name="rememberme" id="rememberme" /></td>
 								</tr>
 								<tr>
 									<th scope="row"><label for="autologin">Auto Login</label></th>
@@ -54,7 +59,8 @@
 						</tbody>
 					</table>
 				</fieldset>
-				<input type="submit" id="save" value="Save Options" />
+				<br />
+				<input type="button" id="save" value="Save Options" />
 			</div>
 		</div>
 	</body>

@@ -44,9 +44,12 @@ Serebra.InvokeApplication = function ( event ) {
 	  				case "password":
 	  					password = item.value;
 	  				break;
-						case "checktime":
-								messageCheckTime = parseInt(item.value, 10);
-						break;
+					case "checktime":
+						messageCheckTime = parseInt(item.value, 10);
+					break;
+					default:
+						//Do nothing
+					break;
 	  			}
 	  		});
 	  	}
@@ -66,15 +69,17 @@ Serebra.CheckLogin = function( options ) {
 		'username': options.username,
 		'password': options.password,
 		'applicationCode': applicationCode
-	}, function(soapDocument){
+	}, function(soapDocument) {
 		var errorCode = jQuery('errorFlag', soapDocument).text();
 		if(errorCode == "false") {
+			loggedIn = true;
 			authCode = jQuery('authCode', soapDocument).text();
+			Serebra.Menu.CreateSystrayMenu();
 			Serebra.Network.Initialize(options.messageCheckTime);
 		} else {
 			var errorMessage = jQuery('errorString', soapDocument).text();
-			if (errorMessage == '') {
-				errorMessage = 'Unknown Error'
+			if (errorMessage === '') {
+				errorMessage = 'Unknown Error';
 			}
 			Errors.push('Login Error: ' + errorMessage);
 			Serebra.Window.LoginWindow(function(results){
@@ -82,4 +87,4 @@ Serebra.CheckLogin = function( options ) {
 			});
 		}
 	});
-}
+};

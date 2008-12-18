@@ -10,13 +10,13 @@ Serebra.Menu.Initialize = function(){
 	function iconLoadComplete ( event ) {
 		if (air.NativeApplication.supportsSystemTrayIcon) {
 			air.NativeApplication.nativeApplication.icon.bitmaps = new Array(event.target.content.bitmapData);
-			Serebra.Menu.CreateSystrayMenu();
+			Serebra.Menu.CreateLoginMenu();
 		}
 	}
 	
 	var iconLoader = new runtime.flash.display.Loader();
 	iconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE, iconLoadComplete);
-	iconLoader.load(new air.URLRequest('app:/assets/icons/SerebraConnectOffline.png'));
+	iconLoader.load(new air.URLRequest('app:/assets/images/icon_tray_natural.png'));
 };
 
 /**
@@ -27,19 +27,37 @@ Serebra.Menu.CreateSystrayMenu = function(){
 	air.NativeApplication.nativeApplication.icon.addEventListener('click', Serebra.Menu.SystrayClickHandler);
 	
 	var menuItems = {
-		'serebraConnect': new air.NativeMenuItem("Serebra Connect", false),
-		'messageCenter': new air.NativeMenuItem("Message Center", false),
-		'fakeAlerts': new air.NativeMenuItem("Create Fake Alert", false),
+		'serebraConnect': new air.NativeMenuItem("Open Serebra Connect", false),
+		'messageCenter': new air.NativeMenuItem("Open Alerts Center", false),
+		/*'fakeAlerts': new air.NativeMenuItem("Create Fake Alert", false),*/
 		'updatesMenu': new air.NativeMenuItem("Check For Updates", false),
-		'optionsMenu': new air.NativeMenuItem("Set Options", false),
+		'optionsMenu': new air.NativeMenuItem("Settings", false),
+		'logoutMenu': new air.NativeMenuItem("Logout", false),
 		'closeMenu': new air.NativeMenuItem("Exit", false)
-	}
+	};
 		
 	jQuery.each(menuItems, function(i, menuItem) {
 		air.NativeApplication.nativeApplication.icon.menu.addItem(menuItem);
 		menuItem.addEventListener(air.Event.SELECT, Serebra.Menu.MenuItemClickHandler);
 	});
 };
+
+Serebra.Menu.CreateLoginMenu = function() {
+	air.NativeApplication.nativeApplication.icon.menu = new air.NativeMenu();
+	air.NativeApplication.nativeApplication.icon.addEventListener('click', Serebra.Menu.SystrayClickHandler);
+	
+	var menuItems = {
+		'serebraConnect': new air.NativeMenuItem("Open Serebra Connect", false),
+		'loginMenu': new air.NativeMenuItem("Login", false),
+		'closeMenu': new air.NativeMenuItem("Exit", false)
+	};
+		
+	jQuery.each(menuItems, function(i, menuItem) {
+		air.NativeApplication.nativeApplication.icon.menu.addItem(menuItem);
+		menuItem.addEventListener(air.Event.SELECT, Serebra.Menu.MenuItemClickHandler);
+	});
+}
+
 
 Serebra.Menu.SystrayClickHandler = function(event){
 
@@ -51,13 +69,13 @@ Serebra.Menu.SystrayClickHandler = function(event){
  */
 Serebra.Menu.MenuItemClickHandler = function(event){
 	switch (event.target.label) {
-		case "Serebra Connect":
-			air.navigateToURL(new air.URLRequest('https://www.serebraconnect.com/'));
+		case "Open Serebra Connect":
+			air.navigateToURL(new air.URLRequest('http://www.serebraconnect.com/'));
 		break;
-		case "Message Center":
+		case "Open Alerts Center":
 			Serebra.Messages.MessageCenter();
 		break;
-		case "Set Options":
+		case "Settings":
 			Serebra.Window.ShowOptionsWindow();
 		break;
 		case "Create Fake Alert":
@@ -69,8 +87,18 @@ Serebra.Menu.MenuItemClickHandler = function(event){
 				'displayFail': true
 	  	});
 		break;
+		case "Login":
+			Serebra.Window.LoginWindow(function(results){
+				Serebra.CheckLogin(results);	
+			});
+		break;
+		case "Logout":
+			Serebra.Network.Logout();
+		break;
 		case "Exit":
 			air.NativeApplication.nativeApplication.exit();
+		break;
+		default:
 		break;
 	}
   return;

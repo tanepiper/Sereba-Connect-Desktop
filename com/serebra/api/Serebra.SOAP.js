@@ -13,13 +13,13 @@ Serebra.SOAP.GetResponse = function(output, callback) {
 		if (xmlhttp.readyState==4) {
 			return callback(xmlhttp.responseText);
 		}
-	}
+	};
 			
 	xmlhttp.setRequestHeader("Content-Type", "text/xml");
 	xmlhttp.setRequestHeader('SOAPAction','http://qa.serebracampus.com:8888/apiWebService.cfc?wsdl');
 	
 	xmlhttp.send(output);
-}
+};
 
 Serebra.SOAP.Authenticate = function(values, callback) {
 	var output = [];
@@ -48,7 +48,7 @@ Serebra.SOAP.GetUserAlerts = function(values, callback) {
 		output.push('</soapenv:Body>');
 	output.push('</soapenv:Envelope>');
 	Serebra.SOAP.GetResponse(output.join(''), callback);
-}
+};
 
 Serebra.SOAP.ConsumeAlert = function(values, callback) {
 	var output = [];
@@ -63,7 +63,7 @@ Serebra.SOAP.ConsumeAlert = function(values, callback) {
 		output.push('</soapenv:Body>');
 	output.push('</soapenv:Envelope>');
 	Serebra.SOAP.GetResponse(output.join(''), callback);
-}
+};
 
 Serebra.SOAP.CreateFakeAlert = function(values, callback) {
 	var output = [];
@@ -81,4 +81,4 @@ Serebra.SOAP.CreateFakeAlert = function(values, callback) {
 		output.push('</soapenv:Body>');
 	output.push('</soapenv:Envelope>');
 	Serebra.SOAP.GetResponse(output.join(''), callback);
-}
+};

@@ -8,7 +8,6 @@
 		<script type="text/javascript" src="app:/lib/air/AIRSourceViewer.js"></script>
 		
 		<script type="text/javascript" src="app:/lib/jquery/jquery.js"></script>
-		<script type="text/javascript" src="app:/lib/jquery/jquery.ui.all.min.js"></script>
 		<script type="text/javascript" src="app:/lib/misc/jquery.grid.core.js"></script>
 		
 		<script type="text/javascript" src="app:/com/serebra/api/Serebra.js"></script>
@@ -40,6 +39,7 @@
 				var SerebraOnline = false;
 				var DatabaseFile = null;
 				var unreadMessages = false;
+				var loggedIn = false;
 			jQuery(document).ready(function(){
 				/* Some Global Variables We Need */
 				Serebra.Initialize();

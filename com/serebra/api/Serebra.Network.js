@@ -49,7 +49,7 @@ Serebra.Network.Online = function(){
 	
   var iconLoader = new runtime.flash.display.Loader();
   iconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE, iconLoadComplete);
-  iconLoader.load(new air.URLRequest('app:/assets/icons/SerebraConnectOnline.png'));
+  iconLoader.load(new air.URLRequest('app:/assets/images/icon_desktop_16.png'));
 };
 
 /**
@@ -67,7 +67,7 @@ Serebra.Network.Offline = function(){
 	
 	var iconLoader = new runtime.flash.display.Loader();
   iconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE, iconLoadComplete);
-  iconLoader.load(new air.URLRequest('app:/assets/icons/SerebraConnectOffline.png'));
+  iconLoader.load(new air.URLRequest('app:/assets/images/icon_tray_natural.png'));
 };
 
 /**
@@ -83,6 +83,8 @@ Serebra.Network.MainLoop = function(event){
 		case "Service.unavailable":
 			Serebra.Network.Offline();
 		break;
+		default:
+		break;
 	}
 };
 
@@ -92,7 +94,6 @@ Serebra.Network.CheckMessages = function() {
 		'applicationCode': applicationCode
 	}, function(userAlerts){
 		var unreadCount = 0;
-		air.Introspector.Console.log(userAlerts);
 		jQuery('alert', userAlerts).each(function(){
 			unreadCount = unreadCount + 1;
 			var id = jQuery(this).attr('id');
@@ -109,7 +110,7 @@ Serebra.Network.CheckMessages = function() {
 				});
 				unreadMessages = true;
 			} else {
-				if (existing.result.data[0].messageRead == 0) {
+				if (existing.result.data[0].messageRead === 0) {
 					unreadMessages = true;
 				}
 			}
@@ -129,8 +130,21 @@ Serebra.Network.CheckMessages = function() {
 			}
 			var iconLoader = new runtime.flash.display.Loader();
   		iconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE, iconLoadComplete);
-  		iconLoader.load(new air.URLRequest('app:/assets/icons/SerebraConnectUnread.png'));
+  		iconLoader.load(new air.URLRequest('app:/assets/images/icon_tray_newalerts.png'));
 		}
 		
 	});
+};
+
+Serebra.Network.Logout = function() {
+	function iconLoadComplete ( event ) {
+		if (air.NativeApplication.supportsSystemTrayIcon) {
+			air.NativeApplication.nativeApplication.icon.bitmaps = new Array(event.target.content.bitmapData);
+			Serebra.Menu.CreateLoginMenu();
+		}
+	}
+	
+	var iconLoader = new runtime.flash.display.Loader();
+	iconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE, iconLoadComplete);
+	iconLoader.load(new air.URLRequest('app:/assets/images/icon_tray_natural.png'));
 }

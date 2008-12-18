@@ -8,7 +8,7 @@ Serebra.Update.InvokeApplicationUpdate = function ( options ) {
 		return {
 			'updateXML':''
 		};
-	};
+	}
 	options = jQuery.extend(defaults(), options);
 	var request = new air.URLRequest(options.updateXML); 
 	var loader = new air.URLLoader(); 
@@ -72,6 +72,6 @@ Serebra.Update.AppVersionCheck = function ( event ) {
 			var updater = new air.Updater();
 			// Notice that the version name has to be present as a second parameter
 			updater.update(updateFile, remoteVersionString);
-		};
-	};
+		}
+	}
 };

@@ -41,15 +41,15 @@ Serebra.Window.CreateNewWindow = function(options, callback){
             'alwaysInFront': false,
             'content': '',
             'title': 'New Serebra Connect Desktop Window'
-        }
+        };
     }
     
-    var options = jQuery.extend(defaults(), options);
+    options = jQuery.extend(defaults(), options);
     var windowOptions = new air.NativeWindowInitOptions();
     
     windowOptions.maximizable = options.maximizable;
     windowOptions.minimizable = options.minimizable;
-    windowOptions.resizable = options.resizable
+    windowOptions.resizable = options.resizable;
     windowOptions.systemChrome = options.systemChrome;
     windowOptions.transparent = options.transparent;
     windowOptions.type = options.type;
@@ -133,6 +133,9 @@ Serebra.Window.ShowOptionsWindow = function() {
 				jQuery('.close-button', optionsWindow).click(function(){
 						event.target.window.nativeWindow.close();
 				});
+				jQuery('.min-button', optionsWindow).click(function(){
+						event.target.window.nativeWindow.minimize();
+				});
 				
 				var dbValues = Serebra.Database.Query({
   				'queryString': 'SELECT * FROM serebra_options'
@@ -149,17 +152,23 @@ Serebra.Window.ShowOptionsWindow = function() {
 	  					case "password":
 	  						password = item.value;
 	  					break;
+							case "rememberme":
+								rememberme = item.value;
+							break;
 							case "autostart":
 								autostart = item.value;
 							break;
 							case "checktime":
 								checktime = item.value;
 							break;
+							default:
+							break;
 	  				}
 	  			});
 					jQuery('#username', optionsWindow).val(username);
 					jQuery('#password', optionsWindow).val(password);
 					jQuery('#autologin', optionsWindow).attr('checked', autologin);
+					jQuery('#rememberme', optionsWindow).attr('checked', rememberme);
 					
 					jQuery('#autostart option', optionsWindow).each(function(){
 						if (jQuery(this).val() == autostart) {
@@ -169,7 +178,7 @@ Serebra.Window.ShowOptionsWindow = function() {
 					jQuery('#checktime', optionsWindow).val(checktime);
 	  		}
 				
-				jQuery('#save', optionsWindow).click(function(){
+				jQuery('#save', optionsWindow).bind('click.save', function(){
 					username = jQuery('#username', optionsWindow).val();
 					password = jQuery('#password', optionsWindow).val();
 					autologin = jQuery('#autologin', optionsWindow).attr('checked');
@@ -178,86 +187,110 @@ Serebra.Window.ShowOptionsWindow = function() {
 					Serebra.Database.SaveOrCreateOption({'key':'username', 'value':username});
 					Serebra.Database.SaveOrCreateOption({'key':'password', 'value':password});
 					Serebra.Database.SaveOrCreateOption({'key':'autologin', 'value':autologin});
+					Serebra.Database.SaveOrCreateOption({'key':'rememberme', 'value':rememberme});
 					Serebra.Database.SaveOrCreateOption({'key':'autostart', 'value':autostart});
 					Serebra.Database.SaveOrCreateOption({'key':'checktime', 'value':checktime});
+					air.NativeApplication.nativeApplication.startAtLogin = autostart;
 					event.target.window.nativeWindow.close();
 				});
 				
 	});
-}
+};
 
-Serebra.Window.LoginWindow = function( callback ) {
+Serebra.Window.LoginWindow = function(callback){
 	var sizeWidth = air.Screen.mainScreen.visibleBounds.width - 800;
 	var sizeHeight = air.Screen.mainScreen.visibleBounds.height - 600;
 	
 	Serebra.Window.CreateNewWindow({
-		'content':'app:/assets/html/LoginWindow.html',
+		'content': 'app:/assets/html/LoginWindow.html',
 		'maximizable': false,
 		'minimizable': false,
-		'resizable' : false,
+		'resizable': false,
 		'systemChrome': 'none',
 		'transparent': true,
 		'scrollBarsVisible': false,
 		'position': [sizeWidth, sizeHeight],
 		'size': [318, 269]
-	}, function ( event ){
-				var loginWindow = jQuery('#login-area', event.target.window.document).get(0);
-				var username = null; password = null; autologin = false;
-				
-				if (Errors.length > 0) {
-					var errorMessages = [];
-					jQuery.each(Errors, function(i, error){
-						errorMessages.push('<li>' + error + '</li>');
-					});
-					Errors = [];
-					jQuery('#form-errors ul', loginWindow).append(errorMessages.join(''));
-					jQuery('#form-errors', loginWindow).fadeIn();
+	}, function(event){
+		var loginWindow = jQuery('#login-area', event.target.window.document).get(0);
+		var username = null;
+		password = null;
+		autologin = false;
+		
+		if (Errors.length > 0) {
+			var errorMessages = [];
+			jQuery.each(Errors, function(i, error){
+				errorMessages.push('<li>' + error + '</li>');
+			});
+			Errors = [];
+			jQuery('#form-errors ul', loginWindow).append(errorMessages.join(''));
+			jQuery('#form-errors', loginWindow).fadeIn();
+		}
+		
+		
+		var dbValues = Serebra.Database.Query({
+			'queryString': 'SELECT * FROM serebra_options'
+		});
+		
+		if (dbValues.result.data) {
+			jQuery.each(dbValues.result.data, function(i, item){
+				switch (item.key) {
+					case "autologin":
+						autologin = item.value;
+						jQuery('#autologin', loginWindow).attr('checked', autologin);
+					break;
+					case "username":
+						username = item.value;
+						jQuery('#username', loginWindow).val(username);
+					break;
+					case "password":
+						password = item.value;
+						jQuery('#password', loginWindow).val(password);
+					break;
+					case "rememberme":
+						rememberme = item.value;
+						jQuery('#rememberme', loginWindow).attr('checked', rememberme);
+					break;
+					default:
+					break;
 				}
-				
-				
-				var dbValues = Serebra.Database.Query({
-  				'queryString': 'SELECT * FROM serebra_options'
-  			});
-				
-				if (dbValues.result.data) {
-					jQuery.each(dbValues.result.data, function(i, item){
-						switch (item.key) {
-							case "autologin":
-								autologin = item.value;
-								jQuery('#autologin', loginWindow).val(autologin);
-							break;
-							case "username":
-								username = item.value;
-								jQuery('#username', loginWindow).val(username);
-							break;
-						case "password":
-							password = item.value;
-							jQuery('#password', loginWindow).val(password);
-						break;
-						}
-					});
-				}
-				jQuery('#window-handle', loginWindow).bind('mousedown.move', function(){
-						event.target.window.nativeWindow.startMove();
-				});
-				jQuery('.close-button', loginWindow).click(function(){
-						event.target.window.nativeWindow.close();
-				});
-				
-				jQuery('#login-button', loginWindow).click(function(){
-					username = jQuery('#username', loginWindow).val();
-					password = jQuery('#password', loginWindow).val();
-					autologin = jQuery('#autologin', loginWindow).attr('checked');
-					Serebra.Database.SaveOrCreateOption({'key':'username', 'value':username});
-					Serebra.Database.SaveOrCreateOption({'key':'password', 'value':password});
-					Serebra.Database.SaveOrCreateOption({'key':'autologin', 'value':autologin});
-					event.target.window.nativeWindow.close();
-					return callback({'username':username, 'password':password, 'autologin':autologin});
-				});
-				
-				jQuery('#create-account', loginWindow).click(function(){
-					air.navigateToURL(new air.URLRequest('https://www.serebraconnect.com/index.cfm?fuseaction=account.addAccountConnect'));
-				});
-				
+			});
+		}
+		jQuery('#window-handle', loginWindow).bind('mousedown.move', function(){
+			event.target.window.nativeWindow.startMove();
+		});
+		jQuery('.close-button, #cancel', loginWindow).click(function(){
+			event.target.window.nativeWindow.close();
+		});
+		
+		jQuery('#login', loginWindow).click(function(){
+			username = jQuery('#username', loginWindow).val();
+			password = jQuery('#password', loginWindow).val();
+			autologin = jQuery('#autologin', loginWindow).attr('checked');
+			rememberme = jQuery('#rememberme', loginWindow).attr('checked');
+			
+			if (rememberme === true) {
+	  		Serebra.Database.SaveOrCreateOption({'key': 'username', 'value': username});
+	  		Serebra.Database.SaveOrCreateOption({'key': 'password',	'value': password});
+	  		Serebra.Database.SaveOrCreateOption({'key': 'autologin', 'value': autologin});
+				Serebra.Database.SaveOrCreateOption({'key': 'rememberme', 'value': rememberme});
+	  	} else {
+				Serebra.Database.SaveOrCreateOption({'key': 'username',	'value': ''});
+	  		Serebra.Database.SaveOrCreateOption({'key': 'password',	'value': ''});
+	  		Serebra.Database.SaveOrCreateOption({'key': 'autologin','value': ''});
+				Serebra.Database.SaveOrCreateOption({'key': 'rememberme', 'value': ''});
+			}
+			event.target.window.nativeWindow.close();
+			return callback({
+				'username': username,
+				'password': password
+			});
+		});
+		
+		jQuery('#create-account', loginWindow).click(function(){
+			var url = jQuery(this).attr('href');
+			air.navigateToURL(new air.URLRequest(url));
+		});
+		
 	});
-}
+};

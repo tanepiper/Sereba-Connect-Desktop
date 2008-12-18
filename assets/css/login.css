@@ -3,7 +3,7 @@ body {
 }
 
 #login-area {
-	background: url('../images/background_slice_medium.png') repeat-x top left;
+	background: url('../images/background_slice_large.png') repeat-x top left;
 	width: 313px;
 	height: 240px;
 	border: 2px solid #e0e0e0;
@@ -77,7 +77,6 @@ body {
 	font-weight:bold;
 	width: 85%;
 	margin: 0 auto;
-	padding: 10px;
 }
 
 #login-form {
@@ -102,10 +101,32 @@ table {
 }
 
 th {
-	width: 10%;
+	width: 15%;
 	text-align:left;
 }
 
 td {
 	text-align:left;
+}
+
+#login {
+	margin: 0;
+  padding: 0;
+  border: 0;
+	width: 50px;
+	height: 20px;
+	background: url('../images/btn_login.png') no-repeat;
+	text-indent: -1000em;
+  cursor: pointer; /* hand-shaped cursor */
+}
+
+#cancel {
+	margin: 0;
+  padding: 0;
+  border: 0;
+	width: 50px;
+	height: 20px;
+	background: url('../images/btn_cancel.png') no-repeat;
+	text-indent: -1000em;
+  cursor: pointer; /* hand-shaped cursor */
 }

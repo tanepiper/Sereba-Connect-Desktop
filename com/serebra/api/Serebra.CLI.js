@@ -16,6 +16,9 @@ Serebra.CLI.ParseCLI = function ( AppArguments, callback) {
 			case "force-offline":
 				ForceOffline = true;
 			break;
+			default:
+				//Do nothing
+			break;
 		}
 	});
 	
@@ -25,4 +28,4 @@ Serebra.CLI.ParseCLI = function ( AppArguments, callback) {
 		throw new Error('You must return a callback with this function');
 	}
 	
-}
+};

@@ -24,7 +24,7 @@ Serebra.Messages.CreateMessageNotification = function(options) {
   		'transparent': true,
   		'scrollBarsVisible': false,
   		'position': [sizeWidth, sizeHeight],
-  		'size': [350, 261]
+  		'size': [250, 261]
   	}, function(event){
   		//event.target.window.nativeWindow.alwaysInFront = true;
 				var messageArea = jQuery('#popup', event.target.window.document).get(0);
@@ -36,18 +36,13 @@ Serebra.Messages.CreateMessageNotification = function(options) {
 					event.target.window.nativeWindow.close();
 				});
 				
-				jQuery('.title', messageArea).html('<h3>Serebra Connect Desktop Alert</h3>');
-				jQuery('.title', messageArea).click(function(){
-					event.target.window.nativeWindow.close();
-				});
-				
 				switch (options.type) {
 					case 'new':
-						jQuery('.message', messageArea).html('<p>You have recived ' + options.messageCount + ' new messages!</p>');
+						jQuery('.message', messageArea).html('<h2>You have <span class="green">' + options.messageCount + '</span> new alerts!</h2>');
 						break;
 					default:
 						jQuery('.message', messageArea).html('<p>You have ' + options.messageCount + ' unread messages!</p>');
-						break
+					break;
 				}
 			});
 	}
@@ -69,15 +64,16 @@ Serebra.Messages.DeleteMessage = function(id, callback) {
 			}, function(soapDocument) {
 				var errorCode = jQuery('errorFlag', soapDocument).text();
 				var errorString = jQuery('errorString', soapDocument).text();
+				var deleteRow;
 				if (errorCode == "false") {
-					var deleteRow = Serebra.Database.Query({
+					deleteRow = Serebra.Database.Query({
 						'queryString': 'DELETE FROM serebra_user_alerts WHERE AlertID = ' + id
 					});
 					if (deleteRow.success) {
 						deleted = true;
 					}
 				} else if (errorString == "you don't own that alert") {
-					var deleteRow = Serebra.Database.Query({
+					deleteRow = Serebra.Database.Query({
 						'queryString': 'DELETE FROM serebra_user_alerts WHERE AlertID = ' + id
 					});
 					if (deleteRow.success) {
@@ -98,7 +94,7 @@ Serebra.Messages.DeleteMessage = function(id, callback) {
 	}
 		
 	return callback(deleted);
-}
+};
 
 Serebra.Messages.MessageCenter = function(){
 	var sizeWidth = air.Screen.mainScreen.visibleBounds.width - 800;
@@ -120,7 +116,7 @@ Serebra.Messages.MessageCenter = function(){
   		'transparent': true,
   		'scrollBarsVisible': false,
   		'position': [sizeWidth, sizeHeight],
-  		'size': [640, 480]
+  		'size': [640, 354]
   	}, function(event){
   			var messageCenter = jQuery('#message-center', event.target.window.document).get(0);
   			jQuery('#window-handle', messageCenter).bind('mousedown.move', function(){
@@ -130,72 +126,62 @@ Serebra.Messages.MessageCenter = function(){
   			jQuery('.close-button', messageCenter).click(function(){
   				event.target.window.nativeWindow.close();
   			});
+				jQuery('.min-button', messageCenter).click(function(){
+						event.target.window.nativeWindow.minimize();
+				});
 			 				
 				(function createTable() {
 					var allMessages = Serebra.Database.Query({
 						'queryString': 'SELECT * FROM serebra_user_alerts ORDER BY AlertID DESC'
   				});
-					var readMessages = [];
-					var unreadMessages = [];
 					var output = [];
 				
-					output.push('<div id="outer-table-wrapper">');
 						output.push('<div id="inner-table-wrapper">');
 	  					output.push('<table id="message-table" cellspacing="0" cellpadding="0" width="100%">');
 	  						output.push('<thead>');
 	  							output.push('<tr>');
-	  								output.push('<th>ID</th>');
+	  								output.push('<th>&nbsp;</th>');
 	  								output.push('<th>Type</th>');
-	  								output.push('<th>Alert</th>');
-	  								output.push('<th>Read</th>');
-	  								output.push('<th>Delete</th>');
+	  								output.push('<th>Details</th>');
+	  								output.push('<th>&nbsp;</th>');
 	  							output.push('</tr>');
 	  						output.push('</thead>');
 	  					output.push('<tbody>');
-	  					if (allMessages.result.data != null) {
+	  					if (allMessages.result.data !== null) {
 	  						jQuery.each(allMessages.result.data, function(i, item){
-	  							switch (item.messageRead) {
-	  								case 0:
-	  									unreadMessages.push(item);
-	  									output.push('<tr id="' + item.AlertID + '">');
-	  										output.push('<td width="55">' + item.AlertID + '</td>');
-	  										output.push('<td width="150">' + item.Type + '</td>');
-	  										output.push('<td width="300">' + item.alertText + '</td>');
-	  										output.push('<td width="55">No</td>');
-	  										output.push('<td width="55"><a class="delete" href="#" rel="' + item.AlertID + '">X</a></td>');
-	  										output.push('</tr>');
-	  								break;
-	  								case 1:
-	  									readMessages.push(item);
-	  									output.push('<tr id="' + item.AlertID + '">');
-	  										output.push('<td>' + item.AlertID + '</td>');
-	  										output.push('<td width="55">' + item.AlertID + '</td>');
-	  										output.push('<td width="150">' + item.Type + '</td>');
-	  										output.push('<td width="300">' + item.alertText + '</td>');
-	  										output.push('<td width="55">Yes</td>');
-	  										output.push('<td width="55"><a class="delete" href="#" rel="' + item.AlertID + '">X</a></td>');
-	  									output.push('</tr>');
-	  								break;
-	  							}
+									output.push('<tr id="' + item.AlertID + '">');
+	  								switch (item.messageRead) {
+	  									case 0:
+	  										output.push('<td width="55"><span class="unread">Unread</span></td>');
+											break;
+											case 1:
+												output.push('<td width="55"><span class="read">Read</span></td>');
+											break;
+											default:
+											break;
+										}	
+	  								output.push('<td width="55">' + item.Type + '</td>');
+	  								output.push('<td width="450">' + item.alertText + '</td>');
+	  								output.push('<td width="55"><a class="delete" href="#" rel="' + item.AlertID + '"><span>Delete</span<</a></td>');
+	  							output.push('</tr>');
 	  						});
 	  						output.push('</tbody>');
-	  						output.push('</table>')
-								output.push('</div>');
+	  						output.push('</table>');
 								output.push('</div>');
 							} else {
 								output.push('<tr width="100%"><td colspan="5" width="100%"><h3>You have No Messages</h3></td></tr>');
 								output.push('</tbody>');
-	  						output.push('</table>')
-								output.push('</div>');
+	  						output.push('</table>');
 								output.push('</div>');
 							}
-							jQuery('#message-wrapper', messageCenter).append(output.join(''));
+							jQuery('#outer-table-wrapper', messageCenter).append(output.join(''));
+							
 							jQuery('#message-table tbody tr', messageCenter).click(function(){
   							jQuery('#message-table tr', messageCenter).css({
   								'background-color': 'transparent'
   							});
   							jQuery(this).css({
-  								'background-color': '#F29614'
+  								'background-color': '#F4F7CD'
   							});
   						});
 				
@@ -205,7 +191,7 @@ Serebra.Messages.MessageCenter = function(){
 									if (deleted) {
 				   					jQuery('tr#' + id, messageCenter).fadeOut(function(){
 											jQuery(this).remove();
-											jQuery('#outer-table-wrapper', messageCenter).remove();
+											jQuery('#inner-table-wrapper', messageCenter).remove();
 											createTable();
 										});
 			  					}
@@ -213,15 +199,12 @@ Serebra.Messages.MessageCenter = function(){
 							});
 				
 	  					jQuery('#message-table tbody tr', messageCenter).dblclick(function(){
+								var row = this;
   							var id = jQuery(this).attr('id');
-  			
   							var thisMessage = Serebra.Database.Query({
   								'queryString': 'SELECT * FROM serebra_user_alerts WHERE AlertID = ' + id
   							});
-								
 								if (thisMessage.result.data) {
-								
-	  							var id = thisMessage.result.data[0].AlertID;
 		  						var link = thisMessage.result.data[0].objectLink;
 	  				
 		  						Serebra.SOAP.ConsumeAlert({
@@ -234,7 +217,7 @@ Serebra.Messages.MessageCenter = function(){
 		  								Serebra.Database.Query({
 		  									'queryString': 'UPDATE serebra_user_alerts SET messageRead = 1 WHERE AlertID = ' + id
 		  								});
-		  								jQuery('#' + id + ' td', messageCenter).eq(3).text('Yes');
+		  								jQuery('.unread', row).addClass('read').removeClass('unread');
 		  								air.navigateToURL(new air.URLRequest(link));
 		  							}
 		  						});
@@ -244,4 +227,4 @@ Serebra.Messages.MessageCenter = function(){
 				})();
 			});
 	 }
-}
+};

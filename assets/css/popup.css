@@ -3,33 +3,38 @@ body {
 }
 
 #popup {
-	background: url('../images/Thin-Bg-1.png') repeat-x top left;
-	width: 350px;
+	background: url('../images/background_slice_medium.png') repeat-x top left;
+	width: 250px;
 	min-height: 150px;
-	border: 2px solid #000;
-	-webkit-border-radius:3.0em;
+	border: 2px solid #e0e0e0;
+	-webkit-border-radius:1.0em;
 	margin:0 auto;
 }
 
 #window-handle {
 	width: 100%;
 	height: 55px;
-	background: url('../images/Handle-Background-1.png') repeat-x top left;
 	border: 0;
-	-webkit-border-top-left-radius: 3.0em;
-	-webkit-border-top-right-radius: 3.0em;
-	-webkit-border-bottom-left-radius: 0em;
-	-webkit-border-bottom-right-radius: 0em;
 }
 
 #window-handle .logo {
-	background: url('../images/Serebra-Logo-1.png') no-repeat top left;
-	width: 133px;
-	height: 51px;
+	background: url('../images/app_logo.png') no-repeat top left;
+	width: 79px;
+	height: 29px;
 	display:block;
 	position:relative;
 	top: 5px;
 	left: 10px;
+}
+
+#window-handle .screentype {
+	background: url('../images/title_alerts.png') no-repeat top left;
+	width: 58px;
+	height: 20px;
+	display:block;
+	position:absolute;
+	top: 15px;
+	right: 35px;
 }
 
 #close-button-container {
@@ -42,11 +47,11 @@ body {
 	display:block;
 	width: 18px;
 	height: 18px;
-	background: url('../icons/Close-Button-Off.png') no-repeat top left;
+	background: url('../images/icon_close-delete.png') no-repeat top left;
 }
 
 .close-button:hover {
-	background: url('../icons/Close-Button-On.png') no-repeat top left;
+	background: url('../images/icon_close-delete.png') no-repeat top left;
 }
 
 .close-button span {
@@ -54,8 +59,14 @@ body {
 }
 
 #message-area {
-	width: 80%;
+	position:relative;
+	left: 20px;
+	width: 90%;
 	margin: 0 auto;
 	position:absolute;
 	top: 55px;
+}
+
+.green {
+	color:#63A912;
 }
