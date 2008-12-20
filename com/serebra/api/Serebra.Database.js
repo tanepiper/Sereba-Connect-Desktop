@@ -1,12 +1,5 @@
-var Serebra;
-if (!Serebra) Serebra = function(){};
-
 Serebra.Database = {};
-
 Serebra.Database.DatabaseFile = null;
-Serebra.Database.GetConnection = function(){
-	return Serebra.Database.DatabaseFile;
-};
 
 /**
  * Connects to a local SQLite database
@@ -47,17 +40,15 @@ Serebra.Database.ConnectToFile = function(options){
  * @param {Object} databaseFile The location of the database file
  */
 Serebra.Database.CreateDB = function(){
-	FirstRun = true;
-	var databaseFile = Serebra.Database.GetConnection();
+	Serebra.FirstRun = true;
 	var connection = new air.SQLConnection();
 	connection.addEventListener(air.SQLErrorEvent.ERROR, Serebra.Database.ErrorHandler);
-	connection.open(databaseFile, air.SQLMode.CREATE);
+	connection.open(Serebra.Database.DatabaseFile, air.SQLMode.CREATE);
 	connection.close();
 	return true;
 };
 
 Serebra.Database.SetupFirstRun = function(callback) {
-	var databaseFile = Serebra.Database.GetConnection();
 	Serebra.Database.Query({
 		'queryString': 'CREATE TABLE IF NOT EXISTS serebra_options (key TEXT, value TEXT);'
 	});
@@ -85,30 +76,29 @@ Serebra.Database.Query = function(options){
 		};
 	}
 	options = jQuery.extend(defaults(), options);
-  	var databaseFile = Serebra.Database.GetConnection();
-  	var transactionSuccessful = false;
-  	var result = false;
+  var transactionSuccessful = false;
+  var result = false;
   
 	try {
 		var connection = new air.SQLConnection();
-		connection.open(databaseFile, air.SQLMode.CREATE);
+		connection.open(Serebra.Database.DatabaseFile, air.SQLMode.CREATE);
 		
 		var query = new air.SQLStatement();
 		query.addEventListener(air.SQLErrorEvent.ERROR, Serebra.Database.ErrorHandler);
 		query.sqlConnection = connection;
-  		query.text = options.queryString;
+  	query.text = options.queryString;
 		query.execute();
-  		var success = query.getResult();
-  		if (success) {
-  			transactionSuccessful = true;
-  	  		result = success;
+  	var success = query.getResult();
+  	if (success) {
+  		transactionSuccessful = true;
+  		result = success;
 		}
-  		connection.close();
+  	connection.close();
 	} catch ( error ) {
 		transactionSuccessful = false;
 		result = error;
 	}
-  	return {
+  return {
 		'success': transactionSuccessful,
 		'result': result
 	};
@@ -127,8 +117,7 @@ Serebra.Database.SaveOrCreateOption = function(options) {
 		};
 	}
 	options = jQuery.extend(defaults(), options);
-  	var databaseFile = Serebra.Database.GetConnection();
-  	var exists = false;
+ 	var exists = false;
 	var result;
 	
 	//First we do a search for the item

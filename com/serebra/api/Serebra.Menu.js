@@ -1,6 +1,3 @@
-var Serebra;
-if (!Serebra) Serebra = function(){};
-
 Serebra.Menu = {};
 
 /**
@@ -29,7 +26,7 @@ Serebra.Menu.CreateSystrayMenu = function(){
 	var menuItems = {
 		'serebraConnect': new air.NativeMenuItem("Open Serebra Connect", false),
 		'messageCenter': new air.NativeMenuItem("Open Alerts Center", false),
-		/*'fakeAlerts': new air.NativeMenuItem("Create Fake Alert", false),*/
+		'fakeAlerts': new air.NativeMenuItem("Create Fake Alert", false),
 		'updatesMenu': new air.NativeMenuItem("Check For Updates", false),
 		'optionsMenu': new air.NativeMenuItem("Settings", false),
 		'logoutMenu': new air.NativeMenuItem("Logout", false),
@@ -60,7 +57,13 @@ Serebra.Menu.CreateLoginMenu = function() {
 
 
 Serebra.Menu.SystrayClickHandler = function(event){
-
+	if (Serebra.NetworkOnline) {
+		Serebra.Chrome.MessageCenter();
+	} else {
+		Serebra.Chrome.LoginWindow(function(){
+			Serebra.Network.CheckLogin();	
+		});
+	}
 };
 
 /**
@@ -73,10 +76,10 @@ Serebra.Menu.MenuItemClickHandler = function(event){
 			air.navigateToURL(new air.URLRequest('http://www.serebraconnect.com/'));
 		break;
 		case "Open Alerts Center":
-			Serebra.Messages.MessageCenter();
+			Serebra.Chrome.MessageCenter();
 		break;
 		case "Settings":
-			Serebra.Window.ShowOptionsWindow();
+			Serebra.Chrome.Settings();
 		break;
 		case "Create Fake Alert":
 			Serebra.SOAP.CreateFakeAlert(null, function(){});
@@ -88,8 +91,8 @@ Serebra.Menu.MenuItemClickHandler = function(event){
 	  	});
 		break;
 		case "Login":
-			Serebra.Window.LoginWindow(function(results){
-				Serebra.CheckLogin(results);	
+			Serebra.Chrome.LoginWindow(function(){
+				Serebra.Network.CheckLogin();	
 			});
 		break;
 		case "Logout":

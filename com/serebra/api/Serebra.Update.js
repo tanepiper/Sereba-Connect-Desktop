@@ -37,7 +37,7 @@ Serebra.Update.AppVersionCheck = function ( event ) {
 	});
 		
 	if (update) {
-		var confirmUpdate = confirm('We have found an update for Serebra Connect Desktop.  Would you like to download now?');
+		var confirmUpdate = confirm('We have found an update for Serebra Connect Alerts.  Would you like to download now?');
 		
 		if (confirmUpdate) {
   		var stream = new air.URLStream();
@@ -58,7 +58,7 @@ Serebra.Update.AppVersionCheck = function ( event ) {
 	}
 	
 	function updateApplication ( event ) {
-		var filename = "SRDesktop-" + remoteVersionString + ".air";
+		var filename = "update/SRDesktop-" + remoteVersionString + ".air";
 		var ba = new air.ByteArray();
 		stream.readBytes(ba, 0, stream.bytesAvailable);
 		updateFile = air.File.applicationStorageDirectory.resolvePath(filename);

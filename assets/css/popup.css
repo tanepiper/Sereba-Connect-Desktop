@@ -2,10 +2,10 @@ body {
 	font: 70% Arial, Helvetica, sans-serif;
 }
 
-#popup {
-	background: url('../images/background_slice_medium.png') repeat-x top left;
+#message-popup {
+	background: url('../images/background_slice_small.png') repeat-x top left;
 	width: 250px;
-	min-height: 150px;
+	min-height: 80px;
 	border: 2px solid #e0e0e0;
 	-webkit-border-radius:1.0em;
 	margin:0 auto;
@@ -13,7 +13,7 @@ body {
 
 #window-handle {
 	width: 100%;
-	height: 55px;
+	height: 30px;
 	border: 0;
 }
 
@@ -60,11 +60,9 @@ body {
 
 #message-area {
 	position:relative;
-	left: 20px;
 	width: 90%;
 	margin: 0 auto;
-	position:absolute;
-	top: 55px;
+	top: 0px;
 }
 
 .green {

@@ -1,0 +1,34 @@
+<project name="Serebra" default="Build" basedir=".">
+	<property description="Source Folder" name="SRC_DIR" value="com/serebra/api"  />
+    <property description="Files for parsing etc." name="BUILD_DIR" value="build" />
+    <property description="Rhino JS Engine" name="JAR" value="${BUILD_DIR}/js.jar" />
+    <property description="Destination Folder" name="DIST_DIR" value="lib/serebra" />
+
+    <!-- Files names for distribution -->
+    <property name="Build" value="${DIST_DIR}/Serebra.Connect.Alerts.js" />
+    <!-- MAIN -->
+
+    <target name="Build" description="Main build for Serebra Connect Alerts @VERSION">
+        <echo message="Building ${Build}" />
+        <mkdir dir="${DIST_DIR}" />
+        <concat destfile="${Build}">
+            <fileset dir="${SRC_DIR}" includes="Serebra.js" />
+            <fileset dir="${SRC_DIR}" includes="Serebra.Database.js" />
+            <fileset dir="${SRC_DIR}" includes="Serebra.Menu.js" />
+            <fileset dir="${SRC_DIR}" includes="Serebra.Messages.js" />
+            <fileset dir="${SRC_DIR}" includes="Serebra.Network.js" />
+						<fileset dir="${SRC_DIR}" includes="Serebra.SOAP.js" />
+						<fileset dir="${SRC_DIR}" includes="Serebra.System.js" />
+						<fileset dir="${SRC_DIR}" includes="Serebra.Update.js" />
+						<fileset dir="${SRC_DIR}" includes="Serebra.Chrome.js" />
+        </concat>
+    	<java jar="${JAR}" fork="true">
+            <arg value="${Build}" />
+      </java>
+        <echo message="${Build} built." />
+    </target>
+
+    <target name="clean">
+        <delete dir="${DIST_DIR}" />
+    </target>
+</project>

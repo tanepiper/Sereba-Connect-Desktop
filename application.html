@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Serebra Connect Desktop</title>
+		<title>Serebra Connect Alerts</title>
 		<script type="text/javascript" src="app:/lib/air/AIRAliases.js"></script>
 		<script type="text/javascript" src="app:/lib/air/AIRIntrospector.js"></script>
 		<script type="text/javascript" src="app:/lib/air/AIRLocalizer.js"></script>
@@ -8,42 +8,15 @@
 		<script type="text/javascript" src="app:/lib/air/AIRSourceViewer.js"></script>
 		
 		<script type="text/javascript" src="app:/lib/jquery/jquery.js"></script>
-		<script type="text/javascript" src="app:/lib/misc/jquery.grid.core.js"></script>
 		
-		<script type="text/javascript" src="app:/com/serebra/api/Serebra.js"></script>
-		<script type="text/javascript" src="app:/com/serebra/api/Serebra.CLI.js"></script>
-		<script type="text/javascript" src="app:/com/serebra/api/Serebra.Menu.js"></script>
-		<script type="text/javascript" src="app:/com/serebra/api/Serebra.Network.js"></script>
-		<script type="text/javascript" src="app:/com/serebra/api/Serebra.Window.js"></script>
-		<script type="text/javascript" src="app:/com/serebra/api/Serebra.Database.js"></script>
-		<script type="text/javascript" src="app:/com/serebra/api/Serebra.Messages.js"></script>
-		<script type="text/javascript" src="app:/com/serebra/api/Serebra.SOAP.js"></script>
-		<script type="text/javascript" src="app:/com/serebra/api/Serebra.System.js"></script>
-		<script type="text/javascript" src="app:/com/serebra/api/Serebra.Update.js"></script>
-		
+		<script type="text/javascript" src="app:/lib/serebra/Serebra.Connect.Alerts.js"></script>
 		
 		<script type="application/x-shockwave-flash" src="app:/lib/air/servicemonitor.swf"></script>
 		<script type="application/x-shockwave-flash" src="app:/lib/air/applicationupdater.swf"></script>
 		<script type="text/javascript">
-			var Serebra;
-				if (!Serebra) Serebra = function(){};
-
-				var DebugMode = false;
-				var FirstRun = false;
-				var Errors = [];
-				var applicationName = 'Serebra Connect Desktop';
-				var applicationCode = 'B000002';
-				var authCode = null;
-				var ForceUpdate = false;
-				var ForceOffline = false;
-				var SerebraOnline = false;
-				var DatabaseFile = null;
-				var unreadMessages = false;
-				var loggedIn = false;
-			jQuery(document).ready(function(){
-				/* Some Global Variables We Need */
-				Serebra.Initialize();
-			});
+				jQuery(document).ready(function(){
+					Serebra.Initialize();
+				});
 		</script>
 	</head>
 	<body>

@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-		<title>Serebra Connect Desktop - Log In</title>
+		<title>Serebra Connect Alerts - Log In</title>
 		<link rel="stylesheet" media="screen" href="app:/assets/css/login.css" />		
 	</head>
 	<body>
@@ -15,32 +15,33 @@
 			<div id="welcome-message">
 				Welcome to Serebra Connect Alerts.  Please login using your Serebra Connect credentials.
 			</div>
+			<div id="form-errors">
+				<ul></ul>
+			</div>
 			<div id="login-form">
 				<table>
 					<tr>
 						<th scope="row"><label for="username">Username</label></th>
-						<td scope="row"><input type="text" name="username" id="username" /></td>
+						<td scope="row" colspan="3"><input type="text" name="username" id="username" /></td>
 					</tr>
 					<tr>
 						<th scope="row"><label for="password">Password</label></th>
-						<td scope="row"><input type="password" name="password" id="password" /></td>
+						<td scope="row" colspan="3"><input type="password" name="password" id="password" /></td>
 					</tr>
 					<tr>
 						<th scope="row"><label for="rememberme">Remember Me</label></th>
-						<td scope="row"><input type="checkbox" name="rememberme" id="rememberme" /></td>
-					</tr>
-					<tr>
+						<td scope="row" align="center"><input type="checkbox" name="rememberme" id="rememberme" /></td>
 						<th scope="row"><label for="autologin">Auto Login</label></th>
-						<td scope="row"><input type="checkbox" name="autologin" id="autologin" /></td>
+						<td scope="row" align="center"><input type="checkbox" name="autologin" id="autologin" /></td>
 					</tr>
 				</table>
 				<table>
 					<tr align="center">
-						<td scope="row" align="center"><input type="button" name="login" id="login" value="Login"/></td>
-						<td scope="row" align="center"><input type="button" name="cancel" id="cancel" value="Cancel" /></td>
+						<td scope="row" align="center" colspan="2"><input type="button" name="login" id="login" value="Login"/></td>
+						<td scope="row" align="center" colspan="2"><input type="button" name="cancel" id="cancel" value="Cancel" /></td>
 					</tr>
 					<tr align="center">
-						<td colspan="2" align="center"><a href="https://www.serebraconnect.com/index.cfm?fuseaction=account.addAccountConnect" id="create-account"></a></td>
+						<td colspan="4" align="center"><br /><a href="https://www.serebraconnect.com/index.cfm?fuseaction=account.addAccountConnect" id="create-account"></a></td>
 					</tr>
 				</table>
 				

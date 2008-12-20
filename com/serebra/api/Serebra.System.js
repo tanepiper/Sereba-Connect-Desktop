@@ -1,60 +1,75 @@
-var Serebra;
-if (!Serebra) Serebra = function(){};
-
 Serebra.System = {};
 
-Serebra.System.GetVersion = function() {
-		var appXML = air.NativeApplication.nativeApplication.applicationDescriptor;
-		var version = jQuery('version', appXML).text();
-		return version;
+Serebra.System.InvokeSettings = function(AppArguments, CurrentDir, callback) {
+	
+	var fileStream = new air.FileStream();
+	var settingsFile = air.File.applicationDirectory.resolvePath('settings.xml');
+
+	jQuery.each(AppArguments, function(i, argument){
+		switch (argument) {
+			case "debug-mode":
+				Serebra.DebugMode = true;
+			break;
+			case "force-update":
+				Serebra.ForceUpdate = true;
+			break;
+			case "force-offline":
+				Serebra.ForceOffline = true;
+			break;
+			default:
+				// Do nothing
+			break;
+		}
+	});
+	
+	jQuery.get(settingsFile.url, null, function(data, success){
+
+		Serebra.ApplicationName = jQuery('appname', data).text();
+		Serebra.ApplicationCode = jQuery('appcode', data).text();
+		Serebra.DatabaseFileName = jQuery('database', data).text();
+		 
+		if (typeof callback === 'function') {
+			return callback();
+		} else {
+			throw new Error('You must return a callback with this function');
+		}
+	},'xml');
 };
 
-Serebra.System.InitUserAgentString = function() {
-	var newString = Serebra.System.SetUserAgent('Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en) AppleWebKit/420+ (KHTML, like Gecko) Serebra Desktop Connect/' + Serebra.System.GetVersion());
-	return newString;
-};
-
-Serebra.System.GetUserAgent = function() {
-	return window.htmlLoader.userAgent;
-};
-
-Serebra.System.SetUserAgent = function(uastring) {
-	window.htmlLoader.userAgent = uastring;
-	return window.htmlLoader.userAgent;
-};
-
-Serebra.System.getRuntimeInfo = function(){
-	return {
-		'os' : air.Capabilities.os,
-		'version': air.Capabilities.version, 
-		'manufacturer': air.Capabilities.manufacturer,
-		'totalMemory': air.System.totalMemory
-	};
-};
-
-Serebra.System.getClipboardText = function() {
-	if(air.Clipboard.generalClipboard.hasFormat("text/plain")){
-	    var text = air.Clipboard.generalClipboard.getData("text/plain");
-		return text;
-	} else {
-		return '';
+Serebra.System.LoadDatabaseSettings = function ( callback ) {
+	var dbValues = Serebra.Database.Query({
+	  'queryString': 'SELECT * FROM serebra_options'
+	});
+	if (dbValues.result.data) {
+		jQuery.each(dbValues.result.data, function(i, item){
+	  	switch (item.key) {
+	  		case "autologin":
+	  			Serebra.AutoLogin = item.value;
+	  		break;
+				case "autostart":
+					Serebra.AutoStart = item.value;
+				break;
+				case "checktime":
+					Serebra.MessageCheckTime = parseInt(item.value, 10);
+				break;
+	  		case "password":
+	  			Serebra.Password = item.value;
+	  		break;
+				case "rememberme":
+	  			Serebra.RememberMe = item.value;
+	  		break;
+	  		case "username":
+	  			Serebra.Username = item.value;
+	  		break;
+				default:
+					//Do nothing
+				break;
+	  	}
+		});
 	}
-};
-
-Serebra.System.setClipboardText = function(text) {
-	air.Clipboard.generalClipboard.clear();
-	air.Clipboard.generalClipboard.setData(air.ClipboardFormats.TEXT_FORMAT,text,false);
-};
-
-Serebra.System.getFileContents = function(path) {
-	var f = new air.File(path);
-	if (f.exists) {
-		var fs = new air.FileStream();
-		fs.open(f, air.FileMode.READ);
-		var str = fs.readMultiByte(f.size, air.File.systemCharset);
-		fs.close();
-		return str;
+	if (typeof callback === 'function') {
+		return callback();
 	} else {
-		return false;
+		throw new Error('You must return a callback with this function');
 	}
 };

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<settings>
+	<appname>Serebra Connect Alerts</appname>
+	<appcode>B000002</appcode>
+	<database>sca1.sqlite</database>
+</settings>
