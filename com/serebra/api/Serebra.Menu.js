@@ -26,7 +26,7 @@ Serebra.Menu.CreateSystrayMenu = function(){
 	var menuItems = {
 		'serebraConnect': new air.NativeMenuItem("Open Serebra Connect", false),
 		'messageCenter': new air.NativeMenuItem("Open Alerts Center", false),
-		'fakeAlerts': new air.NativeMenuItem("Create Fake Alert", false),
+		/*'fakeAlerts': new air.NativeMenuItem("Create Fake Alert", false),*/
 		'updatesMenu': new air.NativeMenuItem("Check For Updates", false),
 		'optionsMenu': new air.NativeMenuItem("Settings", false),
 		'logoutMenu': new air.NativeMenuItem("Logout", false),

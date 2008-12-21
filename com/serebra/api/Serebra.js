@@ -23,8 +23,11 @@ Serebra.Initialize = function(){
 	Serebra.Username = '';
 	
 	//Cleanup from any update
-	air.File.applicationStorageDirectory.resolvePath('update').deleteDirectory(true);
-	
+	try {
+  	air.File.applicationStorageDirectory.resolvePath('update').deleteDirectory(true);
+  } catch (err) {
+		// Do nothing
+	}
 	air.NativeApplication.nativeApplication.addEventListener(air.InvokeEvent.INVOKE, Serebra._InvokeApplication);
 };
 
