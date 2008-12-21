@@ -68,3 +68,12 @@ body {
 .green {
 	color:#63A912;
 }
+
+.open-message-center {
+	text-indent: -1000px;
+	display:block;
+	margin: 0 auto;
+	width: 141px;
+	height: 20px;
+	background: url('../images/link_openalerts.png') no-repeat;
+}

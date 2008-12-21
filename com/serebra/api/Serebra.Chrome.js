@@ -136,13 +136,19 @@ Serebra.Chrome.MessagePopup = function( options ) {
 				thisWindow.close();
 			});
 			
+			jQuery('.open-message-center', popupDom).click(function(){
+				closeTimer.stop();
+				//jQuery('.close-button', popupDom).trigger('click');
+				Serebra.Chrome.MessageCenter();
+			});
+			
 			jQuery('.message', popupDom).html('<h2>You have <span class="green">' + options.messageCount + '</span> new alerts!</h2>');
 				
 			thisWindow.visible = true;
 			thisWindow.orderToFront();
 			
 			function closeWindow() {
-				thisWindow.close();
+				jQuery('.close-button', popupDom).trigger('click');
 			}
 			
 			var closeTimer = new air.Timer(6000, 1);
