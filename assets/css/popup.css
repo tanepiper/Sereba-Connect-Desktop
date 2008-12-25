@@ -71,7 +71,7 @@ body {
 
 .open-message-center {
 	text-indent: -1000px;
-	display:block;
+	display:none;
 	margin: 0 auto;
 	width: 141px;
 	height: 20px;

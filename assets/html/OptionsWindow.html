@@ -1,8 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!doctype html>
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 		<title>Serebra Connect Alerts - Settings</title>
+		<link rel="stylesheet" media="screen" href="app:/assets/css/ui/ui.css" />
 		<link rel="stylesheet" media="screen" href="app:/assets/css/options.css" />
 	</head>
 	<body>
@@ -12,29 +13,27 @@
 				<div id="min-button-container"><a href="#" class="min-button"><span>Minimize</span></a></div>
 				<div id="close-button-container"><a href="#" class="close-button"><span>Close</span></a></div>
 			</div>
-			
-			<div id="options-container">
+			<div id="options-container-1">
 				<fieldset>
 					<legend>Serebra Connect Credentials</legend>
 					<table>
 						<tbody>
-							<tbody>
-								<tr>
-									<th scope="row"><label for="username">Username</label></th>
-									<td scope="row"><input type="text" name="username" id="username" /></td>
-								</tr>
-								<tr>
-									<th scope="row"><label for="password">Password</label></th>
-									<td scope="row"><input type="password" name="password" id="password" /></td>
-								</tr>
-								<tr>
-									<th scope="row"><label for="rememberme">Remember Me</label></th>
-									<td scope="row"><input type="checkbox" name="rememberme" id="rememberme" /></td>
-								</tr>
-								<tr>
-									<th scope="row"><label for="autologin">Auto Login</label></th>
-									<td scope="row"><input type="checkbox" name="autologin" id="autologin" /></td>
-								</tr>
+							<tr>
+								<th scope="row"><label for="username">Username</label></th>
+								<td scope="row"><input type="text" name="username" id="username" /></td>
+							</tr>
+							<tr>
+								<th scope="row"><label for="password">Password</label></th>
+								<td scope="row"><input type="password" name="password" id="password" /></td>
+							</tr>
+							<tr>
+								<th scope="row"><label for="rememberme">Remember Me</label></th>
+								<td scope="row"><input type="checkbox" name="rememberme" id="rememberme" /></td>
+							</tr>
+							<tr>
+								<th scope="row"><label for="autologin">Auto Login</label></th>
+								<td scope="row"><input type="checkbox" name="autologin" id="autologin" /></td>
+							</tr>
 						</tbody>
 					</table>
 				</fieldset>
@@ -42,25 +41,55 @@
 					<legend>Serebra Connect Service Options</legend>
 					<table>
 						<tbody>
-							<tbody>
-								<tr>
-									<th scope="row"><label for="autostart">Startup on Windows Boot</label></th>
-									<td scope="row"><input type="checkbox" name="autostart" id="autostart" /></td>
-								</tr>
-								<tr>
-									<th scope="row"><label for="checktime">Message Check Frequencey</label></th>
-									<td scope="row">
-										<select name="checktime" id="checktime">
-											<option value="300000">5 Mins</option>
-											<option value="600000">10 Mins</option>
-											<option value="12000000">20 Mins</option>
-										</select>
-								</tr>
+							<tr>
+								<th scope="row"><label for="autostart">Startup on Windows Boot</label></th>
+								<td scope="row"><input type="checkbox" name="autostart" id="autostart" /></td>
+							</tr>
+							<tr>
+								<th scope="row"><label for="checktime">Message Check Frequencey</label></th>
+								<td scope="row">
+									<select name="checktime" id="checktime">
+										<option value="300000">5 Mins</option>
+										<option value="600000">10 Mins</option>
+										<option value="12000000">20 Mins</option>
+									</select>
+							</tr>
+						</tbody>
+					</table>
+				</fieldset>
+				<fieldset>
+					<legend>Alert Options</legend>
+					<table>
+						<tbody>
+							<tr>
+								<th scope="row"><label for="display-popup">Display Popups</label></th>
+								<td scope="row"><input type="checkbox" name="display-popup" id="display-popup" checked="checked" disabled="disabled" /></td>
+							</tr>
+						</tbody>
+					</table>
+					<table>
+						<tbody>
+							<tr>
+								<th scope="row"><label for="display-bids">Recieve Bids</label></th>
+								<td scope="row"><input type="checkbox" name="display-bids" id="display-bids" checked="checked" disabled="disabled" /></td>
+								<th scope="row"><label for="display-messages">Recieve Messages</label></th>
+								<td scope="row"><input type="checkbox" name="display-messages" id="display-messages" checked="checked" disabled="disabled" /></td>
+								<th scope="row"><label for="display-questions">Recieve Questions</label></th>
+								<td scope="row"><input type="checkbox" name="display-questions" id="display-questions" checked="checked" disabled="disabled" /></td>
+							</tr>
+							<tr>
+								<th scope="row"><label for="display-answers">Recieve Answers</label></th>
+								<td scope="row"><input type="checkbox" name="display-answers" id="display-answers" checked="checked" disabled="disabled" /></td>
+								<th scope="row"><label for="display-awards">Recieve Awards</label></th>
+								<td scope="row"><input type="checkbox" name="display-awards" id="display-awards" checked="checked" disabled="disabled"/></td>
+								<th scope="row"></label></th>
+								<td scope="row"></td>
+							</tr>
 						</tbody>
 					</table>
 				</fieldset>
 				<br />
-				<input type="button" id="save" value="Save Options" />
+				<input type="button" class="save" value="Save Options" />
 			</div>
 		</div>
 	</body>

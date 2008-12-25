@@ -138,8 +138,13 @@ Serebra.Chrome.MessagePopup = function( options ) {
 			
 			jQuery('.open-message-center', popupDom).click(function(){
 				closeTimer.stop();
-				//jQuery('.close-button', popupDom).trigger('click');
-				Serebra.Chrome.MessageCenter();
+				jQuery('#message-popup', thisDocument).remove();
+				thisWindow.close();
+
+				var openTimer = new air.Timer(2000,1);
+				openTimer.addEventListener(air.TimerEvent.TIMER_COMPLETE, Serebra.Chrome.MessageCenter);
+				openTimer.start();
+
 			});
 			
 			jQuery('.message', popupDom).html('<h2>You have <span class="green">' + options.messageCount + '</span> new alerts!</h2>');
@@ -148,7 +153,7 @@ Serebra.Chrome.MessagePopup = function( options ) {
 			thisWindow.orderToFront();
 			
 			function closeWindow() {
-				jQuery('.close-button', popupDom).trigger('click');
+				thisWindow.close();
 			}
 			
 			var closeTimer = new air.Timer(6000, 1);
@@ -204,7 +209,7 @@ Serebra.Chrome.Settings = function () {
 			jQuery('.min-button', optionsDom).click(function(){
 				thisWindow.minimize();
 			});
-			
+
 			jQuery('#autologin',  optionsDom).attr('checked', Serebra.AutoLogin);
 			jQuery('#autostart',  optionsDom).attr('checked', Serebra.AutoStart);
 			jQuery('#password',   optionsDom).val(Serebra.Password);
@@ -216,7 +221,7 @@ Serebra.Chrome.Settings = function () {
 				}
 			});
 			
-			jQuery('#save', optionsDom).bind('click.save', function(){
+			jQuery('.save', optionsDom).bind('click.save', function(){
 					Serebra.AutoLogin = jQuery('#autologin', optionsDom).attr('checked');
 					Serebra.AutoStart = jQuery('#autostart', optionsDom).attr('checked');
 					Serebra.Password = jQuery('#password', optionsDom).val();
@@ -231,8 +236,8 @@ Serebra.Chrome.Settings = function () {
 					Serebra.Database.SaveOrCreateOption({'key':'autostart', 'value':Serebra.AutoStart});
 					Serebra.Database.SaveOrCreateOption({'key':'checktime', 'value':Serebra.MessageCheckTime});
 					if (!Serebra.DebugMode) {
-		  			air.NativeApplication.nativeApplication.startAtLogin = Serebra.AutoStart;
-		  		}
+		  				air.NativeApplication.nativeApplication.startAtLogin = Serebra.AutoStart;
+		  			}
 					
 					Serebra.Network.MessageCheckTimer.stop();
 					Serebra.Network.MessageCheckTimer.delay = Serebra.MessageCheckTime;
@@ -254,7 +259,7 @@ Serebra.Chrome.Settings = function () {
 	windowOptions.transparent = true;
 	windowOptions.type = 'lightweight';
 	
-	var windowBounds = new air.Rectangle(0, 0, 305, 480);
+	var windowBounds = new air.Rectangle(0, 0, 500, 435);
 	var newHTMLLoader = air.HTMLLoader.createRootWindow(false, windowOptions, false, windowBounds);
 	newHTMLLoader.addEventListener(air.Event.COMPLETE, windowLoaded);
 	
@@ -269,7 +274,7 @@ Serebra.Chrome.Settings = function () {
 	}
 };
 
-Serebra.Chrome.MessageCenter = function( options ) {
+Serebra.Chrome.MessageCenter = function() {
 	function windowLoaded( event ) {
 		var thisWindow = event.target.window.nativeWindow;
 		
@@ -296,7 +301,7 @@ Serebra.Chrome.MessageCenter = function( options ) {
 			(function createTable() {
 					var allMessages = Serebra.Database.Query({
 						'queryString': 'SELECT * FROM serebra_user_alerts ORDER BY AlertID DESC'
-  				});
+  					});
 					var output = [];
 				
 						output.push('<div id="inner-table-wrapper">');
@@ -360,18 +365,39 @@ Serebra.Chrome.MessageCenter = function( options ) {
   							});
   						});
 				
-							jQuery('#message-table .delete', messageDom).bind('click.delete', function(){
-								var id = jQuery(this).attr('rel');
-								Serebra.Messages.DeleteMessage(id, function(deleted){
-									if (deleted) {
-				   					jQuery('tr#' + id, messageDom).fadeOut(function(){
-											jQuery(this).remove();
-											jQuery('#inner-table-wrapper', messageDom).remove();
-											createTable();
-										});
+						jQuery('#message-table .delete', messageDom).bind('click.delete', function(){
+							var id = jQuery(this).attr('rel');
+							Serebra.Messages.DeleteMessage(id, function(deleted){
+								if (deleted) {
+				   				jQuery('tr#' + id, messageDom).fadeOut(function(){
+										jQuery(this).remove();
+										jQuery('#inner-table-wrapper', messageDom).remove();
+										createTable();
+									});
 			  					}
-								});
 							});
+						});
+						
+						jQuery('#delete-all', messageDom).bind('click.deleteall', function(){
+							var allMessages = Serebra.Database.Query({
+  								'queryString': 'SELECT * FROM serebra_user_alerts'
+  							});
+							
+							if (allMessages.result.data) {
+								jQuery.each(allMessages.result.data, function(i, item){
+									Serebra.Messages.DeleteMessage(item.AlertID, function(deleted){
+										if (deleted) {
+											jQuery('tr#' + item.AlertID, messageDom).css({'background-color':'#f00'})
+				   							.fadeOut(function(){
+												jQuery(this).remove();
+												jQuery('#inner-table-wrapper', messageDom).remove();
+												createTable();
+											});
+			  							}
+									});
+								});
+							}
+						});
 				
 	  					jQuery('#message-table tbody tr', messageDom).dblclick(function(){
 								var row = this;
@@ -379,7 +405,7 @@ Serebra.Chrome.MessageCenter = function( options ) {
   							var thisMessage = Serebra.Database.Query({
   								'queryString': 'SELECT * FROM serebra_user_alerts WHERE AlertID = ' + id
   							});
-								if (thisMessage.result.data) {
+							if (thisMessage.result.data) {
 		  						var link = thisMessage.result.data[0].objectLink;
 	  				
 		  						Serebra.SOAP.ConsumeAlert({
@@ -405,7 +431,7 @@ Serebra.Chrome.MessageCenter = function( options ) {
 			thisWindow.orderToFront();
 		}
 	}
-	
+
 	var windowOptions = new air.NativeWindowInitOptions();
 	windowOptions.maximizable = false;
 	windowOptions.minimizable = true;
@@ -414,16 +440,17 @@ Serebra.Chrome.MessageCenter = function( options ) {
 	windowOptions.transparent = true;
 	windowOptions.type = 'normal';
 	
-	var windowBounds = new air.Rectangle(0, 0, 640, 354);
+	var windowBounds = new air.Rectangle(0, 0, 640, 385);
 	var newHTMLLoader = air.HTMLLoader.createRootWindow(false, windowOptions, false, windowBounds);
 	newHTMLLoader.addEventListener(air.Event.COMPLETE, windowLoaded);
-	
+
 	var alreadyOpen = false;
 	jQuery(air.NativeApplication.nativeApplication.openedWindows).each(function(i, win){
 		if (win.title === 'Serebra Connect Alerts - Alert Center') {
 			alreadyOpen = true;
 		}
 	});
+
 	if (!alreadyOpen) {
 		newHTMLLoader.load(new air.URLRequest('app:/assets/html/MessageCenter.html'));
 	}

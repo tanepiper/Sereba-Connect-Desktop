@@ -4,21 +4,24 @@ if (!Serebra) Serebra = function(){};
 Serebra.SOAP = {};
 
 Serebra.SOAP.GetResponse = function(output, callback) {
-	var xmlhttp;
-	var appXML;
-	var url = "http://qa.serebracampus.com:8888/apiWebService.cfc?wsdl";
-	xmlhttp = new XMLHttpRequest();
-	xmlhttp.open("POST", url, true);					
-	xmlhttp.onreadystatechange=function(){
-		if (xmlhttp.readyState==4) {
-			return callback(xmlhttp.responseText);
-		}
-	};
-			
-	xmlhttp.setRequestHeader("Content-Type", "text/xml");
-	xmlhttp.setRequestHeader('SOAPAction','http://qa.serebracampus.com:8888/apiWebService.cfc?wsdl');
 	
-	xmlhttp.send(output);
+	jQuery.ajax({
+		'type':'POST',
+		'url': 'http://qa.serebracampus.com:8888/apiWebService.cfc?wsdl',
+		'contentType': 'text/xml',
+		'data':output,
+		'dataType':'xml',
+		'processData': false,
+		'beforeSend': function(xhr) {
+			xhr.setRequestHeader("SOAPAction","http://qa.serebracampus.com:8888/apiWebService.cfc?wsdl");
+		},
+		'success': function(data) {
+			return callback(data);
+		},
+		'error': function (XMLHttpRequest, textStatus, errorThrown) {
+			return callback();
+		}
+	});
 };
 
 Serebra.SOAP.Authenticate = function(values, callback) {

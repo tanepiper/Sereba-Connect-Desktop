@@ -23,10 +23,10 @@
 	<name>Serebra Connect Alerts</name>
 
 	<!-- An application version designator (such as "v1", "2.5", or "Alpha 1"). Required. -->
-	<version>0.5.1</version>
+	<version>0.5.4</version>
 
 	<!-- Description, displayed in the AIR application installer. Optional. -->
-	<description>Serebra Connect Alerts is an application for Serebra Connect users to get instant notifications.	</description>
+	<description>Serebra Connect Alerts is an application for Serebra Connect users to get instant notifications.</description>
 
 	<!-- Copyright information. Optional -->
 	<copyright>2009 Serebra Connect</copyright>

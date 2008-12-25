@@ -3,9 +3,9 @@ body {
 }
 
 #options-window {
-	background: url('../images/background_slice_large.png') repeat-x top left;
-	width: 300px;
-	height: 310px;
+	background: url('../images/background_slice_xl.png') repeat-x top left;
+	width: 495px;
+	height: 430px;
 	border: 2px solid #e0e0e0;
 	-webkit-border-radius:1.0em;
 	margin:0 auto;
@@ -69,11 +69,11 @@ body {
 	position:relative;
 	left: 10px;
 	margin: 0;
-  padding: 0;
-  border: 0;
+  	padding: 0;
+  	border: 0;
 	width: 100px;
 	height: 20px;
 	background: url('../images/btn_savesettings.png') no-repeat;
 	text-indent: -1000em;
-  cursor: pointer; /* hand-shaped cursor */
+  	cursor: pointer; /* hand-shaped cursor */
 }
