@@ -117,6 +117,6 @@ Serebra.Chrome.Settings = function() {
         }
     });
     if (!alreadyOpen) {
-        newHTMLLoader.load(new air.URLRequest('app:/assets/html/OptionsWindow.html'));
+        newHTMLLoader.load(new air.URLRequest('app:/assets/html/Settings.html'));
     }
 };

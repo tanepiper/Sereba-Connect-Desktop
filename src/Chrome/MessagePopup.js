@@ -70,6 +70,6 @@ Serebra.Chrome.MessagePopup = function(options) {
       }
   });
   if (!alreadyOpen) {
-      newHTMLLoader.load(new air.URLRequest('app:/assets/html/Popup.html'));
+      newHTMLLoader.load(new air.URLRequest('app:/assets/html/MessagePopup.html'));
   }
 };
