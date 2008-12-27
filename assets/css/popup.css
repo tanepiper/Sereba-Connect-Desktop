@@ -9,6 +9,7 @@ body {
 	border: 2px solid #e0e0e0;
 	-webkit-border-radius:1.0em;
 	margin:0 auto;
+	opacity:0.9;
 }
 
 #window-handle {
@@ -71,7 +72,7 @@ body {
 
 .open-message-center {
 	text-indent: -1000px;
-	display:none;
+	display:block;
 	margin: 0 auto;
 	width: 141px;
 	height: 20px;

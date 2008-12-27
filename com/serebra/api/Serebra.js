@@ -1,4 +1,13 @@
-if (!Serebra) Serebra = {};
+var Serebra;
+if (!Serebra) Serebra = function(){};
+Serebra.Chrome = function(){};
+Serebra.Database = function(){};
+Serebra.Menu = function(){};
+Serebra.Messages = function(){};
+Serebra.Network = function(){};
+Serebra.SOAP = function(){};
+Serebra.System = function(){};
+Serebra.Update = function(){};
 
 /* We need to handle command line requests */
 Serebra.Initialize = function(){
@@ -10,6 +19,7 @@ Serebra.Initialize = function(){
 	Serebra.AutoStart = false;
 	Serebra.DatabaseFileName = '';
 	Serebra.DebugMode = false;
+	Serebra.DisplayPopups = true;
 	Serebra.Errors = [];
 	Serebra.FirstRun = false;
 	Serebra.ForceUpdate = false;
@@ -18,6 +28,7 @@ Serebra.Initialize = function(){
 	Serebra.MessageCheckTime = 300000;
 	Serebra.NetworkOnline = false;
 	Serebra.Password = '';
+	Serebra.PlayPopupSound = true;
 	Serebra.RememberMe = false;
 	Serebra.UnreadMessages = false;
 	Serebra.Username = '';

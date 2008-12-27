@@ -13,14 +13,14 @@
         <mkdir dir="${DIST_DIR}" />
         <concat destfile="${Build}">
             <fileset dir="${SRC_DIR}" includes="Serebra.js" />
-            <fileset dir="${SRC_DIR}" includes="Serebra.Database.js" />
-            <fileset dir="${SRC_DIR}" includes="Serebra.Menu.js" />
-            <fileset dir="${SRC_DIR}" includes="Serebra.Messages.js" />
-            <fileset dir="${SRC_DIR}" includes="Serebra.Network.js" />
-						<fileset dir="${SRC_DIR}" includes="Serebra.SOAP.js" />
-						<fileset dir="${SRC_DIR}" includes="Serebra.System.js" />
-						<fileset dir="${SRC_DIR}" includes="Serebra.Update.js" />
-						<fileset dir="${SRC_DIR}" includes="Serebra.Chrome.js" />
+            <fileset dir="${SRC_DIR}/Database" includes="*.js" />
+            <fileset dir="${SRC_DIR}/Menu" includes="*.js" />
+            <fileset dir="${SRC_DIR}/Messages" includes="*.js" />
+            <fileset dir="${SRC_DIR}/Network" includes="*.js" />
+						<fileset dir="${SRC_DIR}/SOAP" includes="*.js" />
+						<fileset dir="${SRC_DIR}/System" includes="*.js" />
+						<fileset dir="${SRC_DIR}/Update" includes="*.js" />
+						<fileset dir="${SRC_DIR}/Chrome" includes="*.js" />
         </concat>
     	<java jar="${JAR}" fork="true">
             <arg value="${Build}" />

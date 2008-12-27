@@ -1,4 +1,3 @@
-Serebra.Messages = {};
 
 Serebra.Messages.DeleteMessage = function(id, callback) {
 	var deleted = false;
