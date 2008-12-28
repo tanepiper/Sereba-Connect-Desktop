@@ -11,7 +11,7 @@ Serebra.Network.CheckLogin = function(options) {
             Serebra.AuthCode = jQuery('authCode', soapDocument).text();
             Serebra.Menu.CreateSystrayMenu();
             Serebra.Network.Initialize(Serebra.MessageCheckTime);
-            Serebra.Chrome.MessageCenter();
+            Serebra.Chrome.AlertCenter();
         } else {
             var errorMessage = jQuery('errorString', soapDocument).text();
             if (errorMessage === '') {

@@ -8,7 +8,7 @@ Serebra.Menu.MenuItemClickHandler = function(event) {
         air.navigateToURL(new air.URLRequest('http://www.serebraconnect.com/'));
         break;
     case "Open Alerts Center":
-        Serebra.Chrome.MessageCenter();
+        Serebra.Chrome.AlertCenter();
         break;
     case "Settings":
         Serebra.Chrome.Settings();

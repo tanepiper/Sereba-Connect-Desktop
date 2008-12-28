@@ -1,13 +1,16 @@
+/**
+ * Initialisation of Serebra Connect Alerts
+ */
 var Serebra;
-if (!Serebra) Serebra = function() {};
-Serebra.Chrome = function() {};
-Serebra.Database = function() {};
-Serebra.Menu = function() {};
-Serebra.Messages = function() {};
-Serebra.Network = function() {};
-Serebra.SOAP = function() {};
-Serebra.System = function() {};
-Serebra.Update = function() {};
+if (!Serebra) Serebra = function(){};
+Serebra.Chrome = function(){};
+Serebra.Database = function(){};
+Serebra.Menu = function(){};
+Serebra.Messages = function(){};
+Serebra.Network = function(){};
+Serebra.SOAP = function(){};
+Serebra.System = function(){};
+Serebra.Update = function(){};
 
 /* We need to handle command line requests */
 Serebra.Initialize = function() {

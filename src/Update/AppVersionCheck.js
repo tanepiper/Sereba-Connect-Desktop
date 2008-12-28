@@ -22,6 +22,16 @@ Serebra.Update.AppVersionCheck = function(event) {
     if (update) {
       var doUpdate = confirm("We have found an update for Serebra Connect Alerts.  Would you like to download now?");
       if (doUpdate) {
+        jQuery(air.NativeApplication.nativeApplication.openedWindows).each(function(i, win) {
+          if (win.title === 'Serebra Connect Alerts - Notification') {
+            win.close();
+          }
+        });
+        Serebra.Chrome.MessagePopup({
+          'message': '<h2>Downloading Update</h2>',
+          'showLink': false,
+          'popupLife': 6000
+        });
         stream.addEventListener(air.ProgressEvent.PROGRESS, updatingStatus);
         stream.addEventListener(air.Event.COMPLETE, updateApplication);
         stream.load(new air.URLRequest(remoteAir));

@@ -138,7 +138,7 @@ body {
 }
 
 .close-button:hover {
-	background: url('../images/icon_close-delete.png') no-repeat top left;
+	background: url('../images/icon_close-delete_hover.png') no-repeat top left;
 }
 
 #min-button-container {
@@ -155,7 +155,7 @@ body {
 }
 
 .min-button:hover {
-	background: url('../images/icon_minimize.png') no-repeat top left;
+	background: url('../images/icon_minimize_hover.png') no-repeat top left;
 }
 
 .close-button span, .min-button span {

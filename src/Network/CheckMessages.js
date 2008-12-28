@@ -28,15 +28,17 @@ Serebra.Network.CheckMessages = function() {
 
         });
 
-        if (Serebra.UnreadMessages) {
+        if (Serebra.UnreadMessages && unreadCount > 0) {
             function iconLoadComplete(event) {
                 if (air.NativeApplication.supportsSystemTrayIcon) {
                     air.NativeApplication.nativeApplication.icon.bitmaps = new Array(event.target.content.bitmapData);
                     air.NativeApplication.nativeApplication.icon.tooltip = 'Serebra Connect Alerts - You have unread messages';
                 }
                 if (Serebra.DisplayPop === 'true') {
-                    Serebra.Chrome.MessagePopup({
-                        'messageCount': unreadCount
+                    Serebra.Chrome.Popup({
+                        'message': '<h2>You have <span class="green">' + unreadCount + '</span> new alerts!</h2>',
+                        'showLink': true,
+                        'popupLife': 6000
                     });
                 }
             }

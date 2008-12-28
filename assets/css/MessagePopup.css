@@ -52,7 +52,7 @@ body {
 }
 
 .close-button:hover {
-	background: url('../images/icon_close-delete.png') no-repeat top left;
+	background: url('../images/icon_close-delete_hover.png') no-repeat top left;
 }
 
 .close-button span {
@@ -72,7 +72,7 @@ body {
 
 .open-message-center {
 	text-indent: -1000px;
-	display:block;
+	display:none;
 	margin: 0 auto;
 	width: 141px;
 	height: 20px;
