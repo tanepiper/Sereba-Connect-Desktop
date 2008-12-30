@@ -27,7 +27,7 @@ Serebra.Update.AppVersionCheck = function(event) {
             win.close();
           }
         });
-        Serebra.Chrome.MessagePopup({
+        Serebra.Chrome.Popup({
           'message': '<h2>Downloading Update</h2>',
           'showLink': false,
           'popupLife': 6000

@@ -7,7 +7,7 @@ Serebra.Network.CheckConnectivity = function(event) {
  * @param {Object} event The callback event
  */
 Serebra.Network.CheckURL = function(event) {
-    if (Serebra.Network.Monitor.available) {
+    if (event.currentTarget.available) {
         Serebra.Network.Online();
     } else {
         Serebra.Network.Logout();
