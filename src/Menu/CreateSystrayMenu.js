@@ -11,6 +11,7 @@ Serebra.Menu.CreateSystrayMenu = function() {
         'updatesMenu': new air.NativeMenuItem("Check For Updates", false),
         'optionsMenu': new air.NativeMenuItem("Settings", false),
         'logoutMenu': new air.NativeMenuItem("Logout", false),
+		'whatsThis': new air.NativeMenuItem("Whats This?", false),
         'closeMenu': new air.NativeMenuItem("Exit", false)
     };
     

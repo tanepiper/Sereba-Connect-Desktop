@@ -32,6 +32,9 @@ Serebra.Menu.MenuItemClickHandler = function(event) {
     case "Logout":
         Serebra.Network.Logout();
         break;
+	case "Whats This?":
+		Serebra.Chrome.WhatsThis();
+		break;
     case "Exit":
         air.NativeApplication.nativeApplication.exit();
         break;

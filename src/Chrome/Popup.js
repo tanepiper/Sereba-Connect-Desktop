@@ -64,7 +64,7 @@ Serebra.Chrome.Popup = function(options) {
         if (event.type === 'complete' && event.target.window.nativeWindow) {
             // Now we set up the window position
             event.target.window.nativeWindow.x = air.Screen.mainScreen.bounds.width - 255;
-            event.target.window.nativeWindow.y = 0;
+            event.target.window.nativeWindow.y = air.Screen.mainScreen.bounds.height - 155;
             event.target.window.nativeWindow.addEventListener(air.Event.ACTIVATE, setupDom);
             popupLife.addEventListener( air.TimerEvent.TIMER, closeWindow );
             event.target.window.nativeWindow.activate();

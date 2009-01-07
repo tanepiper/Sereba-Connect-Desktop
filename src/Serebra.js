@@ -27,6 +27,7 @@ Serebra.Initialize = function() {
     Serebra.FirstRun = false;
     Serebra.ForceUpdate = false;
     Serebra.ForceOffline = false;
+	Serebra.JustLoaded = true;
     Serebra.LoggedIn = false;
     Serebra.MessageCheckTime = 300000;
     Serebra.NetworkOnline = false;

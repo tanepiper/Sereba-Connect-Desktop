@@ -1,15 +1,15 @@
 body {
 	font: 70% Arial, Helvetica, sans-serif;
+	font-weight:bold;
 }
 
 #message-popup {
-	background: url('../images/background_slice_small.png') repeat-x top left;
-	width: 250px;
-	min-height: 80px;
+	background: url('../images/background_slice_xl.png') repeat-x top left;
+	width: 295px;
+	min-height: 195px;
 	border: 2px solid #e0e0e0;
 	-webkit-border-radius:1.0em;
 	margin:0 auto;
-	opacity:0.9;
 }
 
 #window-handle {
@@ -66,15 +66,14 @@ body {
 	top: 0px;
 }
 
-.green {
-	color:#63A912;
-}
-
-.open-message-center {
-	text-indent: -1000px;
-	display:none;
-	margin-left:10px;
-	width: 141px;
+#ok-button {
+	float:right;
+	margin: 0;
+  	padding: 0;
+  	border: 0;
+	width: 50px;
 	height: 20px;
-	background: url('../images/link_openalerts.png') no-repeat;
+	background: url('../images/btn_okay.png') no-repeat;
+	text-indent: -1000em;
+  	cursor: pointer; /* hand-shaped cursor */
 }
