@@ -11,12 +11,14 @@ Serebra.Network.Logout = function() {
                     win.close();
                 }
             });
-
+			Serebra.UserTable = 'serebra_user_';
+			Serebra.JustLoaded = true;
+			
             Serebra.Network.MessageCheckTimer.stop();
             Serebra.Menu.CreateLoginMenu();
         }
     }
     var iconLoader = new runtime.flash.display.Loader();
     iconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE, iconLoadComplete);
-    iconLoader.load(new air.URLRequest('app:/assets/images/icon_tray_natural.png'));
+    iconLoader.load(new air.URLRequest('app:/assets/images/icon_tray_off.png'));
 };

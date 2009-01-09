@@ -14,79 +14,65 @@
 			</div>
 			<div id="options-container-1">
 				<fieldset>
-					<legend>Serebra Connect Credentials</legend>
+					<legend>General Options</legend>
 					<table>
 						<tbody>
 							<tr>
-								<th scope="row"><label for="username">Username</label></th>
-								<td scope="row"><input type="text" name="username" id="username" /></td>
+								<td scope="row"><input type="checkbox" name="autostart" id="autostart" /></td>
+								<td scope="row"><label for="autostart">Automatically run Serebra Connect Alerts when Windows starts.</label></td>
 							</tr>
 							<tr>
-								<th scope="row"><label for="password">Password</label></th>
-								<td scope="row"><input type="password" name="password" id="password" /></td>
-							</tr>
-							<tr>
-								<th scope="row"><label for="rememberme">Remember Me</label></th>
-								<td scope="row"><input type="checkbox" name="rememberme" id="rememberme" /></td>
-							</tr>
-							<tr>
-								<th scope="row"><label for="autologin">Auto Login</label></th>
 								<td scope="row"><input type="checkbox" name="autologin" id="autologin" /></td>
+								<td scope="row"><label for="autologin">Automatically login to Serebra Connect Alerts.</label></td>
 							</tr>
 						</tbody>
 					</table>
-				</fieldset>
-				<fieldset>
-					<legend>Serebra Connect Service Options</legend>
 					<table>
 						<tbody>
 							<tr>
-								<th scope="row"><label for="autostart">Startup on Windows Boot</label></th>
-								<td scope="row"><input type="checkbox" name="autostart" id="autostart" /></td>
-							</tr>
-							<tr>
-								<th scope="row"><label for="checktime">Message Check Frequencey</label></th>
+								<td scope="row"><label for="checktime">Check for new messages every:</label></td>
 								<td scope="row">
 									<select name="checktime" id="checktime">
 										<option value="300000">5 Mins</option>
 										<option value="600000">10 Mins</option>
 										<option value="12000000">20 Mins</option>
-									</select>
+									</select></td>
 							</tr>
 						</tbody>
 					</table>
 				</fieldset>
 				<fieldset>
-					<legend>Alert Options</legend>
+					<legend>Alert Pop-up Options</legend>
 					<table>
 						<tbody>
 							<tr>
-								<th scope="row"><label for="display-popup">Display Popups</label></th>
 								<td scope="row"><input type="checkbox" name="display-popup" id="display-popup" checked="checked" /></td>
+								<td scope="row"><label for="display-popup">Display the Alert Pop-up window for new alerts.</label></td>
+								
 							</tr>
 							<tr>
-								<th scope="row"><label for="popup-sound">Play Popup Sound Alert</label></th>
 								<td scope="row"><input type="checkbox" name="popup-sound" id="popup-sound" checked="checked" /></td>
+								<td scope="row"><label for="popup-sound">Play the Alert Pop-up sound for new alerts.</label></td>
+								
 							</tr>
 						</tbody>
 					</table>
-					<table>
+					<table width="100%">
 						<tbody>
 							<tr>
-								<th scope="row"><label for="display-bids">Recieve Bids</label></th>
-								<td scope="row"><input type="checkbox" name="display-bids" id="display-bids" checked="checked" disabled="disabled" /></td>
-								<th scope="row"><label for="display-messages">Recieve Messages</label></th>
-								<td scope="row"><input type="checkbox" name="display-messages" id="display-messages" checked="checked" disabled="disabled" /></td>
-								<th scope="row"><label for="display-questions">Recieve Questions</label></th>
-								<td scope="row"><input type="checkbox" name="display-questions" id="display-questions" checked="checked" disabled="disabled" /></td>
+								<th colspan="10" align="left">Display alerts for:</th>
 							</tr>
 							<tr>
-								<th scope="row"><label for="display-answers">Recieve Answers</label></th>
-								<td scope="row"><input type="checkbox" name="display-answers" id="display-answers" checked="checked" disabled="disabled" /></td>
-								<th scope="row"><label for="display-awards">Recieve Awards</label></th>
-								<td scope="row"><input type="checkbox" name="display-awards" id="display-awards" checked="checked" disabled="disabled"/></td>
-								<th scope="row"></th>
-								<td scope="row"></td>
+								<td scope="row"><input type="checkbox" name="display-bids" id="display-bids" checked="checked" /></td>
+								<td scope="row"><label for="display-bids">Bids</label></td>
+								<td scope="row"><input type="checkbox" name="display-messages" id="display-messages" checked="checked" /></td>
+								<td scope="row"><label for="display-messages">Messages</label></td>
+								<td scope="row"><input type="checkbox" name="display-questions" id="display-questions" checked="checked" /></td>
+								<td scope="row"><label for="display-questions">Questions</label></td>
+								<td scope="row"><input type="checkbox" name="display-answers" id="display-answers" checked="checked" /></td>
+								<td scope="row"><label for="display-answers">Answers</label></td>
+								<td scope="row"><input type="checkbox" name="display-awards" id="display-awards" checked="checked" /></td>
+								<td scope="row"><label for="display-awards">Awards</label></td>
 							</tr>
 						</tbody>
 					</table>

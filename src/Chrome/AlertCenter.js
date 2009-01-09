@@ -39,10 +39,8 @@ Serebra.Chrome.AlertCenter = function() {
 
         function removeRow(id) {
             function deleteRow() {
-                jQuery('tr#' + id, windowDom).fadeOut(function() {
-                    jQuery(this).remove();
-                    setupDom();
-                });
+                jQuery('tr#' + id, windowDom).remove();
+                setupDom();
             }
             jQuery('tr#' + id, windowDom).css({
                 'background-color': '#f00'
@@ -58,7 +56,7 @@ Serebra.Chrome.AlertCenter = function() {
             jQuery('.min-button', windowDom).unbind('click.min').bind('click.min', minimiseWindow);
             jQuery('#inner-table-wrapper', windowDom).remove();
             var allMessages = Serebra.Database.Query({
-                'queryString': 'SELECT * FROM serebra_user_alerts ORDER BY AlertID DESC'
+                'queryString': 'SELECT * FROM ' + Serebra.UserTable + ' ORDER BY AlertID DESC'
             });
             var output = [];
 
@@ -110,7 +108,7 @@ Serebra.Chrome.AlertCenter = function() {
                 }
                 var iconLoader = new runtime.flash.display.Loader();
                 iconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE, iconLoadComplete);
-                iconLoader.load(new air.URLRequest('app:/assets/images/icon_desktop_16.png'));
+                iconLoader.load(new air.URLRequest('app:/assets/images/icon_tray_on.png'));
 
             }
             jQuery('#outer-table-wrapper', windowDom).append(output.join(''));
@@ -146,7 +144,7 @@ Serebra.Chrome.AlertCenter = function() {
                 function() {
 
                     var allMessages = Serebra.Database.Query({
-                        'queryString': 'SELECT * FROM serebra_user_alerts'
+                        'queryString': 'SELECT * FROM ' + Serebra.UserTable
                     });
 
                     if (allMessages.result.data) {
@@ -171,7 +169,7 @@ Serebra.Chrome.AlertCenter = function() {
                 var row = this;
                 var id = jQuery(this).attr('id');
                 var thisMessage = Serebra.Database.Query({
-                    'queryString': 'SELECT * FROM serebra_user_alerts WHERE AlertID = ' + id
+                    'queryString': 'SELECT * FROM ' + Serebra.UserTable + ' WHERE AlertID = ' + id
                 });
                 if (thisMessage.result.data) {
                     var link = thisMessage.result.data[0].objectLink;
@@ -184,7 +182,7 @@ Serebra.Chrome.AlertCenter = function() {
                         var result = jQuery('consumedAlert', response).text();
                         if (result == 'true') {
                             Serebra.Database.Query({
-                                'queryString': 'UPDATE serebra_user_alerts SET messageRead = 1 WHERE AlertID = ' + id
+                                'queryString': 'UPDATE ' + Serebra.UserTable + ' SET messageRead = 1 WHERE AlertID = ' + id
                             });
                             jQuery('.unread', row).addClass('read').removeClass('unread');
                             air.navigateToURL(new air.URLRequest(link));

@@ -1,81 +1,107 @@
-Serebra.Chrome.Settings = function() {
-    this.windowLoaded = function(event) {
-        var thisWindow = event.target.window.nativeWindow;
-        var thisDocument = event.target.window.document;
+Serebra.Chrome.Settings = function(options) {
 
-        if (thisWindow && thisDocument) {
-            var centerX = air.Screen.mainScreen.bounds.width / 2;
-            var centerY = air.Screen.mainScreen.bounds.height / 2;
-            thisWindow.x = centerX - (thisWindow.width / 2);
-            thisWindow.y = centerY - (thisWindow.height / 2);
+    this.Initialise = function() {
+        var windowOptions = new air.NativeWindowInitOptions();
+        windowOptions.systemChrome = air.NativeWindowSystemChrome.NONE;
+        windowOptions.type = air.NativeWindowType.NORMAL;
+        windowOptions.transparent = true;
 
-            // Before we display the screen, we want to set it up
-            var optionsDom = jQuery('#options-window', thisDocument).get(0);
-            // Now lets set up the fields
-            jQuery('#window-handle', optionsDom).bind('mousedown.move',
-            function() {
-                thisWindow.startMove();
-            });
-            jQuery('.close-button', optionsDom).click(function() {
-                thisWindow.close();
-                return false;
-            });
-            jQuery('.min-button', optionsDom).click(function() {
-                thisWindow.minimize();
-                return false;
-            });
+        var windowBounds = new air.Rectangle(0, 0, 500, 435);
 
-            jQuery('#autologin', optionsDom).attr('checked', Serebra.AutoLogin);
-            jQuery('#autostart', optionsDom).attr('checked', Serebra.AutoStart);
-            jQuery('#display-popup', optionsDom).attr('checked', Serebra.DisplayPopups);
-            jQuery('#password', optionsDom).val(Serebra.Password);
-            jQuery('#popup-sound', optionsDom).attr('checked', Serebra.PlayPopupSound);
-            jQuery('#rememberme', optionsDom).attr('checked', Serebra.RememberMe);
-            jQuery('#username', optionsDom).val(Serebra.Username);
-            jQuery('#checktime option', optionsDom).each(function() {
+        var newHTMLLoader = air.HTMLLoader.createRootWindow(false, windowOptions, false, windowBounds);
+        newHTMLLoader.paintsDefaultBackground = false;
+        newHTMLLoader.stage.nativeWindow.alwaysInFront = true;
+        newHTMLLoader.navigateInSystemBrowser = true;
+        newHTMLLoader.addEventListener(air.Event.COMPLETE, this.CreateWindow);
+        newHTMLLoader.load(new air.URLRequest('app:/assets/html/Settings.html'));
+    }
+
+    this.CreateWindow = function(event) {
+        var windowDom = jQuery('#options-window', event.target.window.document).get(0);
+		         
+        function closeWindow() {
+            event.target.window.nativeWindow.visible = false;
+            return false;
+        }
+        
+        function minimiseWindow() {
+            event.target.window.nativeWindow.minimize();
+            return false;
+          }
+
+        function moveWindow() {
+            event.target.window.nativeWindow.startMove();
+        }
+
+        function setupDom() {
+            jQuery('#window-handle', windowDom).bind('mousedown.move', moveWindow);
+            jQuery('.close-button', windowDom).bind('click.close', closeWindow);
+			jQuery('.min-button', windowDom).bind('click.min', minimiseWindow);
+			
+			jQuery('#autologin', windowDom).attr('checked', Serebra.AutoLogin);
+            jQuery('#autostart', windowDom).attr('checked', Serebra.AutoStart);
+            jQuery('#display-answers', windowDom).attr('checked', Serebra.DisplayPopupsAnswers);
+			jQuery('#display-awards', windowDom).attr('checked', Serebra.DisplayPopupsAwards);
+			jQuery('#display-bids', windowDom).attr('checked', Serebra.DisplayPopupsBids);
+			jQuery('#display-messages', windowDom).attr('checked', Serebra.DisplayPopupsMessages);
+			jQuery('#display-popup', windowDom).attr('checked', Serebra.DisplayPopups);
+			jQuery('#display-questions', windowDom).attr('checked', Serebra.DisplayPopupsQuestions);
+            jQuery('#popup-sound', windowDom).attr('checked', Serebra.PlayPopupSound);
+            jQuery('#checktime option', windowDom).each(function() {
                 if (jQuery(this).val() == Serebra.MessageCheckTime) {
                     jQuery(this).attr('selected', 'selected');
                 }
             });
 
-            jQuery('.save', optionsDom).bind('click.save',
+            jQuery('.save', windowDom).bind('click.save',
             function() {
-                Serebra.AutoLogin = jQuery('#autologin', optionsDom).attr('checked');
-                Serebra.AutoStart = jQuery('#autostart', optionsDom).attr('checked');
-                Serebra.DisplayPopups = jQuery('#display-popup', optionsDom).attr('checked');
-                Serebra.Password = jQuery('#password', optionsDom).val();
-                Serebra.PlayPopupSound = jQuery('#popup-sound', optionsDom).attr('checked');
-                Serebra.RememberMe = jQuery('#rememberme', optionsDom).attr('checked');
-                Serebra.Username = jQuery('#username', optionsDom).val();
-                Serebra.MessageCheckTime = jQuery('#checktime', optionsDom).val();
+                Serebra.AutoLogin = jQuery('#autologin', windowDom).attr('checked');
+                Serebra.AutoStart = jQuery('#autostart', windowDom).attr('checked');
+                Serebra.DisplayPopups = jQuery('#display-popup', windowDom).attr('checked');
+				Serebra.DisplayPopupsAnswers = jQuery('#display-answers', windowDom).attr('checked');
+				Serebra.DisplayPopupsAwards = jQuery('#display-awards', windowDom).attr('checked');
+				Serebra.DisplayPopupsBids = jQuery('#display-bids', windowDom).attr('checked');
+				Serebra.DisplayPopupsMessages = jQuery('#display-messages', windowDom).attr('checked');
+				Serebra.DisplayPopupsQuestions = jQuery('#display-questions', windowDom).attr('checked');
+                Serebra.PlayPopupSound = jQuery('#popup-sound', windowDom).attr('checked');
+                Serebra.RememberMe = jQuery('#rememberme', windowDom).attr('checked');
+                Serebra.MessageCheckTime = jQuery('#checktime', windowDom).val();
 
-                Serebra.Database.SaveOrCreateOption({
-                    'key': 'username',
-                    'value': Serebra.Username
-                });
-                Serebra.Database.SaveOrCreateOption({
-                    'key': 'password',
-                    'value': Serebra.Password
-                });
-                Serebra.Database.SaveOrCreateOption({
+				Serebra.Database.SaveOrCreateOption({
                     'key': 'autologin',
                     'value': Serebra.AutoLogin
                 });
-                Serebra.Database.SaveOrCreateOption({
-                    'key': 'rememberme',
-                    'value': Serebra.RememberMe
-                });
-                Serebra.Database.SaveOrCreateOption({
+				Serebra.Database.SaveOrCreateOption({
                     'key': 'autostart',
                     'value': Serebra.AutoStart
                 });
+				Serebra.Database.SaveOrCreateOption({
+                    'key': 'displaypopups',
+                    'value': Serebra.DisplayPopups
+                });
+				Serebra.Database.SaveOrCreateOption({
+                    'key': 'show_answers',
+                    'value': Serebra.DisplayPopupsAnswers
+                });
+				Serebra.Database.SaveOrCreateOption({
+                    'key': 'show_awards',
+                    'value': Serebra.DisplayPopupsAwards
+                });
+				Serebra.Database.SaveOrCreateOption({
+                    'key': 'show_bids',
+                    'value': Serebra.DisplayPopupsBids
+                });
+				Serebra.Database.SaveOrCreateOption({
+                    'key': 'show_messages',
+                    'value': Serebra.DisplayPopupsMessages
+                });
+				Serebra.Database.SaveOrCreateOption({
+                    'key': 'show_questions',
+                    'value': Serebra.DisplayPopupsQuestions
+                });                
                 Serebra.Database.SaveOrCreateOption({
                     'key': 'checktime',
                     'value': Serebra.MessageCheckTime
-                });
-                Serebra.Database.SaveOrCreateOption({
-                    'key': 'displaypopups',
-                    'value': Serebra.DisplayPopups
                 });
                 Serebra.Database.SaveOrCreateOption({
                     'key': 'popupsound',
@@ -90,33 +116,24 @@ Serebra.Chrome.Settings = function() {
                 Serebra.Network.MessageCheckTimer.delay = Serebra.MessageCheckTime;
                 Serebra.Network.MessageCheckTimer.start();
 
-                thisWindow.close();
+                event.target.window.close();
                 return false;
             });
 
-            thisWindow.orderToFront();
+            event.target.window.nativeWindow.orderToFront();
         }
+        
+        if (event.type === 'complete' && event.target.window.nativeWindow) {
+            // Now we set up the window position
+			var centerX = air.Screen.mainScreen.bounds.width / 2;
+            var centerY = air.Screen.mainScreen.bounds.height / 2;
+            event.target.window.nativeWindow.x = centerX - (event.target.window.nativeWindow.width / 2);
+            event.target.window.nativeWindow.y = centerY - (event.target.window.nativeWindow.height / 2);
+			setupDom();
+			event.target.window.nativeWindow.visible = true;
+        }
+
     }
 
-    var windowOptions = new air.NativeWindowInitOptions();
-    windowOptions.systemChrome = air.NativeWindowSystemChrome.NONE;
-    windowOptions.transparent = true;
-    windowOptions.type = air.NativeWindowType.NORMAL;
-
-    var windowBounds = new air.Rectangle(0, 0, 500, 435);
-    var newHTMLLoader = air.HTMLLoader.createRootWindow(true, windowOptions, false, windowBounds);
-    newHTMLLoader.paintsDefaultBackground = false;
-    newHTMLLoader.stage.nativeWindow.alwaysInFront = false;
-    newHTMLLoader.navigateInSystemBrowser = true;
-    newHTMLLoader.addEventListener(air.Event.COMPLETE, this.windowLoaded);
-
-    var alreadyOpen = false;
-    jQuery(air.NativeApplication.nativeApplication.openedWindows).each(function(i, win) {
-        if (win.title === 'Serebra Connect Alerts - Settings') {
-            alreadyOpen = true;
-        }
-    });
-    if (!alreadyOpen) {
-        newHTMLLoader.load(new air.URLRequest('app:/assets/html/Settings.html'));
-    }
+    this.Initialise();
 };

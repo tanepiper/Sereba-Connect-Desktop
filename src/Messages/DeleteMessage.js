@@ -2,7 +2,7 @@ Serebra.Messages.DeleteMessage = function(id, callback) {
     var deleted = false;
 
     var thisMessage = Serebra.Database.Query({
-        'queryString': 'SELECT * FROM serebra_user_alerts WHERE AlertID = ' + id
+        'queryString': 'SELECT * FROM ' + Serebra.UserTable + ' WHERE AlertID = ' + id
     });
 
     if (thisMessage.result.data) {
@@ -18,14 +18,14 @@ Serebra.Messages.DeleteMessage = function(id, callback) {
                 var deleteRow;
                 if (errorCode == "false") {
                     deleteRow = Serebra.Database.Query({
-                        'queryString': 'DELETE FROM serebra_user_alerts WHERE AlertID = ' + id
+                        'queryString': 'DELETE FROM ' + Serebra.UserTable + ' WHERE AlertID = ' + id
                     });
                     if (deleteRow.success) {
                         deleted = true;
                     }
                 } else if (errorString == "you don't own that alert") {
                     deleteRow = Serebra.Database.Query({
-                        'queryString': 'DELETE FROM serebra_user_alerts WHERE AlertID = ' + id
+                        'queryString': 'DELETE FROM ' + Serebra.UserTable + ' WHERE AlertID = ' + id
                     });
                     if (deleteRow.success) {
                         deleted = true;
@@ -35,7 +35,7 @@ Serebra.Messages.DeleteMessage = function(id, callback) {
             });
         } else {
             var deleteRow = Serebra.Database.Query({
-                'queryString': 'DELETE FROM serebra_user_alerts WHERE AlertID = ' + id
+                'queryString': 'DELETE FROM ' + Serebra.UserTable + ' WHERE AlertID = ' + id
             });
 
             if (deleteRow.result.complete) {

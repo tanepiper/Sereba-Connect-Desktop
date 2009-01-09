@@ -23,10 +23,16 @@ Serebra.Initialize = function() {
     Serebra.DatabaseFileName = '';
     Serebra.DebugMode = false;
     Serebra.DisplayPopups = true;
+	Serebra.DisplayPopupsAnswers = true;
+	Serebra.DisplayPopupsAwards = true;
+	Serebra.DisplayPopupsBids = true;
+	Serebra.DisplayPopupsMessages = true;
+	Serebra.DisplayPopupsQuestions = true;
     Serebra.Errors = [];
     Serebra.FirstRun = false;
     Serebra.ForceUpdate = false;
     Serebra.ForceOffline = false;
+	Serebra.IgnoreArray = [];
 	Serebra.JustLoaded = true;
     Serebra.LoggedIn = false;
     Serebra.MessageCheckTime = 300000;
@@ -36,6 +42,7 @@ Serebra.Initialize = function() {
     Serebra.RememberMe = false;
     Serebra.UnreadMessages = false;
     Serebra.Username = '';
+	Serebra.UserTable = 'serebra_user_';
 
     //Cleanup from any update
     try {
@@ -64,13 +71,14 @@ Serebra._InvokeApplication = function(event) {
                     });
                 });
             } else {
-                if (Serebra.AutoLogin) {
-                    Serebra.Network.CheckLogin();
-                } else {
-                    Serebra.Chrome.LoginWindow(function() {
-                        Serebra.Network.CheckLogin();
-                    });
-                }
+				if (Serebra.AutoLogin) {
+					Serebra.Network.CheckLogin();
+				} else {
+					Serebra.Chrome.LoginWindow(function() {
+						Serebra.Network.CheckLogin();
+					});	
+				}
+				
             }
         });
     });

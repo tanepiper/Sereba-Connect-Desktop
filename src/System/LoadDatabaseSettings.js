@@ -30,6 +30,21 @@ Serebra.System.LoadDatabaseSettings = function(callback) {
             case "popupsound":
                 Serebra.PlayPopupSound = item.value;
                 break;
+			case "show_answers":
+                Serebra.DisplayPopupsAnswers = item.value;
+                break;
+			case "show_awards":
+                Serebra.DisplayPopupsAwards = item.value;
+                break;
+			case "show_bids":
+                Serebra.DisplayPopupsBids = item.value;
+                break;
+			case "show_messages":
+                Serebra.DisplayPopupsMessages = item.value;
+                break;
+			case "show_questions":
+                Serebra.DisplayPopupsQuestions = item.value;
+                break;
             default:
                 //Do nothing
                 break;

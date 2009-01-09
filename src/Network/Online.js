@@ -23,6 +23,6 @@ Serebra.Network.Online = function() {
 
     var iconLoader = new runtime.flash.display.Loader();
     iconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE, iconLoadComplete);
-    iconLoader.load(new air.URLRequest('app:/assets/images/icon_desktop_16.png'));
+    iconLoader.load(new air.URLRequest('app:/assets/images/icon_tray_on.png'));
     return;
 };

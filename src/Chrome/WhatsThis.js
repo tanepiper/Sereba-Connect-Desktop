@@ -36,10 +36,8 @@ Serebra.Chrome.WhatsThis = function(options) {
         
         if (event.type === 'complete' && event.target.window.nativeWindow) {
             // Now we set up the window position
-			var centerX = air.Screen.mainScreen.bounds.width / 2;
-            var centerY = air.Screen.mainScreen.bounds.height / 2;
-            event.target.window.nativeWindow.x = centerX - (event.target.window.nativeWindow.width / 2);
-            event.target.window.nativeWindow.y = centerY - (event.target.window.nativeWindow.height / 2);
+			event.target.window.nativeWindow.x = air.Screen.mainScreen.bounds.width - 300;
+            event.target.window.nativeWindow.y = air.Screen.mainScreen.bounds.height - 240;
 			setupDom();
 			event.target.window.nativeWindow.visible = true;
         }

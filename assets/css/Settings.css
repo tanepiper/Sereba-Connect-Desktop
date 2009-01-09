@@ -5,7 +5,7 @@ body {
 #options-window {
 	background: url('../images/background_slice_xl.png') repeat-x top left;
 	width: 495px;
-	height: 430px;
+	height: 330px;
 	border: 2px solid #e0e0e0;
 	-webkit-border-radius:1.0em;
 	margin:0 auto;

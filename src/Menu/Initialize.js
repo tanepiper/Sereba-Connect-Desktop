@@ -11,5 +11,5 @@ Serebra.Menu.Initialize = function() {
 
     var iconLoader = new runtime.flash.display.Loader();
     iconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE, iconLoadComplete);
-    iconLoader.load(new air.URLRequest('app:/assets/images/icon_tray_natural.png'));
+    iconLoader.load(new air.URLRequest('app:/assets/images/icon_tray_off.png'));
 };
