@@ -7,6 +7,7 @@ Serebra.Network.CheckMessages = function() {
         var newMessages = 0;
 		var totalIgnore = 0;
         jQuery('alert', userAlerts).each(function() {
+			newMessages = newMessages + 1;
             var id = jQuery(this).attr('id');
             var type = jQuery('type', this).text();
             var alertText = jQuery('alertText', this).text();
@@ -22,7 +23,6 @@ Serebra.Network.CheckMessages = function() {
 				
 				jQuery.each(Serebra.IgnoreArray, function(i, ignore) {
 					if (type === ignore[0] && ignore[1] === "true") {
-						newMessages = newMessages + 1;
                 		Serebra.UnreadMessages = true;		
 					} else {
 						totalIgnore = totalIgnore + 1;
@@ -45,6 +45,16 @@ Serebra.Network.CheckMessages = function() {
 				doPopup = true;
 			} else if (newMessages > 0) {
 				doPopup = true;
+				function iconLoadComplete(event) {
+        			if (air.NativeApplication.supportsSystemTrayIcon) {
+           				air.NativeApplication.nativeApplication.icon.bitmaps = new Array(event.target.content.bitmapData);
+            	    air.NativeApplication.nativeApplication.icon.tooltip = 'Serebra Connect Alerts - You have unread messages';
+            		}
+        		}
+			
+				var iconLoader = new runtime.flash.display.Loader();
+				iconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE, iconLoadComplete);
+				iconLoader.load(new air.URLRequest('app:/assets/images/icon_tray_new.png'));
 			}
 			
 			if (doPopup) {
@@ -56,18 +66,5 @@ Serebra.Network.CheckMessages = function() {
 			}
 			Serebra.JustLoaded = false;
         }
-		
-		if (Serebra.UnreadMessages) {
-			function iconLoadComplete(event) {
-        		if (air.NativeApplication.supportsSystemTrayIcon) {
-           			air.NativeApplication.nativeApplication.icon.bitmaps = new Array(event.target.content.bitmapData);
-            	    air.NativeApplication.nativeApplication.icon.tooltip = 'Serebra Connect Alerts - You have unread messages';
-            	}
-        	}
-			
-			var iconLoader = new runtime.flash.display.Loader();
-			iconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE, iconLoadComplete);
-			iconLoader.load(new air.URLRequest('app:/assets/images/icon_tray_new.png'));
-		}
     });
 };

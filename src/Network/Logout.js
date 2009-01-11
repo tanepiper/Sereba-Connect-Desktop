@@ -13,6 +13,11 @@ Serebra.Network.Logout = function() {
             });
 			Serebra.UserTable = 'serebra_user_';
 			Serebra.JustLoaded = true;
+			air.Introspector.Console.log(Serebra.RememberMe);
+			if (Serebra.RememberMe == "false" || !Serebra.RememberMe) {
+				Serebra.Username = '';
+				Serebra.Password = '';
+			}
 			
             Serebra.Network.MessageCheckTimer.stop();
             Serebra.Menu.CreateLoginMenu();

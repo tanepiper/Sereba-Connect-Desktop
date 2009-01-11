@@ -6,9 +6,6 @@ Serebra.System.LoadDatabaseSettings = function(callback) {
         jQuery.each(dbValues.result.data,
         function(i, item) {
             switch (item.key) {
-            case "autologin":
-                Serebra.AutoLogin = item.value;
-                break;
             case "autostart":
                 Serebra.AutoStart = item.value;
                 break;

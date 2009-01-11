@@ -18,7 +18,6 @@ Serebra.Initialize = function() {
     Serebra.ApplicationName = '';
     Serebra.ApplicationCode = '';
     Serebra.AuthCode = null;
-    Serebra.AutoLogin = false;
     Serebra.AutoStart = false;
     Serebra.DatabaseFileName = '';
     Serebra.DebugMode = false;
@@ -71,14 +70,9 @@ Serebra._InvokeApplication = function(event) {
                     });
                 });
             } else {
-				if (Serebra.AutoLogin) {
+				Serebra.Chrome.LoginWindow(function() {
 					Serebra.Network.CheckLogin();
-				} else {
-					Serebra.Chrome.LoginWindow(function() {
-						Serebra.Network.CheckLogin();
-					});	
-				}
-				
+				});
             }
         });
     });

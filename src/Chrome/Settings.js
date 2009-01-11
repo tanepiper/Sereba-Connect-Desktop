@@ -38,7 +38,6 @@ Serebra.Chrome.Settings = function(options) {
             jQuery('.close-button', windowDom).bind('click.close', closeWindow);
 			jQuery('.min-button', windowDom).bind('click.min', minimiseWindow);
 			
-			jQuery('#autologin', windowDom).attr('checked', Serebra.AutoLogin);
             jQuery('#autostart', windowDom).attr('checked', Serebra.AutoStart);
             jQuery('#display-answers', windowDom).attr('checked', Serebra.DisplayPopupsAnswers);
 			jQuery('#display-awards', windowDom).attr('checked', Serebra.DisplayPopupsAwards);
@@ -55,7 +54,6 @@ Serebra.Chrome.Settings = function(options) {
 
             jQuery('.save', windowDom).bind('click.save',
             function() {
-                Serebra.AutoLogin = jQuery('#autologin', windowDom).attr('checked');
                 Serebra.AutoStart = jQuery('#autostart', windowDom).attr('checked');
                 Serebra.DisplayPopups = jQuery('#display-popup', windowDom).attr('checked');
 				Serebra.DisplayPopupsAnswers = jQuery('#display-answers', windowDom).attr('checked');
@@ -67,10 +65,6 @@ Serebra.Chrome.Settings = function(options) {
                 Serebra.RememberMe = jQuery('#rememberme', windowDom).attr('checked');
                 Serebra.MessageCheckTime = jQuery('#checktime', windowDom).val();
 
-				Serebra.Database.SaveOrCreateOption({
-                    'key': 'autologin',
-                    'value': Serebra.AutoLogin
-                });
 				Serebra.Database.SaveOrCreateOption({
                     'key': 'autostart',
                     'value': Serebra.AutoStart
@@ -115,6 +109,13 @@ Serebra.Chrome.Settings = function(options) {
                 Serebra.Network.MessageCheckTimer.stop();
                 Serebra.Network.MessageCheckTimer.delay = Serebra.MessageCheckTime;
                 Serebra.Network.MessageCheckTimer.start();
+				
+				Serebra.IgnoreArray = [];
+				Serebra.IgnoreArray.push(['ANSWER', Serebra.DisplayPopupsAnswers]);
+				Serebra.IgnoreArray.push(['AWARD', Serebra.DisplayPopupsAwards]);
+				Serebra.IgnoreArray.push(['BID', Serebra.DisplayPopupsBids]);
+				Serebra.IgnoreArray.push(['MESSAGE', Serebra.DisplayPopupsMessages]);
+				Serebra.IgnoreArray.push(['QUESTION', Serebra.DisplayPopupsQuestions]);
 
                 event.target.window.close();
                 return false;

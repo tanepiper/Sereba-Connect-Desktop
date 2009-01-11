@@ -14,7 +14,6 @@ Serebra.Chrome.LoginWindow = function(callback) {
             var loginDom = jQuery('#login-area', thisDocument).get(0);
 
             // Now lets set up the fields
-            jQuery('#autologin', loginDom).attr('checked', Serebra.AutoLogin);
             jQuery('#password', loginDom).val(Serebra.Password);
             jQuery('#rememberme', loginDom).attr('checked', Serebra.RememberMe);
             jQuery('#username', loginDom).val(Serebra.Username);
@@ -30,16 +29,11 @@ Serebra.Chrome.LoginWindow = function(callback) {
             });
 
             jQuery('#login', loginDom).click(function() {
-                Serebra.AutoLogin = jQuery('#autologin', loginDom).attr('checked');
                 Serebra.Password = jQuery('#password', loginDom).val();
                 Serebra.RememberMe = jQuery('#rememberme', loginDom).attr('checked');
                 Serebra.Username = jQuery('#username', loginDom).val();
 
                 if (Serebra.RememberMe === true) {
-                    Serebra.Database.SaveOrCreateOption({
-                        'key': 'autologin',
-                        'value': Serebra.AutoLogin
-                    });
                     Serebra.Database.SaveOrCreateOption({
                         'key': 'password',
                         'value': Serebra.Password
@@ -59,10 +53,6 @@ Serebra.Chrome.LoginWindow = function(callback) {
                     });
                     Serebra.Database.SaveOrCreateOption({
                         'key': 'password',
-                        'value': ''
-                    });
-                    Serebra.Database.SaveOrCreateOption({
-                        'key': 'autologin',
                         'value': ''
                     });
                     Serebra.Database.SaveOrCreateOption({
