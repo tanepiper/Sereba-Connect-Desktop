@@ -116,8 +116,10 @@ Serebra.Chrome.Settings = function(options) {
 				Serebra.IgnoreArray.push(['BID', Serebra.DisplayPopupsBids]);
 				Serebra.IgnoreArray.push(['MESSAGE', Serebra.DisplayPopupsMessages]);
 				Serebra.IgnoreArray.push(['QUESTION', Serebra.DisplayPopupsQuestions]);
-
-                event.target.window.close();
+				
+				Serebra.Chrome.OKPrompt("Your settings will take affect the next time you log in.", function() {
+					event.target.window.close();	
+				});
                 return false;
             });
 

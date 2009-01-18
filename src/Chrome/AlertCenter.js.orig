@@ -24,11 +24,13 @@ Serebra.Chrome.AlertCenter = function() {
         var windowDom = jQuery('#message-center', event.target.window.document).get(0);
         
         function closeWindow() {
+			event.target.window.nativeWindow.activate();
             event.target.window.nativeWindow.visible = false;
             return false;
         }
         
         function minimiseWindow() {
+			event.target.window.nativeWindow.activate();
             event.target.window.nativeWindow.minimize();
             return false;
           }
@@ -38,8 +40,8 @@ Serebra.Chrome.AlertCenter = function() {
         }
 
         function removeRow(id) {
-            jQuery('tr#' + id, windowDom).remove();
-            setupDom();
+        	jQuery('tr#' + id, windowDom).remove();
+            event.target.window.nativeWindow.activate();
         }
 
         function setupDom() {
@@ -64,12 +66,14 @@ Serebra.Chrome.AlertCenter = function() {
             output.push('</thead>');
             output.push('<tbody>');
             if (allMessages.result.data !== null) {
+				var still_unread = 0;
                 jQuery.each(allMessages.result.data,
                 function(i, item) {
                     output.push('<tr id="' + item.AlertID + '">');
                     switch (item.messageRead) {
                     case 0:
                         output.push('<td width="55"><span class="unread">Unread</span></td>');
+						still_unread = still_unread + 1;
                         break;
                     case 1:
                         output.push('<td width="55"><span class="read">Read</span></td>');
@@ -85,6 +89,19 @@ Serebra.Chrome.AlertCenter = function() {
                 output.push('</tbody>');
                 output.push('</table>');
                 output.push('</div>');
+				
+				if (still_unread == 0) {
+					function iconLoadComplete(event) {
+                    	if (air.NativeApplication.supportsSystemTrayIcon) {
+                    	    air.NativeApplication.nativeApplication.icon.bitmaps = new Array(event.target.content.bitmapData);
+                    	    air.NativeApplication.nativeApplication.icon.tooltip = 'Serebra Connect Alerts Is Online';
+							return;
+                  	  }
+               	 	}
+               	 	var iconLoader = new runtime.flash.display.Loader();
+                	iconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE, iconLoadComplete);
+                	iconLoader.load(new air.URLRequest('app:/assets/images/icon_tray_on.png'));
+				}
             } else {
                 output.push('<tr width="100%"><td colspan="5" width="100%"><h3>You have No Messages</h3></td></tr>');
                 output.push('</tbody>');
@@ -178,17 +195,7 @@ Serebra.Chrome.AlertCenter = function() {
                                 'queryString': 'UPDATE ' + Serebra.UserTable + ' SET messageRead = 1 WHERE AlertID = ' + id
                             });
                             jQuery('.unread', row).addClass('read').removeClass('unread');
-                            
-							function iconLoadComplete(event) {
-        						if (air.NativeApplication.supportsSystemTrayIcon) {
-           							air.NativeApplication.nativeApplication.icon.bitmaps = new Array(event.target.content.bitmapData);
-            	    				air.NativeApplication.nativeApplication.icon.tooltip = 'Serebra Connect Alerts Is Online';
-            					}
-        					}
-			
-							var iconLoader = new runtime.flash.display.Loader();
-							iconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE, iconLoadComplete);
-							iconLoader.load(new air.URLRequest('app:/assets/images/icon_tray_on.png'));
+							event.target.window.nativeWindow.activate();
                         }
                     });
                 }
