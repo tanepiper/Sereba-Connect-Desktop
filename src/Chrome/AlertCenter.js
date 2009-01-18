@@ -185,10 +185,15 @@ Serebra.Chrome.AlertCenter = function() {
             	    				air.NativeApplication.nativeApplication.icon.tooltip = 'Serebra Connect Alerts Is Online';
             					}
         					}
-			
-							var iconLoader = new runtime.flash.display.Loader();
-							iconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE, iconLoadComplete);
-							iconLoader.load(new air.URLRequest('app:/assets/images/icon_tray_on.png'));
+							
+							var all_existing = Serebra.Database.Query({
+        						'queryString': 'SELECT * FROM ' + Serebra.UserTable + ' WHERE messageRead = 0'
+        					});
+							if (!all_existing.result.data) {
+								var iconLoader = new runtime.flash.display.Loader();
+								iconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE, iconLoadComplete);
+								iconLoader.load(new air.URLRequest('app:/assets/images/icon_tray_on.png'));
+							}
                         }
                     });
                 }
