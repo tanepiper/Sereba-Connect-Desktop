@@ -4,10 +4,7 @@ Serebra.Network.CheckMessages = function() {
         'applicationCode': Serebra.ApplicationCode
     },
     function(userAlerts) {
-        var newMessages = 0;
-		var totalIgnore = 0;
         jQuery('alert', userAlerts).each(function() {
-			newMessages = newMessages + 1;
             var id = jQuery(this).attr('id');
             var type = jQuery('type', this).text();
             var alertText = jQuery('alertText', this).text();
@@ -20,51 +17,50 @@ Serebra.Network.CheckMessages = function() {
                 Serebra.Database.Query({
                     'queryString': 'INSERT INTO ' + Serebra.UserTable + ' VALUES(' + id + ',"' + type + '","' + alertText + '","' + userLink + '","' + objectLink + '",0)'
                 });
-				
-				jQuery.each(Serebra.IgnoreArray, function(i, ignore) {
-					if (type === ignore[0] && ignore[1] === "true") {
-                		Serebra.UnreadMessages = true;		
-					} else {
-						totalIgnore = totalIgnore + 1;
-					};
-				});
             }
-
+		});
+		
+		var new_messages = 0;
+		var all_existing = Serebra.Database.Query({
+        	'queryString': 'SELECT * FROM ' + Serebra.UserTable + ' WHERE messageRead = 0'
         });
-
-		if (Serebra.DisplayPop === 'true') {
+		if (all_existing.result.data) {
+			jQuery.each(all_existing.result.data, function(i, item) {
+				jQuery.each(Serebra.IgnoreArray, function(j, ignore) {
+					if (item.Type === ignore[0]) {
+						if (ignore[1]) {
+							new_messages++;
+						}
+					}
+				});
+			});
+		}
+		
+		if (new_messages) {
 			
 			var alertPlural = "alerts";
-			var doPopup = false;
-			if (newMessages == 1) {
-				alertPlural = "alert";
+			if (new_messages === 1) {
+				alertPlural = "alert"
 			}
 			
-			if (newMessages == 0 && Serebra.JustLoaded && totalIgnore < 5) {
-				newMessages = "no";
-				doPopup = true;
-			} else if (newMessages > 0) {
-				doPopup = true;
-				function iconLoadComplete(event) {
-        			if (air.NativeApplication.supportsSystemTrayIcon) {
-           				air.NativeApplication.nativeApplication.icon.bitmaps = new Array(event.target.content.bitmapData);
-            	    air.NativeApplication.nativeApplication.icon.tooltip = 'Serebra Connect Alerts - You have unread messages';
-            		}
-        		}
-			
-				var iconLoader = new runtime.flash.display.Loader();
-				iconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE, iconLoadComplete);
-				iconLoader.load(new air.URLRequest('app:/assets/images/icon_tray_new.png'));
-			}
-			
-			if (doPopup) {
+			if (Serebra.DisplayPopups) {
 				Serebra.Chrome.Popup({
-					'message': '<h2>You have <span class="green">' + newMessages + '</span> new ' + alertPlural + '!</h2>',
+					'message': '<h2>You have <span class="green">' + new_messages + '</span> new ' + alertPlural + '!</h2>',
 					'showLink': true,
 					'popupLife': 6000
 				});
 			}
-			Serebra.JustLoaded = false;
-        }
-    });
+			
+			function iconLoadComplete(event){
+				if (air.NativeApplication.supportsSystemTrayIcon) {
+					air.NativeApplication.nativeApplication.icon.bitmaps = new Array(event.target.content.bitmapData);
+					air.NativeApplication.nativeApplication.icon.tooltip = 'Serebra Connect Alerts - You have unread messages';
+				}
+			}
+			var iconLoader = new runtime.flash.display.Loader();
+			iconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE, iconLoadComplete);
+			iconLoader.load(new air.URLRequest('app:/assets/images/icon_tray_new.png'));
+			
+		}
+	});
 };

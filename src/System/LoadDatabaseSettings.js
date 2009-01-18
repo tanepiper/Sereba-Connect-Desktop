@@ -7,7 +7,7 @@ Serebra.System.LoadDatabaseSettings = function(callback) {
         function(i, item) {
             switch (item.key) {
             case "autostart":
-                Serebra.AutoStart = item.value;
+                Serebra.AutoStart = ((item.value === "true") ? true : false);
                 break;
             case "checktime":
                 Serebra.MessageCheckTime = parseInt(item.value, 10);
@@ -16,31 +16,31 @@ Serebra.System.LoadDatabaseSettings = function(callback) {
                 Serebra.Password = item.value;
                 break;
             case "rememberme":
-                Serebra.RememberMe = item.value;
+                Serebra.RememberMe = ((item.value === "true") ? true : false);
                 break;
             case "username":
                 Serebra.Username = item.value;
                 break;
             case "displaypopups":
-                Serebra.DisplayPop = item.value;
+                Serebra.DisplayPop = ((item.value === "true") ? true : false);
                 break;
             case "popupsound":
-                Serebra.PlayPopupSound = item.value;
+                Serebra.PlayPopupSound = ((item.value === "true") ? true : false);
                 break;
 			case "show_answers":
-                Serebra.DisplayPopupsAnswers = item.value;
+                Serebra.DisplayPopupsAnswers = ((item.value === "true") ? true : false);
                 break;
 			case "show_awards":
-                Serebra.DisplayPopupsAwards = item.value;
+                Serebra.DisplayPopupsAwards = ((item.value === "true") ? true : false);
                 break;
 			case "show_bids":
-                Serebra.DisplayPopupsBids = item.value;
+                Serebra.DisplayPopupsBids = ((item.value === "true") ? true : false);
                 break;
 			case "show_messages":
-                Serebra.DisplayPopupsMessages = item.value;
+                Serebra.DisplayPopupsMessages = ((item.value === "true") ? true : false);
                 break;
 			case "show_questions":
-                Serebra.DisplayPopupsQuestions = item.value;
+                Serebra.DisplayPopupsQuestions = ((item.value === "true") ? true : false);
                 break;
             default:
                 //Do nothing
