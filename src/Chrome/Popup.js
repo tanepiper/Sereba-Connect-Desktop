@@ -29,19 +29,6 @@ Serebra.Chrome.Popup = function(options) {
             event.target.window.nativeWindow.startMove();
         }
 
-        function playSound() {
-
-            function onSoundLoaded(event) {
-                var localSound = event.target;
-                localSound.play();
-            }
-
-            var sound = new air.Sound();
-            sound.addEventListener(air.Event.COMPLETE, onSoundLoaded);
-            var req = new air.URLRequest("app:/assets/sounds/new_message.mp3");
-            sound.load(req);
-        }
-
         function openMessageCenter() {
             popupLife.stop();
             Serebra.Chrome.AlertCenter();
@@ -60,17 +47,14 @@ Serebra.Chrome.Popup = function(options) {
                 .bind('click.messageCenter', openMessageCenter);
             }
         }
-        
+
         if (event.type === 'complete' && event.target.window.nativeWindow) {
             // Now we set up the window position
             event.target.window.nativeWindow.x = air.Screen.mainScreen.bounds.width - 255;
             event.target.window.nativeWindow.y = air.Screen.mainScreen.bounds.height - 155;
             event.target.window.nativeWindow.addEventListener(air.Event.ACTIVATE, setupDom);
-            popupLife.addEventListener( air.TimerEvent.TIMER, closeWindow );
+            popupLife.addEventListener(air.TimerEvent.TIMER, closeWindow);
             event.target.window.nativeWindow.activate();
-            if (Serebra.PlayPopupSound === 'true') {
-              playSound();
-            }
             event.target.window.nativeWindow.visible = true;
             popupLife.start();
         }

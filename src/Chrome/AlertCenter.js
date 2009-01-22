@@ -13,25 +13,25 @@ Serebra.Chrome.AlertCenter = function() {
         newHTMLLoader.navigateInSystemBrowser = true;
         newHTMLLoader.addEventListener(air.Event.COMPLETE, this.CreateWindow);
         try {
-          newHTMLLoader.load(new air.URLRequest('app:/assets/html/MessageCenter.html'));  
-        } catch (error) {
-          air.Introspector.Console.log(error);
+            newHTMLLoader.load(new air.URLRequest('app:/assets/html/MessageCenter.html'));
+        } catch(error) {
+            air.Introspector.Console.log(error);
         }
-        
+
     }
     this.CreateWindow = function(event) {
         //alert('AlertCenter Loaded')
         var windowDom = jQuery('#message-center', event.target.window.document).get(0);
-        
+
         function closeWindow() {
             event.target.window.nativeWindow.visible = false;
             return false;
         }
-        
+
         function minimiseWindow() {
             event.target.window.nativeWindow.minimize();
             return false;
-          }
+        }
 
         function moveWindow() {
             event.target.window.nativeWindow.startMove();
@@ -165,7 +165,7 @@ Serebra.Chrome.AlertCenter = function() {
                 });
                 if (thisMessage.result.data) {
                     var link = thisMessage.result.data[0].objectLink;
-					air.navigateToURL(new air.URLRequest(link));
+                    air.navigateToURL(new air.URLRequest(link));
                     Serebra.SOAP.ConsumeAlert({
                         'authCode': Serebra.AuthCode,
                         'applicationCode': Serebra.ApplicationCode,
@@ -178,22 +178,22 @@ Serebra.Chrome.AlertCenter = function() {
                                 'queryString': 'UPDATE ' + Serebra.UserTable + ' SET messageRead = 1 WHERE AlertID = ' + id
                             });
                             jQuery('.unread', row).addClass('read').removeClass('unread');
-                            
-							function iconLoadComplete(event) {
-        						if (air.NativeApplication.supportsSystemTrayIcon) {
-           							air.NativeApplication.nativeApplication.icon.bitmaps = new Array(event.target.content.bitmapData);
-            	    				air.NativeApplication.nativeApplication.icon.tooltip = 'Serebra Connect Alerts Is Online';
-            					}
-        					}
-							
-							var all_existing = Serebra.Database.Query({
-        						'queryString': 'SELECT * FROM ' + Serebra.UserTable + ' WHERE messageRead = 0'
-        					});
-							if (!all_existing.result.data) {
-								var iconLoader = new runtime.flash.display.Loader();
-								iconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE, iconLoadComplete);
-								iconLoader.load(new air.URLRequest('app:/assets/images/icon_tray_on.png'));
-							}
+
+                            function iconLoadComplete(event) {
+                                if (air.NativeApplication.supportsSystemTrayIcon) {
+                                    air.NativeApplication.nativeApplication.icon.bitmaps = new Array(event.target.content.bitmapData);
+                                    air.NativeApplication.nativeApplication.icon.tooltip = 'Serebra Connect Alerts Is Online';
+                                }
+                            }
+
+                            var all_existing = Serebra.Database.Query({
+                                'queryString': 'SELECT * FROM ' + Serebra.UserTable + ' WHERE messageRead = 0'
+                            });
+                            if (!all_existing.result.data) {
+                                var iconLoader = new runtime.flash.display.Loader();
+                                iconLoader.contentLoaderInfo.addEventListener(air.Event.COMPLETE, iconLoadComplete);
+                                iconLoader.load(new air.URLRequest('app:/assets/images/icon_tray_on.png'));
+                            }
                         }
                     });
                 }
@@ -210,7 +210,7 @@ Serebra.Chrome.AlertCenter = function() {
             event.target.window.nativeWindow.addEventListener(air.Event.ACTIVATE, setupDom);
         }
     }
-    
+
     var alreadyOpen = false;
     jQuery(air.NativeApplication.nativeApplication.openedWindows).each(function(i, win) {
         if (win.title === 'Serebra Connect Alerts - Alert Center') {
@@ -221,6 +221,6 @@ Serebra.Chrome.AlertCenter = function() {
         }
     });
     if (!alreadyOpen) {
-     this.Initialise();
+        this.Initialise();
     }
 };

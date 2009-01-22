@@ -31,15 +31,15 @@ Serebra.Chrome.WhatsThis = function(options) {
         function setupDom() {
             jQuery('#window-handle', windowDom).bind('mousedown.move', moveWindow);
             jQuery('.close-button', windowDom).bind('click.close', closeWindow);
-			jQuery('#ok-button', windowDom).bind('click.ok', closeWindow);
+            jQuery('#ok-button', windowDom).bind('click.ok', closeWindow);
         }
-        
+
         if (event.type === 'complete' && event.target.window.nativeWindow) {
             // Now we set up the window position
-			event.target.window.nativeWindow.x = air.Screen.mainScreen.bounds.width - 300;
+            event.target.window.nativeWindow.x = air.Screen.mainScreen.bounds.width - 300;
             event.target.window.nativeWindow.y = air.Screen.mainScreen.bounds.height - 240;
-			setupDom();
-			event.target.window.nativeWindow.visible = true;
+            setupDom();
+            event.target.window.nativeWindow.visible = true;
         }
 
     }

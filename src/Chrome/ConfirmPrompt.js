@@ -11,26 +11,26 @@ Serebra.Chrome.ConfirmPrompt = function(message, callback) {
 
             var thisDom = jQuery('#confirm-message', thisWindow.document).get(0);
             thisWindow.nativeWindow.height = jQuery('#confirm-message', thisWindow.document).height() + 100;
-           
-             // Now lets set up the fields
+
+            // Now lets set up the fields
             jQuery('#window-handle', thisDom).bind('mousedown.move',
             function() {
                 thisWindow.nativeWindow.startMove();
             });
-            
+
             jQuery('.close-button', thisDom).click(function() {
                 thisWindow.close();
                 return false;
             });
-            
+
             jQuery('.message', thisDom).html('<h2>' + message + '</h2>');
 
             jQuery('.confirm-button', thisDom).click(function() {
                 var value = jQuery(this).val();
                 var returnValue;
                 if (value === 'Yes') {
-                  thisWindow.close();
-                  return callback();
+                    thisWindow.close();
+                    return callback();
                 }
                 thisWindow.close();
                 return false;
